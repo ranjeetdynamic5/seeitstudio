@@ -20,12 +20,7 @@ export default async function ProductDetailPage({
     ? slugParam[0]
     : slugParam;
 
-  console.log("SLUG:", slug);
-
-  // ✅ Fetch from Sanity
   const product: SanityProduct | null = await getProductBySlug(slug);
-
-  console.log("PRODUCT:", product);
 
   // ✅ Not found handling
   if (!product) notFound();
@@ -90,7 +85,7 @@ export default async function ProductDetailPage({
               </div>
 
               <AddToCartButton
-                id={product.slug.current}
+                id={product.slug}
                 name={product.name}
                 price={product.price}
               />
@@ -104,7 +99,7 @@ export default async function ProductDetailPage({
       <Footer />
 
       <StickyBar
-        id={product.slug.current}
+        id={product.slug}
         name={product.name}
         price={product.price}
       />
