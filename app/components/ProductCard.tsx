@@ -10,7 +10,7 @@ export default function ProductCard({ product }: { product: SanityProduct }) {
   const [added, setAdded] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const slug = product?.slug?.current;
+  const slug = product?.slug;
   const href = slug ? `/products/${slug}` : "#";
 
   const categoryLabel = product?.category?.title || "Uncategorised";

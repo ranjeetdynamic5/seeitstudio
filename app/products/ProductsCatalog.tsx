@@ -18,7 +18,7 @@ function CatalogInner({
   const [activeCategory, setActiveCategory] = useState<string>(() => {
     const param = searchParams.get("category");
     if (!param) return "All";
-    const match = categories.find((c) => c.slug.current === param.toLowerCase());
+    const match = categories.find((c) => c.slug === param.toLowerCase());
     return match ? match.title : "All";
   });
   const [search, setSearch] = useState("");
@@ -152,7 +152,7 @@ function CatalogInner({
             role="tablist"
             aria-label="Filter by category"
           >
-            {[{ _id: "all", title: "All", slug: { current: "all" } }, ...categories].map((cat) => {
+            {[{ _id: "all", title: "All", slug: "all" }, ...categories].map((cat) => {
               const isActive = activeCategory === cat.title;
               return (
                 <button

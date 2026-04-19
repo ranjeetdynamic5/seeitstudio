@@ -1,13 +1,13 @@
 export type SanityCategory = {
   _id: string;
   title: string;
-  slug: { current: string };
+  slug: string;
 };
 
 export type SanityProduct = {
   _id: string;
   name: string;
-  slug: { current: string };
+  slug: string;
   price: number;
   description: string;
   badge?: string;
