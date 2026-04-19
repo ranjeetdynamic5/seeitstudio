@@ -19,6 +19,7 @@ type OrderProduct = {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+
     const { orderId, products, totalAmount, customerName, email } = body as {
       orderId: string;
       products: OrderProduct[];
@@ -27,25 +28,50 @@ export async function POST(req: NextRequest) {
       email: string;
     };
 
-    if (!orderId || !products?.length || !totalAmount || !customerName || !email) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    // ✅ validation
+    if (
+      !orderId ||
+      !products?.length ||
+      !totalAmount ||
+      !customerName ||
+      !email
+    ) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
     }
 
-    // createIfNotExists prevents duplicate orders for the same orderId
+    // 🔥 IMPORTANT FIX: add _key in each product
+    const formattedProducts = products.map((item) => ({
+      _key: crypto.randomUUID(), // ✅ required for Sanity arrays
+      productId: item.productId,
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity,
+    }));
+
+    // createIfNotExists prevents duplicate orders
     const doc = await writeClient.createIfNotExists({
       _id: `order-${orderId}`,
       _type: "order",
       orderId,
-      products,
+      products: formattedProducts, // ✅ use fixed array
       totalAmount,
       customerName,
       email,
       createdAt: new Date().toISOString(),
     });
 
-    return NextResponse.json({ success: true, id: doc._id });
+    return NextResponse.json({
+      success: true,
+      id: doc._id,
+    });
   } catch (error) {
     console.error("[create-order]", error);
-    return NextResponse.json({ error: "Failed to save order" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to save order" },
+      { status: 500 }
+    );
   }
 }
