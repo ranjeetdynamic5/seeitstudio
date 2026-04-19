@@ -7,16 +7,16 @@ const ALL_PRODUCTS_QUERY = `
   *[_type == "product"] | order(name asc) {
     _id,
     name,
-    slug,
+    "slug": slug.current,
     price,
     description,
     badge,
     featured,
     "image": image.asset->url,
-    category-> {
+    "category": category->{
       _id,
       title,
-      slug
+      "slug": slug.current
     }
   }
 `;
@@ -27,16 +27,16 @@ const PRODUCT_BY_SLUG_QUERY = `
   *[_type == "product" && slug.current == $slug][0] {
     _id,
     name,
-    slug,
+    "slug": slug.current,
     price,
     description,
     badge,
     featured,
     "image": image.asset->url,
-    category-> {
+    "category": category->{
       _id,
       title,
-      slug
+      "slug": slug.current
     }
   }
 `;
@@ -47,7 +47,7 @@ const ALL_CATEGORIES_QUERY = `
   *[_type == "category"] | order(title asc) {
     _id,
     title,
-    slug
+    "slug": slug.current
   }
 `;
 
@@ -57,75 +57,62 @@ const FEATURED_PRODUCTS_QUERY = `
   *[_type == "product" && featured == true] | order(name asc) {
     _id,
     name,
-    slug,
+    "slug": slug.current,
     price,
     description,
     badge,
     featured,
     "image": image.asset->url,
-    category-> {
+    "category": category->{
       _id,
       title,
-      slug
+      "slug": slug.current
     }
   }
 `;
 
 // ─── FETCH FUNCTIONS ─────────────────────────────────────────
 
-// Categories
+// ⚠️ IMPORTANT: cache disable for fresh data
+const options = { next: { revalidate: 0 } };
+
 export async function getAllCategories(): Promise<SanityCategory[]> {
   try {
-    return await sanityClient.fetch<SanityCategory[]>(
-      ALL_CATEGORIES_QUERY,
-      {},
-      { cache: "no-store" } // 🔥 always fresh data
-    );
+    return await sanityClient.fetch(ALL_CATEGORIES_QUERY, {}, options);
   } catch (error) {
     console.error("Error fetching categories:", error);
     return [];
   }
 }
 
-// Featured Products
 export async function getFeaturedProducts(): Promise<SanityProduct[]> {
   try {
-    return await sanityClient.fetch<SanityProduct[]>(
-      FEATURED_PRODUCTS_QUERY,
-      {},
-      { cache: "no-store" }
-    );
+    return await sanityClient.fetch(FEATURED_PRODUCTS_QUERY, {}, options);
   } catch (error) {
     console.error("Error fetching featured products:", error);
     return [];
   }
 }
 
-// All Products
 export async function getAllProducts(): Promise<SanityProduct[]> {
   try {
-    return await sanityClient.fetch<SanityProduct[]>(
-      ALL_PRODUCTS_QUERY,
-      {},
-      { cache: "no-store" }
-    );
+    return await sanityClient.fetch(ALL_PRODUCTS_QUERY, {}, options);
   } catch (error) {
     console.error("Error fetching products:", error);
     return [];
   }
 }
 
-// Product by Slug
 export async function getProductBySlug(
   slug: string
 ): Promise<SanityProduct | null> {
   if (!slug) return null;
 
   try {
-    return await sanityClient.fetch<SanityProduct | null>(
+    return await sanityClient.fetch(
       PRODUCT_BY_SLUG_QUERY,
       { slug },
-      { cache: "no-store" }
+      options
     );
   } catch (error) {
     console.error("Error fetching product by slug:", error);
