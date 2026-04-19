@@ -23,7 +23,7 @@ function buildNavItems(categories: SanityCategory[]): NavItem[] {
       href: "/products",
       dropdown: categories.map((cat) => ({
         label: cat.title,
-        href: `/products?category=${cat.slug.current}`,
+        href: `/products?category=${cat.slug}`,
       })),
     },
     { label: "Events", href: "/events" },
