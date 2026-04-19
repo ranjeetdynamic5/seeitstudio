@@ -51,15 +51,6 @@ const ALL_CATEGORIES_QUERY = `
   }
 `;
 
-export async function getAllCategories(): Promise<SanityCategory[]> {
-  try {
-    return await sanityClient.fetch<SanityCategory[]>(ALL_CATEGORIES_QUERY);
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-    return [];
-  }
-}
-
 // ─── FEATURED PRODUCTS ───────────────────────────────────────
 
 const FEATURED_PRODUCTS_QUERY = `
@@ -82,24 +73,49 @@ const FEATURED_PRODUCTS_QUERY = `
 
 // ─── FETCH FUNCTIONS ─────────────────────────────────────────
 
+// Categories
+export async function getAllCategories(): Promise<SanityCategory[]> {
+  try {
+    return await sanityClient.fetch<SanityCategory[]>(
+      ALL_CATEGORIES_QUERY,
+      {},
+      { cache: "no-store" } // 🔥 always fresh data
+    );
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return [];
+  }
+}
+
+// Featured Products
 export async function getFeaturedProducts(): Promise<SanityProduct[]> {
   try {
-    return await sanityClient.fetch<SanityProduct[]>(FEATURED_PRODUCTS_QUERY);
+    return await sanityClient.fetch<SanityProduct[]>(
+      FEATURED_PRODUCTS_QUERY,
+      {},
+      { cache: "no-store" }
+    );
   } catch (error) {
     console.error("Error fetching featured products:", error);
     return [];
   }
 }
 
+// All Products
 export async function getAllProducts(): Promise<SanityProduct[]> {
   try {
-    return await sanityClient.fetch<SanityProduct[]>(ALL_PRODUCTS_QUERY);
+    return await sanityClient.fetch<SanityProduct[]>(
+      ALL_PRODUCTS_QUERY,
+      {},
+      { cache: "no-store" }
+    );
   } catch (error) {
     console.error("Error fetching products:", error);
     return [];
   }
 }
 
+// Product by Slug
 export async function getProductBySlug(
   slug: string
 ): Promise<SanityProduct | null> {
@@ -108,7 +124,8 @@ export async function getProductBySlug(
   try {
     return await sanityClient.fetch<SanityProduct | null>(
       PRODUCT_BY_SLUG_QUERY,
-      { slug }
+      { slug },
+      { cache: "no-store" }
     );
   } catch (error) {
     console.error("Error fetching product by slug:", error);
