@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "next-sanity";
+import { sendOrderEmails } from "@/lib/email";
 
 const writeClient = createClient({
   projectId: "ibaf5v0k",
@@ -28,50 +29,42 @@ export async function POST(req: NextRequest) {
       email: string;
     };
 
-    // ✅ validation
-    if (
-      !orderId ||
-      !products?.length ||
-      !totalAmount ||
-      !customerName ||
-      !email
-    ) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+    if (!orderId || !products?.length || !totalAmount || !customerName || !email) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // 🔥 IMPORTANT FIX: add _key in each product
+    // Sanity requires a _key on every array item
     const formattedProducts = products.map((item) => ({
-      _key: crypto.randomUUID(), // ✅ required for Sanity arrays
+      _key: crypto.randomUUID(),
       productId: item.productId,
       name: item.name,
       price: item.price,
       quantity: item.quantity,
     }));
 
-    // createIfNotExists prevents duplicate orders
+    const createdAt = new Date().toISOString();
+
+    // createIfNotExists is idempotent — safe to retry
     const doc = await writeClient.createIfNotExists({
       _id: `order-${orderId}`,
       _type: "order",
       orderId,
-      products: formattedProducts, // ✅ use fixed array
+      products: formattedProducts,
       totalAmount,
       customerName,
       email,
-      createdAt: new Date().toISOString(),
+      status: "pending",
+      createdAt,
     });
 
-    return NextResponse.json({
-      success: true,
-      id: doc._id,
-    });
+    // Fire emails without blocking the response; errors are logged, not thrown
+    sendOrderEmails({ orderId, customerName, email, products, totalAmount, createdAt }).catch(
+      (err) => console.error("[create-order] Email dispatch error:", err)
+    );
+
+    return NextResponse.json({ success: true, id: doc._id });
   } catch (error) {
     console.error("[create-order]", error);
-    return NextResponse.json(
-      { error: "Failed to save order" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to save order" }, { status: 500 });
   }
 }

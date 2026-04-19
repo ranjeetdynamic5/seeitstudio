@@ -43,6 +43,22 @@ export const order = defineType({
       type: "string",
     }),
     defineField({
+      name: "status",
+      title: "Order Status",
+      type: "string",
+      initialValue: "pending",
+      options: {
+        list: [
+          { title: "Pending", value: "pending" },
+          { title: "Processing", value: "processing" },
+          { title: "Completed", value: "completed" },
+          { title: "Cancelled", value: "cancelled" },
+        ],
+        layout: "radio",
+      },
+      validation: (r) => r.required(),
+    }),
+    defineField({
       name: "createdAt",
       title: "Created At",
       type: "datetime",
@@ -53,10 +69,12 @@ export const order = defineType({
     select: {
       title: "orderId",
       subtitle: "customerName",
+      status: "status",
     },
-    prepare({ title, subtitle }) {
+    prepare({ title, subtitle, status }) {
+      const label = status ? ` [${status}]` : "";
       return {
-        title: `Order ${title}`,
+        title: `Order ${title}${label}`,
         subtitle: subtitle ?? "Unknown customer",
       };
     },
