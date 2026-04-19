@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "next-sanity";
-import { sendOrderEmails } from "@/lib/email";
 
 const writeClient = createClient({
   projectId: "ibaf5v0k",
@@ -56,11 +55,6 @@ export async function POST(req: NextRequest) {
       status: "pending",
       createdAt,
     });
-
-    // Fire emails without blocking the response; errors are logged, not thrown
-    sendOrderEmails({ orderId, customerName, email, products, totalAmount, createdAt }).catch(
-      (err) => console.error("[create-order] Email dispatch error:", err)
-    );
 
     return NextResponse.json({ success: true, id: doc._id });
   } catch (error) {
