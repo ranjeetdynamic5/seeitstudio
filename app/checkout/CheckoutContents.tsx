@@ -62,6 +62,7 @@ export default function CheckoutContents() {
   const [form, setForm] = useState<FormFields>(EMPTY_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
+  const [orderError, setOrderError] = useState<string | null>(null);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -71,19 +72,46 @@ export default function CheckoutContents() {
     }
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     const validationErrors = validate(form);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
+
     setLoading(true);
-    await new Promise((res) => setTimeout(res, 2000));
-    clearCart();
+    setOrderError(null);
+
     const id = `UK${Math.floor(10000 + Math.random() * 90000)}`;
-    sessionStorage.setItem("orderComplete", "1");
-    router.push(`/success?orderId=${id}`);
+
+    try {
+      const res = await fetch("/api/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId: id,
+          customerName: form.fullName,
+          email: form.email,
+          products: items.map((item) => ({
+            productId: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+          totalAmount: total,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Order save failed");
+
+      clearCart();
+      sessionStorage.setItem("orderComplete", "1");
+      router.push(`/success?orderId=${id}`);
+    } catch {
+      setOrderError("There was a problem placing your order. Please try again.");
+      setLoading(false);
+    }
   }
 
   const subtotal = mounted ? getSubtotal() : 0;
@@ -136,6 +164,10 @@ export default function CheckoutContents() {
                 <Field label="City" name="city" type="text" autoComplete="address-level2" value={form.city} error={errors.city} onChange={handleChange} />
                 <Field label="Postcode" name="postcode" type="text" autoComplete="postal-code" value={form.postcode} error={errors.postcode} onChange={handleChange} />
               </div>
+
+              {orderError && (
+                <p className="mt-6 text-sm text-red-500 font-medium">{orderError}</p>
+              )}
 
               <button
                 type="submit"
