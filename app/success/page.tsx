@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import NavHeader from "@/app/components/NavHeader";
 import Footer from "@/app/components/Footer";
 
-export default function SuccessPage() {
+function SuccessContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [orderId, setOrderId] = useState<string | null>(null);
@@ -14,10 +14,12 @@ export default function SuccessPage() {
   useEffect(() => {
     const id = searchParams.get("orderId");
     const flag = sessionStorage.getItem("orderComplete");
+
     if (!id || !flag) {
       router.replace("/cart");
       return;
     }
+
     sessionStorage.removeItem("orderComplete");
     setOrderId(`#${id}`);
   }, [searchParams, router]);
@@ -73,5 +75,13 @@ export default function SuccessPage() {
       </main>
       <Footer />
     </>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={<div className="p-10 text-center">Loading...</div>}>
+      <SuccessContent />
+    </Suspense>
   );
 }
