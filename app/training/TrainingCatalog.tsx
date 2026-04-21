@@ -341,7 +341,7 @@ function CourseCard({
         <div className="min-w-0">
           {training.category && (
             <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-1">
-              {training.category.label}
+              {training.category.title}
             </p>
           )}
           <h3 className="text-sm font-semibold text-[#0B0F19] leading-snug">{training.title}</h3>
