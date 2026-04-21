@@ -38,7 +38,7 @@ export default function TrainingCatalog({
 
   const filtered = useMemo(() => {
     let result = activeCategory
-      ? trainings.filter((t) => t.category === activeCategory)
+      ? trainings.filter((t) => t.category?.label === activeCategory)
       : trainings;
     if (search.trim()) {
       const q = search.trim().toLowerCase();
@@ -50,7 +50,7 @@ export default function TrainingCatalog({
   // Pre-compute counts keyed by category label
   const counts: Record<string, number> = { all: trainings.length };
   for (const t of trainings) {
-    if (t.category) counts[t.category] = (counts[t.category] ?? 0) + 1;
+    if (t.category?.label) counts[t.category.label] = (counts[t.category.label] ?? 0) + 1;
   }
 
   function selectTab(tabParam: string | null) {
@@ -341,7 +341,7 @@ function CourseCard({
         <div className="min-w-0">
           {training.category && (
             <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-1">
-              {training.category}
+              {training.category.label}
             </p>
           )}
           <h3 className="text-sm font-semibold text-[#0B0F19] leading-snug">{training.title}</h3>

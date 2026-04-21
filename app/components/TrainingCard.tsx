@@ -75,7 +75,7 @@ export default function TrainingCard({ training }: { training: SanityTraining })
           <div className="min-w-0">
             {training.category && (
               <p className="text-xs font-semibold text-red-400 uppercase tracking-widest mb-1.5">
-                {training.category}
+                {training.category?.label}
               </p>
             )}
             <h3 className="text-sm font-semibold text-white leading-snug">{training.title}</h3>
@@ -93,7 +93,7 @@ export default function TrainingCard({ training }: { training: SanityTraining })
           <div>
             {training.category && (
               <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-1">
-                {training.category}
+                {training.category?.label}
               </p>
             )}
             <h3 className="text-sm font-semibold text-[#0B0F19] leading-snug">{training.title}</h3>

@@ -122,56 +122,31 @@ export async function getProductBySlug(
 
 // ─── TRAINING ────────────────────────────────────────────────
 
-const ALL_TRAININGS_QUERY = `
-  *[_type == "training"] | order(title asc) {
+const TRAINING_PROJECTION = `
     _id,
     title,
     "slug": slug.current,
     description,
-    category,
+    "category": category->{ "label": title, "slug": slug.current },
     duration,
     format,
     level,
     price,
     featured,
     "image": image.asset->url
-  }
 `;
 
-const TRAINING_BY_SLUG_QUERY = `
-  *[_type == "training" && slug.current == $slug][0] {
-    _id,
-    title,
-    "slug": slug.current,
-    description,
-    category,
-    duration,
-    format,
-    level,
-    price,
-    featured,
-    "image": image.asset->url
-  }
-`;
+const ALL_TRAININGS_QUERY = `*[_type == "training"] | order(title asc) {${TRAINING_PROJECTION}}`;
 
-const FEATURED_TRAININGS_QUERY = `
-  *[_type == "training" && featured == true] | order(title asc) {
-    _id,
-    title,
-    "slug": slug.current,
-    description,
-    category,
-    duration,
-    format,
-    level,
-    price,
-    featured,
-    "image": image.asset->url
-  }
-`;
+const TRAINING_BY_SLUG_QUERY = `*[_type == "training" && slug.current == $slug][0] {${TRAINING_PROJECTION}}`;
+
+const FEATURED_TRAININGS_QUERY = `*[_type == "training" && featured == true] | order(title asc) {${TRAINING_PROJECTION}}`;
 
 const TRAINING_CATEGORIES_QUERY = `
-  array::unique(*[_type == "training" && defined(category)].category)
+  *[_type == "category" && _id in *[_type == "training"].category._ref] | order(title asc) {
+    "label": title,
+    "slug": slug.current
+  }
 `;
 
 export async function getAllTrainings(): Promise<SanityTraining[]> {
@@ -194,11 +169,7 @@ export async function getFeaturedTrainings(): Promise<SanityTraining[]> {
 
 export async function getTrainingCategories(): Promise<SanityTrainingCategory[]> {
   try {
-    const raw: string[] = await sanityClient.fetch(TRAINING_CATEGORIES_QUERY, {}, options);
-    return raw
-      .filter(Boolean)
-      .sort()
-      .map((label) => ({ label, slug: label.toLowerCase().replace(/\s+/g, "-") }));
+    return await sanityClient.fetch(TRAINING_CATEGORIES_QUERY, {}, options);
   } catch (error) {
     console.error("Error fetching training categories:", error);
     return [];

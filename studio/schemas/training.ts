@@ -21,8 +21,8 @@ export const training = defineType({
     defineField({
       name: "category",
       title: "Category",
-      type: "string",
-      options: { list: ["SketchUp", "Rendering", "Extensions", "AI", "Events"] },
+      type: "reference",
+      to: [{ type: "category" }],
     }),
     defineField({
       name: "description",
@@ -69,8 +69,16 @@ export const training = defineType({
   preview: {
     select: {
       title: "title",
-      subtitle: "category",
+      categoryTitle: "category.title",
       media: "image",
+    },
+    prepare(selection) {
+      const { title, categoryTitle, media } = selection;
+      return {
+        title,
+        subtitle: categoryTitle || "No category",
+        media,
+      };
     },
   },
 });

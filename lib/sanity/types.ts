@@ -14,7 +14,7 @@ export type SanityTraining = {
   title: string;
   slug: string;
   description?: string;
-  category?: string;
+  category?: SanityTrainingCategory;
   duration?: string;
   format?: "Online" | "In-Person" | "Hybrid";
   level?: "Beginner" | "Intermediate" | "Advanced" | "All Levels";
