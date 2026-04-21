@@ -21,8 +21,8 @@ export async function generateMetadata({
   const category = categories.find((c) => c.slug === slug);
   if (!category) return {};
   return {
-    title: `${category.label} Training | SeeIt Studio`,
-    description: `Expert-led ${category.label} training courses for design professionals. Certified UK instructors.`,
+    title: `${category.title} Training | SeeIt Studio`,
+    description: `Expert-led ${category.title} training courses for design professionals. Certified UK instructors.`,
   };
 }
 

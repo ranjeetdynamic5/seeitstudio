@@ -50,7 +50,7 @@ export default function TrainingCatalog({
   // Pre-compute counts keyed by category label
   const counts: Record<string, number> = { all: trainings.length };
   for (const t of trainings) {
-    if (t.category?.title) counts[t.category.label] = (counts[t.category.label] ?? 0) + 1;
+    if (t.category?.title) counts[t.category.title] = (counts[t.category.title] ?? 0) + 1;
   }
 
   function selectTab(tabParam: string | null) {
