@@ -270,7 +270,7 @@ export default function TrainingCatalog({
 
       <EnquiryModal
         isOpen={modalOpen}
-        courseTitle={selectedTitle}
+        title={selectedTitle}
         onClose={() => setModalOpen(false)}
       />
     </>
