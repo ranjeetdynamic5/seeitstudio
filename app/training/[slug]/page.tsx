@@ -69,7 +69,7 @@ export default async function TrainingDetail({
               <div>
                 {training.category && (
                   <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-2">
-                    {training.category?.label}
+                    {training.category?.title}
                   </p>
                 )}
                 <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B0F19] mb-3">

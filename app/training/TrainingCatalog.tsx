@@ -30,7 +30,7 @@ export default function TrainingCatalog({
   const searchParams = useSearchParams();
   const router = useRouter();
   const param = searchParams.get("category")?.toLowerCase() ?? initialCategory ?? "";
-  const activeCategory = categories.find((c) => c.slug === param)?.label ?? null;
+  const activeCategory = categories.find((c) => c.slug === param)?.title ?? null;
 
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -38,7 +38,7 @@ export default function TrainingCatalog({
 
   const filtered = useMemo(() => {
     let result = activeCategory
-      ? trainings.filter((t) => t.category?.label === activeCategory)
+      ? trainings.filter((t) => t.category?.title === activeCategory)
       : trainings;
     if (search.trim()) {
       const q = search.trim().toLowerCase();
@@ -50,7 +50,7 @@ export default function TrainingCatalog({
   // Pre-compute counts keyed by category label
   const counts: Record<string, number> = { all: trainings.length };
   for (const t of trainings) {
-    if (t.category?.label) counts[t.category.label] = (counts[t.category.label] ?? 0) + 1;
+    if (t.category?.title) counts[t.category.label] = (counts[t.category.label] ?? 0) + 1;
   }
 
   function selectTab(tabParam: string | null) {
@@ -198,8 +198,8 @@ export default function TrainingCatalog({
 
               {/* Dynamic category tabs */}
               {categories.map((cat) => {
-                const isActive = cat.label === activeCategory;
-                const count = counts[cat.label] ?? 0;
+                const isActive = cat.title === activeCategory;
+                const count = counts[cat.title] ?? 0;
                 return (
                   <button
                     key={cat.slug}
@@ -212,7 +212,7 @@ export default function TrainingCatalog({
                         : "border-transparent text-[#64748B] hover:text-[#0B0F19] hover:border-slate-300"
                       }`}
                   >
-                    {cat.label}
+                    {cat.title}
                     <span className={`inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-xs font-semibold
                       ${isActive ? "bg-[#D9534F] text-white" : "bg-slate-100 text-[#64748B]"}`}
                     >

@@ -5,7 +5,8 @@ export type SanityCategory = {
 };
 
 export type SanityTrainingCategory = {
-  label: string;
+  _id: string;
+  title: string;
   slug: string;
 };
 
