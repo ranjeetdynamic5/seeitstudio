@@ -383,12 +383,16 @@ function CourseCard({
 
         {/* Price + CTAs */}
         <div className="pt-3 border-t border-slate-100 mt-auto flex flex-col gap-3">
-          {training.price !== undefined && (
-            <div className="flex items-baseline gap-1">
-              <span className="text-lg font-semibold text-[#0F172A]">£{training.price.toFixed(2)}</span>
-              <span className="text-sm text-[#64748B] ml-1">/ person</span>
-            </div>
-          )}
+          <div className="flex items-baseline gap-1">
+            {typeof training.price === "number" ? (
+              <>
+                <span className="text-lg font-semibold text-[#0F172A]">£{training.price.toFixed(2)}</span>
+                <span className="text-sm text-[#64748B] ml-1">/ person</span>
+              </>
+            ) : (
+              <span className="text-sm text-[#64748B]">Contact for price</span>
+            )}
+          </div>
           <div className="flex gap-2">
             <Link
               href={`/training/${training.slug}`}

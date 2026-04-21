@@ -1,5 +1,10 @@
 import { sanityClient } from "./client";
-import type { SanityProduct, SanityCategory, SanityTraining, SanityTrainingCategory } from "./types";
+import type {
+  SanityProduct,
+  SanityCategory,
+  SanityTraining,
+  SanityTrainingCategory,
+} from "./types";
 
 // ─── ALL PRODUCTS ─────────────────────────────────────────────
 
@@ -73,7 +78,6 @@ const FEATURED_PRODUCTS_QUERY = `
 
 // ─── FETCH FUNCTIONS ─────────────────────────────────────────
 
-// ⚠️ IMPORTANT: cache disable for fresh data
 const options = { next: { revalidate: 0 } };
 
 export async function getAllCategories(): Promise<SanityCategory[]> {
@@ -122,29 +126,48 @@ export async function getProductBySlug(
 
 // ─── TRAINING ────────────────────────────────────────────────
 
+// 🔥 FIXED: category properly dereferenced + safe structure
 const TRAINING_PROJECTION = `
+  _id,
+  title,
+  "slug": slug.current,
+  description,
+  duration,
+  format,
+  level,
+  price,
+  featured,
+  "image": image.asset->url,
+  "category": category->{
     _id,
     title,
-    "slug": slug.current,
-    description,
-    "category": category->{ "label": title, "slug": slug.current },
-    duration,
-    format,
-    level,
-    price,
-    featured,
-    "image": image.asset->url
+    "slug": slug.current
+  }
 `;
 
-const ALL_TRAININGS_QUERY = `*[_type == "training"] | order(title asc) {${TRAINING_PROJECTION}}`;
+const ALL_TRAININGS_QUERY = `
+  *[_type == "training"] | order(title asc) {
+    ${TRAINING_PROJECTION}
+  }
+`;
 
-const TRAINING_BY_SLUG_QUERY = `*[_type == "training" && slug.current == $slug][0] {${TRAINING_PROJECTION}}`;
+const TRAINING_BY_SLUG_QUERY = `
+  *[_type == "training" && slug.current == $slug][0] {
+    ${TRAINING_PROJECTION}
+  }
+`;
 
-const FEATURED_TRAININGS_QUERY = `*[_type == "training" && featured == true] | order(title asc) {${TRAINING_PROJECTION}}`;
+const FEATURED_TRAININGS_QUERY = `
+  *[_type == "training" && featured == true] | order(title asc) {
+    ${TRAINING_PROJECTION}
+  }
+`;
 
+// 🔥 FIXED: only categories actually used in trainings
 const TRAINING_CATEGORIES_QUERY = `
   *[_type == "category" && _id in *[_type == "training"].category._ref] | order(title asc) {
-    "label": title,
+    _id,
+    title,
     "slug": slug.current
   }
 `;
@@ -180,8 +203,13 @@ export async function getTrainingBySlug(
   slug: string
 ): Promise<SanityTraining | null> {
   if (!slug) return null;
+
   try {
-    return await sanityClient.fetch(TRAINING_BY_SLUG_QUERY, { slug }, options);
+    return await sanityClient.fetch(
+      TRAINING_BY_SLUG_QUERY,
+      { slug },
+      options
+    );
   } catch (error) {
     console.error("Error fetching training by slug:", error);
     return null;

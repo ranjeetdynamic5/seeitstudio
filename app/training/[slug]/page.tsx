@@ -82,12 +82,14 @@ export default async function TrainingDetail({
                 )}
               </div>
 
-              {training.price !== undefined && (
-                <div className="shrink-0 bg-[#0F172A] rounded-xl px-6 py-5 text-center min-w-[160px]">
-                  <p className="text-xs text-slate-400 mb-1">Price per person</p>
+              <div className="shrink-0 bg-[#0F172A] rounded-xl px-6 py-5 text-center min-w-[160px]">
+                <p className="text-xs text-slate-400 mb-1">Price per person</p>
+                {typeof training.price === "number" ? (
                   <p className="text-3xl font-bold text-white">£{training.price.toFixed(2)}</p>
-                </div>
-              )}
+                ) : (
+                  <p className="text-base font-semibold text-slate-300">Contact for price</p>
+                )}
+              </div>
             </div>
           </div>
         </div>

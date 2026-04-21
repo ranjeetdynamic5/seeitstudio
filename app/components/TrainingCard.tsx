@@ -116,12 +116,16 @@ export default function TrainingCard({ training }: { training: SanityTraining })
         )}
 
         <div className="pt-3 border-t border-slate-100 mt-auto flex flex-col gap-3">
-          {training.price !== undefined && (
-            <div className="flex items-baseline gap-1">
-              <span className="text-lg font-semibold text-[#0F172A]">£{training.price.toFixed(2)}</span>
-              <span className="text-sm text-[#64748B] ml-1">/ person</span>
-            </div>
-          )}
+          <div className="flex items-baseline gap-1">
+            {typeof training.price === "number" ? (
+              <>
+                <span className="text-lg font-semibold text-[#0F172A]">£{training.price.toFixed(2)}</span>
+                <span className="text-sm text-[#64748B] ml-1">/ person</span>
+              </>
+            ) : (
+              <span className="text-sm text-[#64748B]">Contact for price</span>
+            )}
+          </div>
           <Link
             href={`/training/${training.slug}`}
             className="w-full flex items-center justify-center py-2.5 text-sm font-semibold text-[#D9534F] border border-[#D9534F] rounded-lg hover:bg-[#D9534F] hover:text-white active:bg-[#c9302c] transition-colors"
