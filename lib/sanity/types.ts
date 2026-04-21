@@ -4,6 +4,11 @@ export type SanityCategory = {
   slug: string;
 };
 
+export type SanityTrainingCategory = {
+  label: string;
+  slug: string;
+};
+
 export type SanityTraining = {
   _id: string;
   title: string;

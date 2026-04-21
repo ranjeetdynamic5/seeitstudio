@@ -2,9 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { TRAINING_CATEGORIES } from "../../lib/trainingCategories";
 import { useCartStore } from "@/lib/cartStore";
-import type { SanityCategory } from "@/lib/sanity/types";
+import type { SanityCategory, SanityTrainingCategory } from "@/lib/sanity/types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -15,7 +14,7 @@ type NavItem =
 
 // ─── Nav builder ──────────────────────────────────────────────────────────────
 
-function buildNavItems(categories: SanityCategory[]): NavItem[] {
+function buildNavItems(categories: SanityCategory[], trainingCategories: SanityTrainingCategory[]): NavItem[] {
   return [
     { label: "Home", href: "/" },
     {
@@ -31,10 +30,9 @@ function buildNavItems(categories: SanityCategory[]): NavItem[] {
       label: "Training",
       href: "/training",
       dropdown: [
-        ...TRAINING_CATEGORIES.filter((c) => c.value !== "all").map((c) => ({
+        ...trainingCategories.map((c) => ({
           label: `${c.label} Training`,
-          href: `/training?category=${c.value}`,
-          description: c.description,
+          href: `/training/category/${c.slug}`,
         })),
         { label: "All Courses", href: "/training", description: "Browse the full course catalogue" },
       ],
@@ -123,8 +121,8 @@ function DropdownMenu({ items, isOpen }: { items: DropdownItem[]; isOpen: boolea
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 
-export default function Header({ categories = [] }: { categories?: SanityCategory[] }) {
-  const NAV_ITEMS = buildNavItems(categories);
+export default function Header({ categories = [], trainingCategories = [] }: { categories?: SanityCategory[]; trainingCategories?: SanityTrainingCategory[] }) {
+  const NAV_ITEMS = buildNavItems(categories, trainingCategories);
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);

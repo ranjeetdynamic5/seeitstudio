@@ -3,8 +3,8 @@ import HeroSection from "./components/HeroSection";
 import AboutSection from "./components/AboutSection";
 import TrustedPartners from "./components/TrustedPartners";
 import ProductCard from "./components/ProductCard";
-import { getFeaturedProducts } from "../lib/sanity/queries";
-import TrainingCard, { type TrainingCourse } from "./components/TrainingCard";
+import { getFeaturedProducts, getFeaturedTrainings } from "../lib/sanity/queries";
+import TrainingCard from "./components/TrainingCard";
 import ServiceCard, { type Service } from "./components/ServiceCard";
 import Testimonials from "./components/Testimonials";
 import Footer from "./components/Footer";
@@ -38,46 +38,6 @@ function SectionHeading({
   );
 }
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
-
-const FEATURED_COURSES: TrainingCourse[] = [
-  {
-    id: "sketchup-foundations",
-    title: "SketchUp Foundations: Complete Beginner to Confident User",
-    category: "SketchUp Training",
-    level: "Beginner",
-    duration: "12 hours",
-    price: 199.00,
-    description:
-      "A structured programme taking you from zero to confident 3D modelling. Covers tools, workflows, and best practices used by architecture studios.",
-    lessons: 24,
-    format: "Online",
-  },
-  {
-    id: "vray-masterclass",
-    title: "V-Ray Masterclass: Photorealistic Interiors & Exteriors",
-    category: "Rendering Training",
-    level: "Intermediate",
-    duration: "8 hours",
-    price: 249.00,
-    description:
-      "Master lighting setups, material libraries, and post-production workflows for interior and exterior renders.",
-    lessons: 16,
-    format: "Online",
-  },
-  {
-    id: "ai-design-tools",
-    title: "AI Tools for Design Professionals",
-    category: "AI Training",
-    level: "All Levels",
-    duration: "6 hours",
-    price: 179.00,
-    description:
-      "Practical training on integrating AI tools into your design workflow — generation, editing, automation and more.",
-    lessons: 12,
-    format: "Hybrid",
-  },
-];
 
 const SERVICES: Service[] = [
   {
@@ -157,7 +117,10 @@ const SERVICES: Service[] = [
 // ─── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function HomePage() {
-  const featuredProducts = await getFeaturedProducts();
+  const [featuredProducts, featuredTrainings] = await Promise.all([
+    getFeaturedProducts(),
+    getFeaturedTrainings(),
+  ]);
 
   return (
     <>
@@ -235,8 +198,8 @@ export default async function HomePage() {
 
           {/* Cards: 1 col → 2 col sm → 3 col lg */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mb-6 sm:mb-8">
-            {FEATURED_COURSES.map((course) => (
-              <TrainingCard key={course.id} course={course} />
+            {featuredTrainings.map((training) => (
+              <TrainingCard key={training._id} training={training} />
             ))}
           </div>
 

@@ -5,8 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import EnquiryModal from "@/app/components/EnquiryModal";
-import { TRAINING_CATEGORIES, paramToLabel } from "@/lib/trainingCategories";
-import type { SanityTraining } from "@/lib/sanity/types";
+import type { SanityTraining, SanityTrainingCategory } from "@/lib/sanity/types";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -21,13 +20,17 @@ const LEVEL_COLORS: Record<string, string> = {
 
 export default function TrainingCatalog({
   trainings,
+  categories,
+  initialCategory,
 }: {
   trainings: SanityTraining[];
+  categories: SanityTrainingCategory[];
+  initialCategory?: string;
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const param = searchParams.get("category")?.toLowerCase() ?? "";
-  const activeCategory = paramToLabel(param);
+  const param = searchParams.get("category")?.toLowerCase() ?? initialCategory ?? "";
+  const activeCategory = categories.find((c) => c.slug === param)?.label ?? null;
 
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -168,23 +171,48 @@ export default function TrainingCatalog({
               role="tablist"
               aria-label="Filter by category"
             >
-              {TRAINING_CATEGORIES.map((tab) => {
-                const isAll = tab.value === "all";
-                const isActive = isAll ? !activeCategory : tab.label === activeCategory;
-                const count = isAll ? counts.all : (counts[tab.label] ?? 0);
+              {/* All tab */}
+              {(() => {
+                const isActive = !activeCategory;
                 return (
                   <button
-                    key={tab.value}
+                    key="all"
                     role="tab"
                     aria-selected={isActive}
-                    onClick={() => selectTab(isAll ? null : tab.value)}
+                    onClick={() => selectTab(null)}
                     className={`relative flex items-center gap-2 px-4 py-3.5 text-sm font-medium whitespace-nowrap transition-colors border-b-2 -mb-px
                       ${isActive
                         ? "border-[#D9534F] text-[#D9534F]"
                         : "border-transparent text-[#64748B] hover:text-[#0B0F19] hover:border-slate-300"
                       }`}
                   >
-                    {tab.label}
+                    All
+                    <span className={`inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-xs font-semibold
+                      ${isActive ? "bg-[#D9534F] text-white" : "bg-slate-100 text-[#64748B]"}`}
+                    >
+                      {counts.all}
+                    </span>
+                  </button>
+                );
+              })()}
+
+              {/* Dynamic category tabs */}
+              {categories.map((cat) => {
+                const isActive = cat.label === activeCategory;
+                const count = counts[cat.label] ?? 0;
+                return (
+                  <button
+                    key={cat.slug}
+                    role="tab"
+                    aria-selected={isActive}
+                    onClick={() => selectTab(cat.slug)}
+                    className={`relative flex items-center gap-2 px-4 py-3.5 text-sm font-medium whitespace-nowrap transition-colors border-b-2 -mb-px
+                      ${isActive
+                        ? "border-[#D9534F] text-[#D9534F]"
+                        : "border-transparent text-[#64748B] hover:text-[#0B0F19] hover:border-slate-300"
+                      }`}
+                  >
+                    {cat.label}
                     <span className={`inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-xs font-semibold
                       ${isActive ? "bg-[#D9534F] text-white" : "bg-slate-100 text-[#64748B]"}`}
                     >
