@@ -163,10 +163,8 @@ const FEATURED_TRAININGS_QUERY = `
   }
 `;
 
-// 🔥 FIXED: only categories actually used in trainings
 const TRAINING_CATEGORIES_QUERY = `
-  *[_type == "category" && _id in *[_type == "training"].category._ref] | order(title asc) {
-    _id,
+  *[_type == "category" && count(*[_type == "training" && references(^._id)]) > 0] | order(title asc) {
     title,
     "slug": slug.current
   }
@@ -192,7 +190,9 @@ export async function getFeaturedTrainings(): Promise<SanityTraining[]> {
 
 export async function getTrainingCategories(): Promise<SanityTrainingCategory[]> {
   try {
-    return await sanityClient.fetch(TRAINING_CATEGORIES_QUERY, {}, options);
+    const results = await sanityClient.fetch(TRAINING_CATEGORIES_QUERY, {}, options);
+    console.log("Training categories:", results);
+    return results;
   } catch (error) {
     console.error("Error fetching training categories:", error);
     return [];

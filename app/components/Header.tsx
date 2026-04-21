@@ -41,7 +41,7 @@ export default function Header({ trainingCategories }: Props) {
                     href={`/training/category/${cat.slug}`}
                     className="block px-4 py-3 hover:bg-gray-100"
                   >
-                    {cat.title ?? "Training"}
+                    {cat?.title || "Training"}
                   </Link>
                 ))
               ) : (
