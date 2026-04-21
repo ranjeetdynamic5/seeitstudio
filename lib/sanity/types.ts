@@ -4,6 +4,20 @@ export type SanityCategory = {
   slug: string;
 };
 
+export type SanityTraining = {
+  _id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  category?: string;
+  duration?: string;
+  format?: "Online" | "In-Person" | "Hybrid";
+  level?: "Beginner" | "Intermediate" | "Advanced" | "All Levels";
+  price?: number;
+  featured?: boolean;
+  image?: string;
+};
+
 export type SanityProduct = {
   _id: string;
   name: string;

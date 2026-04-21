@@ -1,5 +1,5 @@
 import { sanityClient } from "./client";
-import type { SanityProduct, SanityCategory } from "./types";
+import type { SanityProduct, SanityCategory, SanityTraining } from "./types";
 
 // ─── ALL PRODUCTS ─────────────────────────────────────────────
 
@@ -116,6 +116,61 @@ export async function getProductBySlug(
     );
   } catch (error) {
     console.error("Error fetching product by slug:", error);
+    return null;
+  }
+}
+
+// ─── TRAINING ────────────────────────────────────────────────
+
+const ALL_TRAININGS_QUERY = `
+  *[_type == "training"] | order(title asc) {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    category,
+    duration,
+    format,
+    level,
+    price,
+    featured,
+    "image": image.asset->url
+  }
+`;
+
+const TRAINING_BY_SLUG_QUERY = `
+  *[_type == "training" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    category,
+    duration,
+    format,
+    level,
+    price,
+    featured,
+    "image": image.asset->url
+  }
+`;
+
+export async function getAllTrainings(): Promise<SanityTraining[]> {
+  try {
+    return await sanityClient.fetch(ALL_TRAININGS_QUERY, {}, options);
+  } catch (error) {
+    console.error("Error fetching trainings:", error);
+    return [];
+  }
+}
+
+export async function getTrainingBySlug(
+  slug: string
+): Promise<SanityTraining | null> {
+  if (!slug) return null;
+  try {
+    return await sanityClient.fetch(TRAINING_BY_SLUG_QUERY, { slug }, options);
+  } catch (error) {
+    console.error("Error fetching training by slug:", error);
     return null;
   }
 }

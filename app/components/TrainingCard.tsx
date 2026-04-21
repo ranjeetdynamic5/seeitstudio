@@ -1,5 +1,6 @@
 // TrainingCard — Server Component
 
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 export type TrainingCourse = {
@@ -99,12 +100,12 @@ export default function TrainingCard({ course }: { course: TrainingCourse }) {
             <span className="text-lg font-semibold text-[#0F172A]">£{course.price.toFixed(2)}</span>
             <span className="text-sm text-[#64748B] ml-1">/ person</span>
           </div>
-          <a
+          <Link
             href={`/training/${course.id}`}
             className="w-full flex items-center justify-center py-2.5 text-sm font-semibold text-[#D9534F] border border-[#D9534F] rounded-lg hover:bg-[#D9534F] hover:text-white active:bg-[#c9302c] transition-colors"
           >
             View Course
-          </a>
+          </Link>
         </div>
       </div>
     </div>
