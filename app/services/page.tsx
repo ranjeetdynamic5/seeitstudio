@@ -1,7 +1,8 @@
 import Link from "next/link";
 import NavHeader from "@/app/components/NavHeader";
 import Footer from "@/app/components/Footer";
-import { SERVICES } from "@/lib/services";
+import { getAllServices } from "@/lib/sanity/queries";
+import type { SanityService } from "@/lib/sanity/types";
 
 // ── Service icon map ──────────────────────────────────────────────────────────
 
@@ -34,7 +35,9 @@ export const metadata = {
     "Professional rendering, 3D modelling, AI consulting, and web development services for design studios.",
 };
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const services = await getAllServices();
+
   return (
     <>
       <NavHeader />
@@ -86,15 +89,15 @@ export default function ServicesPage() {
         {/* ── Services grid ─────────────────────────────────────────────────── */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {SERVICES.map((service) => (
+            {services.map((service: SanityService) => (
               <div
-                key={service.slug}
+                key={service._id}
                 className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col"
               >
                 {/* Card header */}
                 <div className="bg-[#0F172A] px-5 py-6">
                   <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-white mb-4">
-                    <ServiceIcon type={service.icon} />
+                    <ServiceIcon type={service.icon ?? ""} />
                   </div>
                   <h2 className="text-base font-semibold text-white leading-snug">
                     {service.title}
@@ -109,7 +112,7 @@ export default function ServicesPage() {
 
                   {/* Feature bullets */}
                   <ul className="flex flex-col gap-2 mt-1">
-                    {service.features.slice(0, 3).map((f) => (
+                    {(service.features ?? []).slice(0, 3).map((f: string) => (
                       <li key={f} className="flex items-start gap-2 text-sm text-[#0B0F19]">
                         <svg className="w-4 h-4 text-[#D9534F] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />

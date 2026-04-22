@@ -22,6 +22,18 @@ export const service = defineType({
       of: [{ type: "string" }],
     }),
     defineField({ name: "cta", title: "CTA Label", type: "string", description: "e.g. Request a Quote" }),
+    defineField({
+      name: "icon",
+      title: "Icon",
+      type: "string",
+      options: { list: ["modelling", "ai", "web"] },
+    }),
+    defineField({
+      name: "category",
+      title: "Category",
+      type: "reference",
+      to: [{ type: "category" }],
+    }),
   ],
   preview: {
     select: { title: "title", subtitle: "shortDescription" },

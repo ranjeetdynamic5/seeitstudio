@@ -23,6 +23,19 @@ export type SanityTraining = {
   image?: string;
 };
 
+export type SanityService = {
+  _id: string;
+  title: string;
+  slug: string;
+  shortDescription?: string;
+  description?: string;
+  features?: string[];
+  problems?: string[];
+  cta?: string;
+  icon?: string;
+  category?: { title: string; slug: string };
+};
+
 export type SanityProduct = {
   _id: string;
   name: string;

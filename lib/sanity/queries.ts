@@ -4,6 +4,7 @@ import type {
   SanityCategory,
   SanityTraining,
   SanityTrainingCategory,
+  SanityService,
 } from "./types";
 
 // ─── ALL PRODUCTS ─────────────────────────────────────────────
@@ -230,5 +231,48 @@ export async function getTrainingBySlug(
   } catch (error) {
     console.error("Error fetching training by slug:", error);
     return null;
+  }
+}
+
+// ─── SERVICES ────────────────────────────────────────────────
+
+const ALL_SERVICES_QUERY = `
+  *[_type == "service"] | order(title asc) {
+    _id,
+    title,
+    "slug": slug.current,
+    shortDescription,
+    description,
+    features,
+    problems,
+    cta,
+    icon,
+    "category": category->{ title, "slug": slug.current }
+  }
+`;
+
+const SERVICE_CATEGORIES_QUERY = `
+  *[_type == "category" && count(*[_type == "service" && references(^._id)]) > 0] | order(title asc) {
+    _id,
+    title,
+    "slug": slug.current
+  }
+`;
+
+export async function getAllServices(): Promise<SanityService[]> {
+  try {
+    return await sanityClient.fetch(ALL_SERVICES_QUERY, {}, options);
+  } catch (error) {
+    console.error("Error fetching services:", error);
+    return [];
+  }
+}
+
+export async function getServiceCategories(): Promise<SanityCategory[]> {
+  try {
+    return await sanityClient.fetch(SERVICE_CATEGORIES_QUERY, {}, options);
+  } catch (error) {
+    console.error("Error fetching service categories:", error);
+    return [];
   }
 }

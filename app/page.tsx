@@ -5,9 +5,12 @@ import TrustedPartners from "./components/TrustedPartners";
 import ProductCard from "./components/ProductCard";
 import { getFeaturedProducts, getFeaturedTrainings } from "../lib/sanity/queries";
 import TrainingCard from "./components/TrainingCard";
-import ServiceCard, { type Service } from "./components/ServiceCard";
+import ServiceCard from "./components/ServiceCard";
 import Testimonials from "./components/Testimonials";
 import Footer from "./components/Footer";
+import { getAllServices } from "../lib/sanity/queries";
+import type { SanityService } from "../lib/sanity/types";
+import type { ReactNode } from "react";
 
 // ─── Reusable Section Heading ─────────────────────────────────────────────────
 
@@ -39,69 +42,42 @@ function SectionHeading({
 }
 
 
-const SERVICES: Service[] = [
-  {
-    title: "3D Modelling & BIM",
-    category: "3D Modelling",
-    description:
-      "Precision 3D modelling for architecture, product design, retail fit-out, and manufacturing. Delivered in SketchUp, Revit, or any required format.",
-    href: "/services/3d-modelling",
-    highlights: [
-      "Architectural & product modelling",
-      "BIM-ready Revit families",
-      "SketchUp & Rhino specialists",
-      "Millimetre-accurate geometry",
-    ],
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
-      </svg>
-    ),
-  },
-  {
-    title: "AI Strategy & Consulting",
-    category: "AI Consulting",
-    description:
-      "From workflow analysis to full AI implementation, we help design firms and businesses identify where AI delivers the highest ROI — and then build it.",
-    href: "/services/ai-consulting",
-    highlights: [
-      "AI readiness assessment",
-      "Process automation strategy",
-      "Custom tool development",
-      "Team enablement & training",
-    ],
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
-      </svg>
-    ),
-  },
-  {
-    title: "Web Development",
-    category: "Web Development",
-    description:
-      "Clean, performant websites and web applications built with modern frameworks. Portfolio sites, e-commerce, booking systems, and bespoke SaaS products.",
-    href: "/services/web-development",
-    highlights: [
-      "Next.js & React applications",
-      "E-commerce & booking systems",
-      "CMS integration (Sanity, Contentful)",
-      "Ongoing maintenance & support",
-    ],
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
-      </svg>
-    ),
-  },
-];
+const SERVICE_ICONS: Record<string, ReactNode> = {
+  modelling: (
+    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+    </svg>
+  ),
+  ai: (
+    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+    </svg>
+  ),
+  web: (
+    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+    </svg>
+  ),
+};
+
+function toServiceCardProps(s: SanityService) {
+  return {
+    title: s.title,
+    category: s.category?.title ?? "",
+    description: s.shortDescription ?? "",
+    href: `/services/${s.slug}`,
+    highlights: s.features?.slice(0, 4) ?? [],
+    icon: SERVICE_ICONS[s.icon ?? ""] ?? null,
+  };
+}
 
 // ─── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function HomePage() {
-  const [featuredProducts, featuredTrainings] = await Promise.all([
+  const [featuredProducts, featuredTrainings, services] = await Promise.all([
     getFeaturedProducts(),
     getFeaturedTrainings(),
+    getAllServices(),
   ]);
 
   return (
@@ -220,8 +196,8 @@ export default async function HomePage() {
           </div>
           {/* Services: 1 col → 2 col sm → 3 col lg */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-            {SERVICES.map((service) => (
-              <ServiceCard key={service.title} service={service} />
+            {services.map((s) => (
+              <ServiceCard key={s._id} service={toServiceCardProps(s)} />
             ))}
           </div>
         </div>
