@@ -58,22 +58,7 @@ export default function HeroSection() {
       </div>
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50 flex items-center">
-        <div className="max-w-7xl mx-auto px-4 text-white">
-          <h1 className="text-4xl font-bold mb-4">
-            AI, 3D & Web Solutions for Designers
-          </h1>
-          <p className="mb-6 text-lg text-gray-300">
-            Trusted tools and training for UK professionals
-          </p>
-          <a
-            href="/products"
-            className="inline-block bg-[#d9534f] px-6 py-3 rounded-lg font-semibold"
-          >
-            Explore Products
-          </a>
-        </div>
-      </div>
+      <div className="absolute inset-0 bg-black/50" />
     </section>
   );
 }
