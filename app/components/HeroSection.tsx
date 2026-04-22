@@ -58,7 +58,7 @@ export default function HeroSection() {
       </div>
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50" />
+      <div className="absolute inset-0 bg-black/10" />
     </section>
   );
 }
