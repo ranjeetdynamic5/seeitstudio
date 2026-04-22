@@ -1,9 +1,9 @@
-import { getAllCategories, getTrainingCategories } from "@/lib/sanity/queries";
+import { getProductCategories, getTrainingCategories } from "@/lib/sanity/queries";
 import Header from "./Header";
 
 export default async function NavHeader() {
   const [categories, trainingCategories] = await Promise.all([
-    getAllCategories(),
+    getProductCategories(),
     getTrainingCategories(),
   ]);
 
