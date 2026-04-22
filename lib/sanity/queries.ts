@@ -56,6 +56,14 @@ const ALL_CATEGORIES_QUERY = `
   }
 `;
 
+const PRODUCT_CATEGORIES_QUERY = `
+  *[_type == "category" && count(*[_type == "product" && references(^._id)]) > 0] | order(title asc) {
+    _id,
+    title,
+    "slug": slug.current
+  }
+`;
+
 // ─── FEATURED PRODUCTS ───────────────────────────────────────
 
 const FEATURED_PRODUCTS_QUERY = `
@@ -85,6 +93,15 @@ export async function getAllCategories(): Promise<SanityCategory[]> {
     return await sanityClient.fetch(ALL_CATEGORIES_QUERY, {}, options);
   } catch (error) {
     console.error("Error fetching categories:", error);
+    return [];
+  }
+}
+
+export async function getProductCategories(): Promise<SanityCategory[]> {
+  try {
+    return await sanityClient.fetch(PRODUCT_CATEGORIES_QUERY, {}, options);
+  } catch (error) {
+    console.error("Error fetching product categories:", error);
     return [];
   }
 }

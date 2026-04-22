@@ -1,13 +1,13 @@
 import { Suspense } from "react";
 import NavHeader from "../components/NavHeader";
 import Footer from "../components/Footer";
-import { getAllProducts, getAllCategories } from "../../lib/sanity/queries";
+import { getAllProducts, getProductCategories } from "../../lib/sanity/queries";
 import ProductsCatalog from "./ProductsCatalog";
 
 export default async function ProductsPage() {
   const [products, categories] = await Promise.all([
     getAllProducts(),
-    getAllCategories(),
+    getProductCategories(),
   ]);
 
   return (
