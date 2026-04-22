@@ -33,6 +33,7 @@ export type SanityService = {
   problems?: string[];
   cta?: string;
   icon?: string;
+  image?: string;
   category?: { title: string; slug: string };
 };
 

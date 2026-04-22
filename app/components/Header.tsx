@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useCartStore } from "@/lib/cartStore";
-import type { SanityCategory, SanityTrainingCategory } from "@/lib/sanity/types";
+import type { SanityCategory, SanityTrainingCategory, SanityService } from "@/lib/sanity/types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -14,7 +14,13 @@ type NavItem =
 
 // ─── Nav builder ──────────────────────────────────────────────────────────────
 
-function buildNavItems(categories: SanityCategory[], trainingCategories: SanityTrainingCategory[]): NavItem[] {
+const PRIORITY_SLUGS = ["3d-modelling", "ai-consulting", "web-development"];
+
+function buildNavItems(categories: SanityCategory[], trainingCategories: SanityTrainingCategory[], services: SanityService[]): NavItem[] {
+  const priority = PRIORITY_SLUGS.map((slug) => services.find((s) => s.slug === slug)).filter(Boolean) as SanityService[];
+  const rest = services.filter((s) => !PRIORITY_SLUGS.includes(s.slug));
+  const orderedServices = [...priority, ...rest];
+
   return [
     { label: "Home", href: "/" },
     {
@@ -42,11 +48,11 @@ function buildNavItems(categories: SanityCategory[], trainingCategories: SanityT
     {
       label: "Services",
       href: "/services",
-      dropdown: [
-        { label: "3D Modelling", href: "/services/3d-modelling", description: "Precision modelling for any sector" },
-        { label: "AI Consulting", href: "/services/ai-consulting", description: "Strategy & implementation" },
-        { label: "Web Development", href: "/services/web-development", description: "Performant, modern web builds" },
-      ],
+      dropdown: orderedServices.map((s) => ({
+        label: s.title,
+        href: `/services/${s.slug}`,
+        description: s.shortDescription,
+      })),
     },
     { label: "Blog", href: "/blog" },
     { label: "About", href: "/about" },
@@ -123,8 +129,8 @@ function DropdownMenu({ items, isOpen }: { items: DropdownItem[]; isOpen: boolea
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 
-export default function Header({ categories = [], trainingCategories = [] }: { categories?: SanityCategory[]; trainingCategories?: SanityTrainingCategory[] }) {
-  const NAV_ITEMS = buildNavItems(categories, trainingCategories);
+export default function Header({ categories = [], trainingCategories = [], services = [] }: { categories?: SanityCategory[]; trainingCategories?: SanityTrainingCategory[]; services?: SanityService[] }) {
+  const NAV_ITEMS = buildNavItems(categories, trainingCategories, services);
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);

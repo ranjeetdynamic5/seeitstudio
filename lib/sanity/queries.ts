@@ -247,6 +247,7 @@ const ALL_SERVICES_QUERY = `
     problems,
     cta,
     icon,
+    "image": image.asset->url,
     "category": category->{ title, "slug": slug.current }
   }
 `;

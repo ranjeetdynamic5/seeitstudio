@@ -1,5 +1,6 @@
 // ServiceCard — Server Component
 
+import Image from "next/image";
 import type { ReactNode } from "react";
 
 export type Service = {
@@ -9,11 +10,20 @@ export type Service = {
   href: string;
   icon: ReactNode;
   highlights: string[];
+  image?: string;
 };
 
 export default function ServiceCard({ service }: { service: Service }) {
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col gap-5">
+    <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col gap-5">
+      {/* Image */}
+      {service.image && (
+        <div className="relative w-full h-44 shrink-0">
+          <Image src={service.image} alt={service.title} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+        </div>
+      )}
+
+      <div className="px-6 flex flex-col gap-5 pb-6">
       {/* Icon */}
       <div className="w-11 h-11 rounded-xl bg-[#f0f5fa] border border-slate-200 flex items-center justify-center text-[#0F172A] shrink-0">
         {service.icon}
@@ -56,6 +66,7 @@ export default function ServiceCard({ service }: { service: Service }) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
         </svg>
       </a>
+      </div>
     </div>
   );
 }

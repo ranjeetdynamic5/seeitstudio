@@ -68,6 +68,7 @@ function toServiceCardProps(s: SanityService) {
     href: `/services/${s.slug}`,
     highlights: s.features?.slice(0, 4) ?? [],
     icon: SERVICE_ICONS[s.icon ?? ""] ?? null,
+    image: s.image,
   };
 }
 
