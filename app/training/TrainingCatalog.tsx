@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import EnquiryModal from "@/app/components/EnquiryModal";
+import EnrollModal from "@/app/components/EnrollModal";
 import type { SanityTraining, SanityTrainingCategory } from "@/lib/sanity/types";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -35,6 +36,8 @@ export default function TrainingCatalog({
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTitle, setSelectedTitle] = useState("");
+  const [enrollOpen, setEnrollOpen] = useState(false);
+  const [enrollTitle, setEnrollTitle] = useState("");
 
   const filtered = useMemo(() => {
     let result = activeCategory
@@ -60,6 +63,11 @@ export default function TrainingCatalog({
   function openEnquiry(title: string) {
     setSelectedTitle(title);
     setModalOpen(true);
+  }
+
+  function openEnroll(title: string) {
+    setEnrollTitle(title);
+    setEnrollOpen(true);
   }
 
   return (
@@ -234,6 +242,7 @@ export default function TrainingCatalog({
                   key={training._id}
                   training={training}
                   onEnquire={() => openEnquiry(training.title)}
+                  onEnroll={() => openEnroll(training.title)}
                 />
               ))}
             </div>
@@ -301,6 +310,11 @@ export default function TrainingCatalog({
         title={selectedTitle}
         onClose={() => setModalOpen(false)}
       />
+      <EnrollModal
+        isOpen={enrollOpen}
+        courseTitle={enrollTitle}
+        onClose={() => setEnrollOpen(false)}
+      />
     </>
   );
 }
@@ -310,9 +324,11 @@ export default function TrainingCatalog({
 function CourseCard({
   training,
   onEnquire,
+  onEnroll,
 }: {
   training: SanityTraining;
   onEnquire: () => void;
+  onEnroll: () => void;
 }) {
   return (
     <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
@@ -408,6 +424,13 @@ function CourseCard({
               Enquire
             </button>
           </div>
+          <button
+            type="button"
+            onClick={onEnroll}
+            className="w-full flex items-center justify-center py-2.5 text-sm font-semibold text-[#D9534F] border border-[#D9534F] rounded-lg hover:bg-[#D9534F] hover:text-white transition-colors"
+          >
+            Enroll Now
+          </button>
         </div>
       </div>
     </div>

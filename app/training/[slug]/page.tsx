@@ -6,6 +6,7 @@ import NavHeader from "@/app/components/NavHeader";
 import Footer from "@/app/components/Footer";
 import { getAllTrainings, getTrainingBySlug } from "@/lib/sanity/queries";
 import EnquireButton from "./EnquireButton";
+import EnrollButton from "./EnrollButton";
 
 export async function generateStaticParams() {
   const trainings = await getAllTrainings();
@@ -174,6 +175,7 @@ export default async function TrainingDetail({
                 0333 121 2187
               </a>
               <EnquireButton training={training} />
+              <EnrollButton courseTitle={training.title} />
             </div>
           </div>
 

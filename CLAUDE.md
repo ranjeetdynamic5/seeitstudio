@@ -160,3 +160,69 @@ Build a **clean, professional, CMS-driven UK design platform** that feels:
 * Easy to use
 
 ---
+## 🤖 AI EXECUTION CONTROL (CRITICAL FOR CLAUDE)
+
+### 🎯 TASK BOUNDARY (STRICT)
+- Only implement what is explicitly asked
+- Do NOT go outside scope
+- Do NOT add extra features
+- Do NOT improve or "enhance" unless asked
+
+---
+
+### 🚫 UI SAFETY RULES (VERY STRICT)
+- Do NOT change header, footer, or layout
+- Do NOT modify spacing, colors, typography
+- Do NOT redesign any component
+- Do NOT remove or rename existing classes
+
+---
+
+### 🔁 CODE SAFETY
+- Do NOT refactor unrelated code
+- Do NOT rewrite existing components
+- Only touch required files
+
+---
+
+### 📦 OUTPUT RULES (LOW CREDIT MODE)
+- Return ONLY changed or new files
+- NO explanations
+- NO comments unless necessary
+- Keep response minimal
+
+---
+
+### ⚡ PERFORMANCE RULES
+- Write smallest possible working code
+- Avoid unnecessary imports
+- Avoid large components
+
+---
+
+### ❗ UNCERTAINTY RULE
+If anything is unclear:
+→ ASK before proceeding
+→ Do NOT assume
+
+---
+
+### 🧩 COMPONENT RULE
+- Prefer reusable components
+- Do NOT duplicate logic
+
+---
+
+### 🔌 API RULES
+- Use existing structure (Next.js App Router)
+- Keep API simple and minimal
+
+---
+
+### 🚨 FAIL CONDITION
+If task requires:
+- UI redesign
+- Major refactor
+- Structure change
+
+→ STOP and ask for confirmation
