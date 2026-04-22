@@ -21,6 +21,7 @@ export const service = defineType({
       type: "array",
       of: [{ type: "string" }],
     }),
+    defineField({ name: "image", title: "Image", type: "image", options: { hotspot: true } }),
     defineField({ name: "cta", title: "CTA Label", type: "string", description: "e.g. Request a Quote" }),
     defineField({
       name: "icon",
