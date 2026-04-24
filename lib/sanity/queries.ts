@@ -87,7 +87,7 @@ const FEATURED_PRODUCTS_QUERY = `
 
 // ─── FETCH FUNCTIONS ─────────────────────────────────────────
 
-const options = { next: { revalidate: 0 } };
+const options = { next: { revalidate: 60 } };
 
 export async function getAllCategories(): Promise<SanityCategory[]> {
   try {
