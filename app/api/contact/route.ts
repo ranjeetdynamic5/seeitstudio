@@ -16,8 +16,6 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    console.log("Incoming data:", body); // ✅ debug
-
     const {
       fullName,
       email,
@@ -28,7 +26,6 @@ export async function POST(req: NextRequest) {
       hearAboutUs,
     } = body;
 
-    // ✅ Validation
     if (!fullName || !email) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -36,80 +33,96 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const source = Array.isArray(hearAboutUs)
-      ? hearAboutUs.join(", ")
-      : "";
+    const source = Array.isArray(hearAboutUs) ? hearAboutUs.join(", ") : "";
 
-    // ✅ Sanity save (safe)
-    try {
-      await writeClient.create({
-        _type: "contactLead",
-        name: fullName,
-        email,
-        phone: phone || "",
-        company: company || "",
-        inquiryType: inquiryType || "",
-        message: message || "",
-        source,
-        createdAt: new Date().toISOString(),
-      });
-    } catch (sanityError) {
-      console.error("Sanity Error:", sanityError);
+    // ── Sanity write ──────────────────────────────────────────
+    if (!process.env.SANITY_API_TOKEN) {
+      console.error("[Sanity] SANITY_API_TOKEN is not set");
+    } else {
+      try {
+        await writeClient.create({
+          _type: "contactLead",
+          name: fullName,
+          email,
+          phone: phone || "",
+          company: company || "",
+          inquiryType: inquiryType || "",
+          message: message || "",
+          source,
+          status: "new",
+          createdAt: new Date().toISOString(),
+        });
+      } catch (err: unknown) {
+        const e = err as { statusCode?: number; message?: string; responseBody?: string };
+        console.error("[Sanity] Write failed", {
+          statusCode: e?.statusCode,
+          message: e?.message,
+          responseBody: e?.responseBody,
+          hint:
+            e?.statusCode === 401
+              ? "Token invalid or missing write permission"
+              : e?.statusCode === 402 || e?.message?.includes("plan_limit")
+              ? "API quota reached — upgrade plan at sanity.io/manage"
+              : e?.statusCode === 403
+              ? "Token lacks write access to this dataset"
+              : undefined,
+        });
+      }
     }
 
-    // ✅ Email send (safe)
-    try {
-      await Promise.allSettled([
-        resend.emails.send({
-          from: "SeeIt Studio <onboarding@resend.dev>",
-          to: email,
-          subject: "Thank you for contacting SeeIt Studio",
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #0B0F19;">
-              <h2 style="color: #D9534F;">Thank you for getting in touch, ${fullName}</h2>
-              <p>We have received your enquiry and will respond within one business day.</p>
-              <p>If your matter is urgent, please email us directly at 
-              <a href="mailto:jamesogston@seeit3d.co.uk" style="color: #D9534F;">
-              jamesogston@seeit3d.co.uk</a>.</p>
-              <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
-              <p style="font-size: 12px; color: #64748B;">
-              SeeIt Studio — UK’s trusted partner for design software, training, and consulting.
-              </p>
-            </div>
-          `,
-        }),
-
-        resend.emails.send({
-          from: "SeeIt Studio <onboarding@resend.dev>",
-          to: process.env.ADMIN_EMAIL || "yourgmail@gmail.com", // ✅ fallback
-          subject: `New Lead: ${inquiryType || "General Enquiry"} from ${fullName}`,
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #0B0F19;">
-              <h2 style="color: #D9534F;">New Contact Lead</h2>
-              <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                <tr><td style="padding: 8px 0; font-weight: bold;">Name</td><td>${fullName}</td></tr>
-                <tr><td style="padding: 8px 0; font-weight: bold;">Email</td><td>${email}</td></tr>
-                <tr><td style="padding: 8px 0; font-weight: bold;">Phone</td><td>${phone || "—"}</td></tr>
-                <tr><td style="padding: 8px 0; font-weight: bold;">Company</td><td>${company || "—"}</td></tr>
-                <tr><td style="padding: 8px 0; font-weight: bold;">Enquiry Type</td><td>${inquiryType || "—"}</td></tr>
-                <tr><td style="padding: 8px 0; font-weight: bold;">Source</td><td>${source || "—"}</td></tr>
-                <tr><td style="padding: 8px 0; font-weight: bold;">Message</td><td>${message || "—"}</td></tr>
-              </table>
-            </div>
-          `,
-        }),
-      ]);
-    } catch (emailError) {
-      console.error("Email Error:", emailError);
+    // ── Email ─────────────────────────────────────────────────
+    if (!process.env.RESEND_API_KEY) {
+      console.error("[Resend] RESEND_API_KEY is not set");
+    } else {
+      try {
+        await Promise.allSettled([
+          resend.emails.send({
+            from: "SeeIt Studio <onboarding@resend.dev>",
+            to: email,
+            subject: "Thank you for contacting SeeIt Studio",
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #0B0F19;">
+                <h2 style="color: #D9534F;">Thank you for getting in touch, ${fullName}</h2>
+                <p>We have received your enquiry and will respond within one business day.</p>
+                <p>If your matter is urgent, please email us directly at
+                <a href="mailto:jamesogston@seeit3d.co.uk" style="color: #D9534F;">jamesogston@seeit3d.co.uk</a>.</p>
+                <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
+                <p style="font-size: 12px; color: #64748B;">SeeIt Studio &mdash; UK&rsquo;s trusted partner for design software, training, and consulting.</p>
+              </div>
+            `,
+          }),
+          resend.emails.send({
+            from: "SeeIt Studio <onboarding@resend.dev>",
+            to: process.env.ADMIN_EMAIL || "ranjeetdynamic5@gmail.com",
+            subject: `New Lead: ${inquiryType || "General Enquiry"} from ${fullName}`,
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #0B0F19;">
+                <h2 style="color: #D9534F;">New Contact Lead</h2>
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                  <tr><td style="padding: 8px 0; font-weight: bold; width: 160px;">Name</td><td>${fullName}</td></tr>
+                  <tr><td style="padding: 8px 0; font-weight: bold;">Email</td><td><a href="mailto:${email}" style="color: #D9534F;">${email}</a></td></tr>
+                  <tr><td style="padding: 8px 0; font-weight: bold;">Phone</td><td>${phone || "—"}</td></tr>
+                  <tr><td style="padding: 8px 0; font-weight: bold;">Company</td><td>${company || "—"}</td></tr>
+                  <tr><td style="padding: 8px 0; font-weight: bold;">Enquiry Type</td><td>${inquiryType || "—"}</td></tr>
+                  <tr><td style="padding: 8px 0; font-weight: bold;">Source</td><td>${source || "—"}</td></tr>
+                  <tr><td style="padding: 8px 0; font-weight: bold; vertical-align: top;">Message</td><td style="white-space: pre-wrap;">${message || "—"}</td></tr>
+                </table>
+              </div>
+            `,
+          }),
+        ]);
+      } catch (err: unknown) {
+        const e = err as { message?: string };
+        console.error("[Resend] Email failed:", e?.message);
+      }
     }
 
     return NextResponse.json({ success: true });
-
-  } catch (error: any) {
-    console.error("API ERROR:", error); // ✅ main debug
-
+  } catch (err: unknown) {
+    const e = err as { message?: string };
+    console.error("[API] Unhandled error:", e?.message);
     return NextResponse.json(
-      { error: error.message || "Internal server error" },
+      { error: e?.message || "Internal server error" },
       { status: 500 }
     );
   }
