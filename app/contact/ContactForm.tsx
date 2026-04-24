@@ -57,7 +57,7 @@ export default function ContactForm() {
     }));
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("loading");
     try {
@@ -93,9 +93,9 @@ export default function ContactForm() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-base font-semibold text-[#0B0F19] mb-1">Message received</p>
+                  <p className="text-base font-semibold text-[#0B0F19] mb-1">Thank you. Your enquiry has been received.</p>
                   <p className="text-sm text-[#64748B] max-w-xs">
-                    Thank you for contacting us. We&apos;ll respond within 1 business day.
+                    We will get back to you within 24 hours.
                   </p>
                 </div>
                 <button
