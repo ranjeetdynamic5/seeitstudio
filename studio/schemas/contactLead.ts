@@ -47,5 +47,43 @@ export const contactLead = defineType({
       title: "Created At",
       type: "datetime",
     }),
+    defineField({
+      name: "status",
+      title: "Status",
+      type: "string",
+      options: {
+        list: [
+          { title: "New", value: "new" },
+          { title: "Contacted", value: "contacted" },
+          { title: "Closed", value: "closed" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "new",
+    }),
+    defineField({
+      name: "notes",
+      title: "Notes",
+      type: "text",
+    }),
   ],
+  preview: {
+    select: {
+      title: "name",
+      subtitle: "email",
+      status: "status",
+      inquiryType: "inquiryType",
+      createdAt: "createdAt",
+    },
+    prepare({ title, subtitle, status, inquiryType, createdAt }) {
+      const date = createdAt
+        ? new Date(createdAt).toLocaleDateString("en-GB")
+        : "";
+      const badge = status === "new" ? "🟢" : status === "contacted" ? "🟡" : "⚫";
+      return {
+        title: `${badge} ${title}`,
+        subtitle: [subtitle, inquiryType, date].filter(Boolean).join(" · "),
+      };
+    },
+  },
 });

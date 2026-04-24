@@ -1,6 +1,7 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { schemaTypes } from "./schemas";
+import { structure } from "./deskStructure";
 
 export default defineConfig({
   name: "seeit-studio",
@@ -10,8 +11,8 @@ export default defineConfig({
   dataset: "production",
 
   plugins: [
-    structureTool(),
-      ],
+    structureTool({ structure }),
+  ],
 
   schema: {
     types: schemaTypes,
