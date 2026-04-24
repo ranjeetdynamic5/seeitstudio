@@ -208,9 +208,7 @@ export async function getFeaturedTrainings(): Promise<SanityTraining[]> {
 
 export async function getTrainingCategories(): Promise<SanityTrainingCategory[]> {
   try {
-    const results = await sanityClient.fetch(TRAINING_CATEGORIES_QUERY, {}, options);
-    console.log("Training categories:", results);
-    return results;
+    return await sanityClient.fetch(TRAINING_CATEGORIES_QUERY, {}, options);
   } catch (error) {
     console.error("Error fetching training categories:", error);
     return [];

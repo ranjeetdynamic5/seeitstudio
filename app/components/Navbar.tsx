@@ -14,11 +14,9 @@ export default function Navbar() {
 
   const cartItems = useCartStore((state) => state.items);
 
-  let cartCount = 0;
-  if (mounted) {
-    cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-    console.log("[Navbar] cartItems:", cartItems, "| count:", cartCount);
-  }
+  const cartCount = mounted
+    ? cartItems.reduce((sum, item) => sum + item.quantity, 0)
+    : 0;
 
   return (
     <header className="w-full border-b bg-white sticky top-0 z-50">
