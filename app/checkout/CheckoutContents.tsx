@@ -105,6 +105,19 @@ export default function CheckoutContents() {
 
       if (!res.ok) throw new Error("Order save failed");
 
+      const data = await res.json();
+      console.log("Sending email...", data);
+
+      await fetch("/api/send-order-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId: id,
+          customerEmail: form.email,
+          customerName: form.fullName,
+        }),
+      });
+
       clearCart();
       sessionStorage.setItem("orderComplete", "1");
       router.push(`/success?orderId=${id}`);
