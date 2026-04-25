@@ -17,3 +17,14 @@ VALUES
   ('AI Consulting',      'ai-consulting',       'AI-driven solutions and consulting for modern businesses.'),
   ('Web Development',    'web-development',     'Custom, scalable web development tailored for business growth.')
 ON CONFLICT (slug) DO NOTHING;
+
+-- Orders table (run once in Supabase SQL editor)
+CREATE TABLE IF NOT EXISTS orders (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  order_id text NOT NULL UNIQUE,
+  customer_name text NOT NULL,
+  customer_email text NOT NULL,
+  total_amount numeric(10, 2) NOT NULL,
+  products jsonb NOT NULL,
+  created_at timestamptz DEFAULT now()
+);
