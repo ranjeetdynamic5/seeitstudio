@@ -1,41 +1,17 @@
-## 🎯 PROJECT: SEELT STUDIO (UK MARKET)
+# 🎯 PROJECT: SEELT STUDIO (UK MARKET)
 
 This is a **professional, production-grade web application** targeting UK-based businesses and professionals.
 
 ---
-## ⚠️ ACTIVE TASK: SERVICES + CONTACT FORM FIX
 
-For this task:
+## ⚠️ ACTIVE TASK CONTROL
 
-- You ARE allowed to create dynamic routes under /services
-- You ARE allowed to modify ContactForm.tsx UI and state
-- You CAN update Supabase queries and integrations
-- You CAN fix form state issues (loading, success, reset)
+* Only implement what is asked
+* Do NOT add extra features
+* Do NOT redesign UI
+* Do NOT modify unrelated files
 
-Goals:
-
-1. Fix ContactForm:
-   - Do not show form and success together
-   - Reset status correctly
-   - Ensure buttons are not stuck disabled
-   - Maintain Supabase insert
-
-2. Services system:
-   - Use Supabase "services" table
-   - Fields: id, title, slug, description, content, image_url
-   - Create dynamic route: /services/[slug]
-   - Fetch and render service by slug
-   - Update /services page to list all services with links
-
-Rules override:
-- You CAN modify ContactForm.tsx
-- You CAN create /services/[slug]/page.tsx
-- Do NOT touch header/footer
-- Do NOT modify unrelated components
-
-Output:
-- Full files only
-- No explanation
+---
 
 ## 🇬🇧 UK MARKET RULES (STRICT)
 
@@ -50,212 +26,157 @@ Output:
 ❌ Never use:
 
 * Hype language
-* Aggressive sales tone
-* Clickbait wording
+* Aggressive tone
+* Clickbait
 
 ---
 
 ## 🎨 UI / DESIGN SYSTEM
 
-Design must follow:
-
 * Clean, minimal layout
 * Grid-based structure
-* Strong whitespace usage
-* Clear visual hierarchy
+* Strong whitespace
+* Clear hierarchy
 
 ### Colors:
 
-* Primary: `#d9534f` (used subtly for CTA)
-* Neutral: White, light greys, soft blacks
+* Primary: `#d9534f`
+* Neutral: White, greys, soft black
 
 ### Typography:
 
-* Clear, readable
+* Clean and readable
 * No decorative fonts
-* Focus on usability over style
 
 ---
 
-## 🧠 UX PRINCIPLES (VERY IMPORTANT)
+## 🧠 UX PRINCIPLES
 
-* Prioritise clarity over creativity
+* Clarity over creativity
 * Every page must answer:
-  → What is this?
-  → Why should I trust it?
-  → What should I do next?
 
-### Must include:
-
-* Clear navigation
-* Logical structure
-* Visible CTA (not aggressive)
-* Trust indicators:
-
-  * Certifications
-  * Reviews
-  * Partner badges
+  * What is this?
+  * Why trust it?
+  * What to do next?
 
 ---
 
 ## 🛍️ E-COMMERCE RULES
 
-* Pricing must always be shown as: `£XX.XX`
+* Price format: `£XX.XX`
 * Show:
 
   * Product title
   * Price
-  * Category
   * Image
-* Avoid clutter
+  * Category
+* Keep layout clean
 
 ---
 
-## 🧩 DEVELOPMENT RULES (CRITICAL)
+## 🔌 DATABASE RULES (SUPABASE ONLY)
 
-* Use **Next.js App Router best practices**
-* Use **server components by default**
-* Use **Sanity CMS for ALL dynamic content**
-* Do NOT hardcode data
+* Use Supabase for ALL dynamic data
+* Do NOT use Sanity
+* Do NOT use GROQ
+* Use existing client: `lib/supabase.ts`
 
-### Data Sources:
+### Tables:
 
-* Products → Sanity
-* Categories → Sanity
-* Training → Sanity
-* Blog → Sanity
-* Services → Sanity
+* products
+* product_categories
+* services
+* training_courses
+* training_categories
 
----
+### Rules:
 
-## 🔌 CMS INTEGRATION RULES
-
-* Always use GROQ queries
-* Always fetch from Sanity client
-* Never use mock/static data once CMS is connected
+* Always fetch from Supabase
+* No hardcoded data
+* Keep queries minimal
 
 ---
 
-## 🧱 COMPONENT STRUCTURE
+## 💸 PRODUCT OFFER SYSTEM
+
+Products may include:
+
+* original_price (numeric)
+* discount_percent (int)
+* is_on_sale (boolean)
+* offer_text (text)
+
+### UI Rules:
+
+If `is_on_sale = true`:
+
+* Show original_price (line-through)
+* Show price (bold)
+* Show discount badge (top-left)
+* Show offer_text below title
+
+If false:
+
+* Show only price
+
+⚠️ Do NOT redesign card layout
+⚠️ Only enhance existing UI
+
+---
+
+## 🧩 COMPONENT RULES
 
 * Keep components reusable
-* Separate:
+* Separate UI & data logic
+* Avoid large components
 
-  * UI components
-  * Data fetching logic
-* Avoid large monolithic components
+---
+
+## 🚫 UI SAFETY (VERY STRICT)
+
+* Do NOT change header/footer
+* Do NOT change spacing/colors
+* Do NOT redesign components
+* Do NOT remove classes
 
 ---
 
 ## 🧼 CODE QUALITY
 
-* Clean and readable code
-* No unnecessary complexity
-* Proper naming conventions
-* No `any` types (use TypeScript properly)
+* Clean TypeScript
+* No `any`
+* Proper naming
+* No unnecessary logic
 
 ---
 
-## 🚫 STRICTLY AVOID
+## 📦 OUTPUT RULES
 
-* Inline hardcoded data
-* Messy layouts
-* Over-animation
-* Marketing fluff
-* Inconsistent spacing
-* Random colors
+* Return only changed files
+* No explanation
+* Minimal response
 
 ---
 
-## ✅ GOOD CONTENT EXAMPLES
+## ⚡ PERFORMANCE
 
-✔ "Professional software trusted by UK designers"
-✔ "Official UK reseller"
-✔ "Secure payment & instant delivery"
-
----
-
-## ❌ BAD CONTENT EXAMPLES
-
-✖ "Best deal ever!!!"
-✖ "Crazy discount!!!"
-✖ "Limited time madness!!!"
+* Smallest working code
+* Avoid heavy imports
 
 ---
 
-## 🎯 FINAL GOAL
+## ❗ UNCERTAINTY RULE
 
-Build a **clean, professional, CMS-driven UK design platform** that feels:
-
-* Reliable
-* Premium
-* Structured
-* Easy to use
-
----
-## 🤖 AI EXECUTION CONTROL (CRITICAL FOR CLAUDE)
-
-### 🎯 TASK BOUNDARY (STRICT)
-- Only implement what is explicitly asked
-- Do NOT go outside scope
-- Do NOT add extra features
-- Do NOT improve or "enhance" unless asked
+If unclear → ASK
+Do NOT assume
 
 ---
 
-### 🚫 UI SAFETY RULES (VERY STRICT)
-- Do NOT change header, footer, or layout
-- Do NOT modify spacing, colors, typography
-- Do NOT redesign any component
-- Do NOT remove or rename existing classes
+## 🚨 FAIL CONDITION
 
----
-
-### 🔁 CODE SAFETY
-- Do NOT refactor unrelated code
-- Do NOT rewrite existing components
-- Only touch required files
-
----
-
-### 📦 OUTPUT RULES (LOW CREDIT MODE)
-- Return ONLY changed or new files
-- NO explanations
-- NO comments unless necessary
-- Keep response minimal
-
----
-
-### ⚡ PERFORMANCE RULES
-- Write smallest possible working code
-- Avoid unnecessary imports
-- Avoid large components
-
----
-
-### ❗ UNCERTAINTY RULE
-If anything is unclear:
-→ ASK before proceeding
-→ Do NOT assume
-
----
-
-### 🧩 COMPONENT RULE
-- Prefer reusable components
-- Do NOT duplicate logic
-
----
-
-### 🔌 API RULES
-- Use existing structure (Next.js App Router)
-- Keep API simple and minimal
-
----
-
-### 🚨 FAIL CONDITION
 If task requires:
-- UI redesign
-- Major refactor
-- Structure change
 
-→ STOP and ask for confirmation
+* UI redesign
+* Major refactor
+
+→ STOP and ask

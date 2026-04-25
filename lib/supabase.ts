@@ -22,6 +22,10 @@ export type Product = {
   title: string;
   description: string;
   price: number;
+  original_price?: number;
+  discount_percent?: number;
+  is_on_sale?: boolean;
+  offer_text?: string;
   image_url?: string;
   category_id?: number;
   created_at: string;
