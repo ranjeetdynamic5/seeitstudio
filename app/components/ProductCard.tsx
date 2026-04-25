@@ -10,7 +10,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const [added, setAdded] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const href = `/products/${product.id}`;
+  const href = `/products/${product.slug}`;
 
   function handleAddToCart(e: React.MouseEvent) {
     e.stopPropagation();

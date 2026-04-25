@@ -19,6 +19,7 @@ export type TrainingCategory = {
 
 export type Product = {
   id: string;
+  slug: string;
   title: string;
   description: string;
   price: number;
@@ -91,6 +92,19 @@ export async function getProductById(id: string): Promise<Product | null> {
     .from("products")
     .select("*")
     .eq("id", id)
+    .single();
+  if (error) {
+    console.error("Error fetching product:", error);
+    return null;
+  }
+  return data;
+}
+
+export async function getProductBySlug(slug: string): Promise<Product | null> {
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("slug", slug)
     .single();
   if (error) {
     console.error("Error fetching product:", error);

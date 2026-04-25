@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import NavHeader from "@/app/components/NavHeader";
 import Footer from "@/app/components/Footer";
-import { getProductById } from "@/lib/supabase";
+import { getProductBySlug } from "@/lib/supabase";
 import type { Product } from "@/lib/supabase";
 import StickyBar from "./StickyBar";
 import AddToCartButton from "./AddToCartButton";
@@ -15,7 +15,7 @@ export default async function ProductDetailPage({
   const { slug: slugParam } = await params;
   const id = Array.isArray(slugParam) ? slugParam[0] : slugParam;
 
-  const product: Product | null = await getProductById(id);
+  const product: Product | null = await getProductBySlug(id);
 
   if (!product) notFound();
 
