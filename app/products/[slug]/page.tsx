@@ -43,7 +43,12 @@ export default async function ProductDetailPage({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 lg:grid-cols-2 gap-10">
 
             {/* Image */}
-            <div className="bg-[#f0f5fa] rounded-xl flex items-center justify-center h-80">
+            <div className="relative bg-[#f0f5fa] rounded-xl flex items-center justify-center h-80">
+              {product.is_on_sale && product.discount_percent != null && (
+                <span className="absolute top-3 left-3 bg-[#D9534F] text-white text-xs font-semibold px-2.5 py-1 rounded">
+                  {product.discount_percent}% OFF
+                </span>
+              )}
               {product.image_url ? (
                 <img
                   src={product.image_url}
@@ -59,13 +64,28 @@ export default async function ProductDetailPage({
             <div className="flex flex-col gap-5">
               <h1 className="text-2xl font-bold text-[#0B0F19]">{product.title}</h1>
 
+              {product.is_on_sale && product.offer_text && (
+                <p className="text-sm text-[#D9534F] font-medium">{product.offer_text}</p>
+              )}
+
               <p className="text-[#64748B]">
                 {product.description || "No description available"}
               </p>
 
-              <div className="text-2xl font-semibold text-[#0F172A]">
-                £{product.price?.toFixed(2)}
-              </div>
+              {product.is_on_sale && product.original_price != null ? (
+                <div className="flex items-baseline gap-3">
+                  <span className="text-2xl font-bold text-[#0F172A]">
+                    £{product.price?.toFixed(2)}
+                  </span>
+                  <span className="text-base text-[#94A3B8] line-through">
+                    £{product.original_price.toFixed(2)}
+                  </span>
+                </div>
+              ) : (
+                <div className="text-2xl font-semibold text-[#0F172A]">
+                  £{product.price?.toFixed(2)}
+                </div>
+              )}
 
               <AddToCartButton
                 id={product.id}
@@ -84,6 +104,7 @@ export default async function ProductDetailPage({
         id={product.id}
         name={product.title}
         price={product.price}
+        originalPrice={product.is_on_sale ? product.original_price : undefined}
       />
     </>
   );
