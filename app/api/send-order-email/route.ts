@@ -1,51 +1,58 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sendOrderEmails } from "@/lib/email";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+const adminEmail = process.env.ADMIN_EMAIL!;
 
 export async function POST(req: NextRequest) {
-  console.log("[send-order-email] WEBHOOK HIT —", new Date().toISOString());
+  const { orderId, customerEmail, customerName } = await req.json();
 
-  const receivedSecret = req.headers.get("x-webhook-secret")?.trim() ?? "";
-  const expectedSecret = (process.env.WEBHOOK_SECRET ?? "").trim();
-
-  if (!receivedSecret || receivedSecret !== expectedSecret) {
-    console.warn("[send-order-email] Secret MISMATCH — returning 401");
-    return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
+  if (!orderId || !customerEmail) {
+    return NextResponse.json(
+      { error: "orderId and customerEmail are required" },
+      { status: 400 }
+    );
   }
 
-  let body: Record<string, unknown>;
+  const customerHtml = `
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
+      <h2 style="color:#d9534f;">Order Confirmation</h2>
+      <p>Dear ${customerName ?? "Customer"},</p>
+      <p>Thank you for your order. We have received it and will process it shortly.</p>
+      <p><strong>Order ID:</strong> ${orderId}</p>
+      <p>If you have any questions, please do not hesitate to contact us.</p>
+      <p style="margin-top:32px;">Kind regards,<br/>Seelt Studio</p>
+    </div>
+  `;
+
+  const adminHtml = `
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
+      <h2 style="color:#d9534f;">New Order Received</h2>
+      <p><strong>Order ID:</strong> ${orderId}</p>
+      <p><strong>Customer Email:</strong> ${customerEmail}</p>
+      <p><strong>Customer Name:</strong> ${customerName ?? "N/A"}</p>
+    </div>
+  `;
+
   try {
-    const raw = await req.text();
-    body = JSON.parse(raw) as Record<string, unknown>;
-  } catch (err) {
-    console.error("[send-order-email] Failed to parse body:", err);
-    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+    await Promise.all([
+      resend.emails.send({
+        from: "Seelt Studio <onboarding@resend.dev>",
+        to: customerEmail,
+        subject: "Order Confirmation",
+        html: customerHtml,
+      }),
+      resend.emails.send({
+        from: "Seelt Studio <onboarding@resend.dev>",
+        to: adminEmail,
+        subject: `New Order: ${orderId}`,
+        html: adminHtml,
+      }),
+    ]);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Email send error:", error);
+    return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
   }
-
-  const status = typeof body.status === "string" ? body.status : undefined;
-  const orderId = typeof body.orderId === "string" ? body.orderId : undefined;
-
-  if (status !== "completed") {
-    return NextResponse.json({ skipped: true, reason: `status is "${status}", not "completed"` });
-  }
-
-  if (!orderId) {
-    return NextResponse.json({ error: "Missing orderId" }, { status: 400 });
-  }
-
-  try {
-    await sendOrderEmails({
-      orderId,
-      customerName: typeof body.customerName === "string" ? body.customerName : "Customer",
-      email: typeof body.email === "string" ? body.email : "",
-      products: Array.isArray(body.products) ? body.products as Array<{ name: string; price: number; quantity: number }> : [],
-      totalAmount: typeof body.totalAmount === "number" ? body.totalAmount : 0,
-      createdAt: typeof body.createdAt === "string" ? body.createdAt : new Date().toISOString(),
-    });
-    console.log(`[send-order-email] Emails sent for order "${orderId}"`);
-  } catch (err) {
-    console.error("[send-order-email] sendOrderEmails threw:", err);
-    return NextResponse.json({ error: "Email sending failed" }, { status: 500 });
-  }
-
-  return NextResponse.json({ success: true, orderId });
 }
