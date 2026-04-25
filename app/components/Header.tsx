@@ -295,8 +295,14 @@ export default function Header({ services = [] }: { services?: Service[] }) {
             ))}
           </ul>
 
-          {/* Right: Cart + hamburger */}
+          {/* Right: Login + Cart + hamburger */}
           <div className="flex items-center gap-2">
+            <Link
+              href="/login"
+              className="hidden lg:inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-[#0B0F19] border border-slate-200 rounded-lg hover:bg-[#f0f5fa] transition-colors"
+            >
+              Login
+            </Link>
             <Link
               href="/cart"
               aria-label="View cart"
@@ -420,11 +426,12 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                 </div>
               ))}
 
-              <div className="pt-3 mt-2 border-t border-slate-100 grid grid-cols-3 gap-2">
+              <div className="pt-3 mt-2 border-t border-slate-100 grid grid-cols-4 gap-2">
                 {[
                   { label: "Support", href: "/contact" },
                   { label: "Shop", href: "/shop" },
                   { label: "Sign Up", href: "/signup" },
+                  { label: "Login", href: "/login" },
                 ].map((btn) => (
                   <a
                     key={btn.label}
