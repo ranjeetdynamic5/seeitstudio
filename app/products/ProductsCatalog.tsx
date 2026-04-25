@@ -3,53 +3,28 @@
 import { useState, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "../components/ProductCard";
-import type { SanityProduct, SanityCategory } from "../../lib/sanity/types";
+import type { Product } from "../../lib/supabase";
 
 type SortOption = "default" | "price-asc" | "price-desc";
 
-function CatalogInner({
-  products,
-  categories,
-}: {
-  products: SanityProduct[];
-  categories: SanityCategory[];
-}) {
+function CatalogInner({ products }: { products: Product[] }) {
   const searchParams = useSearchParams();
-  const [activeCategory, setActiveCategory] = useState<string>(() => {
-    const param = searchParams.get("category");
-    if (!param) return "All";
-    const match = categories.find((c) => c.slug === param.toLowerCase());
-    return match ? match.title : "All";
-  });
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(searchParams.get("q") ?? "");
   const [sort, setSort] = useState<SortOption>("default");
 
-  const isSearching = search.trim().length > 0;
-
   const filtered = useMemo(() => {
-    let result =
-      isSearching || activeCategory === "All"
-        ? products
-        : products.filter((p) => p.category.title === activeCategory);
+    let result = products;
 
-    if (isSearching) {
+    if (search.trim()) {
       const q = search.trim().toLowerCase();
-      result = result.filter((p) => p.name.toLowerCase().includes(q));
+      result = result.filter((p) => p.title.toLowerCase().includes(q));
     }
 
     if (sort === "price-asc") result = [...result].sort((a, b) => a.price - b.price);
     if (sort === "price-desc") result = [...result].sort((a, b) => b.price - a.price);
 
     return result;
-  }, [products, activeCategory, search, sort, isSearching]);
-
-  const counts = useMemo(() => {
-    const map: Record<string, number> = { All: products.length };
-    for (const p of products) {
-      map[p.category.title] = (map[p.category.title] ?? 0) + 1;
-    }
-    return map;
-  }, [products]);
+  }, [products, search, sort]);
 
   return (
     <>
@@ -68,11 +43,7 @@ function CatalogInner({
               stroke="currentColor"
               strokeWidth={2.5}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M8.25 4.5l7.5 7.5-7.5 7.5"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
             </svg>
             <span className="text-[#0B0F19] font-medium">Products</span>
           </nav>
@@ -88,9 +59,7 @@ function CatalogInner({
               </p>
             </div>
             <p className="text-sm text-[#64748B] shrink-0">
-              <span className="font-semibold text-[#0B0F19]">
-                {products.length}
-              </span>{" "}
+              <span className="font-semibold text-[#0B0F19]">{products.length}</span>{" "}
               products
             </p>
           </div>
@@ -104,11 +73,7 @@ function CatalogInner({
               stroke="currentColor"
               strokeWidth={2}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803 7.5 7.5 0 0016.803 15.803z"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803 7.5 7.5 0 0016.803 15.803z" />
             </svg>
             <input
               type="search"
@@ -123,69 +88,11 @@ function CatalogInner({
                 aria-label="Clear search"
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#D9534F] transition-colors"
               >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2.5}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             )}
-          </div>
-        </div>
-
-        {/* ── Category Filter Tabs ──────────────────────────────────────── */}
-        <div
-          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-opacity ${
-            isSearching ? "opacity-40 pointer-events-none" : "opacity-100"
-          }`}
-        >
-          <div
-            className="flex items-center gap-1 overflow-x-auto pb-0 scrollbar-none"
-            role="tablist"
-            aria-label="Filter by category"
-          >
-            {[{ _id: "all", title: "All", slug: "all" }, ...categories].map((cat) => {
-              const isActive = activeCategory === cat.title;
-              return (
-                <button
-                  key={cat._id}
-                  role="tab"
-                  aria-selected={isActive}
-                  onClick={() => setActiveCategory(cat.title)}
-                  className={`
-                    relative flex items-center gap-2 px-4 py-3.5 text-sm font-medium whitespace-nowrap
-                    transition-colors border-b-2 -mb-px
-                    ${
-                      isActive
-                        ? "border-[#D9534F] text-[#D9534F]"
-                        : "border-transparent text-[#64748B] hover:text-[#0B0F19] hover:border-slate-300"
-                    }
-                  `}
-                >
-                  {cat.title}
-                  <span
-                    className={`
-                      inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-xs font-semibold
-                      ${
-                        isActive
-                          ? "bg-[#D9534F] text-white"
-                          : "bg-slate-100 text-[#64748B]"
-                      }
-                    `}
-                  >
-                    {counts[cat.title] ?? 0}
-                  </span>
-                </button>
-              );
-            })}
           </div>
         </div>
       </div>
@@ -196,22 +103,10 @@ function CatalogInner({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <p className="text-sm text-[#64748B]">
             Showing{" "}
-            <span className="font-semibold text-[#0B0F19]">
-              {filtered.length}
-            </span>
+            <span className="font-semibold text-[#0B0F19]">{filtered.length}</span>
             {" "}of{" "}
-            <span className="font-semibold text-[#0B0F19]">
-              {products.length}
-            </span>{" "}
+            <span className="font-semibold text-[#0B0F19]">{products.length}</span>{" "}
             product{filtered.length !== 1 ? "s" : ""}
-            {activeCategory !== "All" && (
-              <>
-                {" "}in{" "}
-                <span className="font-semibold text-[#D9534F]">
-                  {activeCategory}
-                </span>
-              </>
-            )}
             {search.trim() && (
               <>
                 {" "}matching{" "}
@@ -233,66 +128,38 @@ function CatalogInner({
               <option value="price-desc">Price: High to Low</option>
             </select>
 
-            {(activeCategory !== "All" || search.trim()) && (
+            {search.trim() && (
               <button
-                onClick={() => {
-                  setActiveCategory("All");
-                  setSearch("");
-                  setSort("default");
-                }}
+                onClick={() => setSearch("")}
                 className="text-sm font-medium text-[#64748B] hover:text-[#D9534F] transition-colors flex items-center gap-1 whitespace-nowrap"
               >
-                <svg
-                  className="w-3.5 h-3.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2.5}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
-                Clear all
+                Clear
               </button>
             )}
           </div>
         </div>
 
-        {/* Grid — 1 col → 2 col sm → 3 col lg → 4 col xl */}
+        {/* Grid */}
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
             {filtered.map((product) => (
-              <ProductCard key={product._id} product={product} />
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <div className="w-16 h-16 mb-4 rounded-full bg-slate-100 flex items-center justify-center">
-              <svg
-                className="w-7 h-7 text-slate-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803 7.5 7.5 0 0016.803 15.803z"
-                />
+              <svg className="w-7 h-7 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803 7.5 7.5 0 0016.803 15.803z" />
               </svg>
             </div>
-            <p className="text-base font-semibold text-[#0B0F19] mb-1">
-              No products found
-            </p>
-            <p className="text-sm text-[#64748B]">
-              Try a different category or view all products.
-            </p>
+            <p className="text-base font-semibold text-[#0B0F19] mb-1">No products found</p>
+            <p className="text-sm text-[#64748B]">Try a different search term.</p>
             <button
-              onClick={() => setActiveCategory("All")}
+              onClick={() => setSearch("")}
               className="mt-4 px-4 py-2 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors"
             >
               View all products
@@ -321,18 +188,8 @@ function CatalogInner({
               href="tel:03331212187"
               className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-[#0F172A] bg-white rounded-lg hover:bg-slate-100 transition-colors"
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
-                />
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
               </svg>
               0333 121 2187
             </a>
@@ -349,16 +206,10 @@ function CatalogInner({
   );
 }
 
-export default function ProductsCatalog({
-  products,
-  categories,
-}: {
-  products: SanityProduct[];
-  categories: SanityCategory[];
-}) {
+export default function ProductsCatalog({ products }: { products: Product[] }) {
   return (
     <Suspense fallback={null}>
-      <CatalogInner products={products} categories={categories} />
+      <CatalogInner products={products} />
     </Suspense>
   );
 }

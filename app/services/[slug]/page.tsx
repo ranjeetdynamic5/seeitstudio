@@ -1,13 +1,13 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import NavHeader from "@/app/components/NavHeader";
 import Footer from "@/app/components/Footer";
-import { SERVICES, getServiceBySlug } from "@/lib/services";
+import { getServiceBySlug, getServices } from "@/lib/supabase";
 
-// ── Static generation ─────────────────────────────────────────────────────────
-
-export function generateStaticParams() {
-  return SERVICES.map((s) => ({ slug: s.slug }));
+export async function generateStaticParams() {
+  const services = await getServices();
+  return services.map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({
@@ -16,15 +16,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const service = getServiceBySlug(slug);
+  const service = await getServiceBySlug(slug);
   if (!service) return {};
   return {
     title: `${service.title} — SeeIt Studio`,
-    description: service.shortDescription,
+    description: service.description,
   };
 }
-
-// ── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function ServiceDetailPage({
   params,
@@ -32,8 +30,13 @@ export default async function ServiceDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const service = getServiceBySlug(slug);
+  const [service, allServices] = await Promise.all([
+    getServiceBySlug(slug),
+    getServices(),
+  ]);
   if (!service) notFound();
+
+  const otherServices = allServices.filter((s) => s.slug !== slug);
 
   return (
     <>
@@ -41,11 +44,10 @@ export default async function ServiceDetailPage({
 
       <main className="pt-20 md:pt-32 min-h-screen bg-[#f8fafc]">
 
-        {/* ── Page header / hero ───────────────────────────────────────────── */}
+        {/* ── Page header ── */}
         <div className="bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
 
-            {/* Breadcrumb */}
             <nav className="flex items-center gap-1.5 text-sm text-[#64748B] mb-4">
               <Link href="/" className="hover:text-[#0B0F19] transition-colors">Home</Link>
               <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -69,61 +71,35 @@ export default async function ServiceDetailPage({
           </div>
         </div>
 
-        {/* ── Main content ─────────────────────────────────────────────────── */}
+        {/* ── Main content ── */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-            {/* Left: Problems + Features */}
-            <div className="lg:col-span-2 flex flex-col gap-8">
+            {/* Left: content + image */}
+            <div className="lg:col-span-2 flex flex-col gap-6">
 
-              {/* Problems section */}
-              <section className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center shrink-0">
-                    <svg className="w-4 h-4 text-[#D9534F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                    </svg>
-                  </div>
-                  <h2 className="text-lg font-semibold text-[#0B0F19]">Common Problems We Solve</h2>
+              {service.image_url && (
+                <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-slate-200">
+                  <Image
+                    src={service.image_url}
+                    alt={service.title}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
-                <ul className="flex flex-col gap-3">
-                  {service.problems.map((problem) => (
-                    <li key={problem} className="flex items-start gap-3">
-                      <span className="w-5 h-5 rounded-full bg-rose-50 flex items-center justify-center shrink-0 mt-0.5">
-                        <svg className="w-3 h-3 text-[#D9534F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </span>
-                      <span className="text-sm text-[#64748B] leading-relaxed">{problem}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
+              )}
 
-              {/* Features section */}
-              <section className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
-                    <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+              {service.content && (
+                <section className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
+                  <h2 className="text-lg font-semibold text-[#0B0F19] mb-4">About This Service</h2>
+                  <div className="text-sm text-[#64748B] leading-relaxed whitespace-pre-line">
+                    {service.content}
                   </div>
-                  <h2 className="text-lg font-semibold text-[#0B0F19]">What We Offer</h2>
-                </div>
-                <ul className="flex flex-col gap-3">
-                  {service.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3">
-                      <svg className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                      </svg>
-                      <span className="text-sm text-[#0B0F19] leading-relaxed">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
+                </section>
+              )}
             </div>
 
-            {/* Right: sticky CTA card */}
+            {/* Right: sticky CTA */}
             <aside className="lg:col-span-1">
               <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm sticky top-28">
                 <div className="bg-[#0F172A] px-5 py-6">
@@ -140,11 +116,7 @@ export default async function ServiceDetailPage({
                   </p>
 
                   <div className="flex flex-col gap-2">
-                    {[
-                      "No obligation quote",
-                      "Response within 1 business day",
-                      "UK-based team",
-                    ].map((item) => (
+                    {["No obligation quote", "Response within 1 business day", "UK-based team"].map((item) => (
                       <div key={item} className="flex items-center gap-2 text-sm text-[#64748B]">
                         <svg className="w-4 h-4 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
@@ -156,9 +128,9 @@ export default async function ServiceDetailPage({
 
                   <Link
                     href="/contact"
-                    className="w-full flex items-center justify-center gap-2 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] active:bg-[#b02a29] transition-colors mt-1"
+                    className="w-full flex items-center justify-center gap-2 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors mt-1"
                   >
-                    {service.cta}
+                    Enquire Now
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                     </svg>
@@ -176,7 +148,6 @@ export default async function ServiceDetailPage({
                 </div>
               </div>
 
-              {/* Back link */}
               <div className="mt-4">
                 <Link
                   href="/services"
@@ -193,29 +164,31 @@ export default async function ServiceDetailPage({
           </div>
         </div>
 
-        {/* ── Other services ───────────────────────────────────────────────── */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-          <h2 className="text-lg font-semibold text-[#0B0F19] mb-5">Other Services</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {SERVICES.filter((s) => s.slug !== service.slug).map((s) => (
-              <Link
-                key={s.slug}
-                href={`/services/${s.slug}`}
-                className="bg-white border border-slate-200 rounded-xl px-5 py-4 hover:border-[#D9534F] hover:shadow-sm transition-all group flex items-center justify-between gap-3"
-              >
-                <div>
-                  <p className="text-sm font-semibold text-[#0B0F19] group-hover:text-[#D9534F] transition-colors">
-                    {s.title}
-                  </p>
-                  <p className="text-xs text-[#64748B] mt-0.5 line-clamp-1">{s.shortDescription}</p>
-                </div>
-                <svg className="w-4 h-4 text-slate-400 shrink-0 group-hover:text-[#D9534F] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </Link>
-            ))}
+        {/* ── Other services ── */}
+        {otherServices.length > 0 && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+            <h2 className="text-lg font-semibold text-[#0B0F19] mb-5">Other Services</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {otherServices.map((s) => (
+                <Link
+                  key={s.id}
+                  href={`/services/${s.slug}`}
+                  className="bg-white border border-slate-200 rounded-xl px-5 py-4 hover:border-[#D9534F] hover:shadow-sm transition-all group flex items-center justify-between gap-3"
+                >
+                  <div>
+                    <p className="text-sm font-semibold text-[#0B0F19] group-hover:text-[#D9534F] transition-colors">
+                      {s.title}
+                    </p>
+                    <p className="text-xs text-[#64748B] mt-0.5 line-clamp-1">{s.description}</p>
+                  </div>
+                  <svg className="w-4 h-4 text-slate-400 shrink-0 group-hover:text-[#D9534F] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
       </main>
 

@@ -3,13 +3,12 @@ import HeroSection from "./components/HeroSection";
 import AboutSection from "./components/AboutSection";
 import TrustedPartners from "./components/TrustedPartners";
 import ProductCard from "./components/ProductCard";
-import { getFeaturedProducts, getFeaturedTrainings } from "../lib/sanity/queries";
 import TrainingCard from "./components/TrainingCard";
 import ServiceCard from "./components/ServiceCard";
 import Testimonials from "./components/Testimonials";
 import Footer from "./components/Footer";
-import { getAllServices } from "../lib/sanity/queries";
-import type { SanityService } from "../lib/sanity/types";
+import { getFeaturedProducts, getTrainingCourses, getServices } from "../lib/supabase";
+import type { Service } from "../lib/supabase";
 import type { ReactNode } from "react";
 
 // ─── Reusable Section Heading ─────────────────────────────────────────────────
@@ -41,7 +40,6 @@ function SectionHeading({
   );
 }
 
-
 const SERVICE_ICONS: Record<string, ReactNode> = {
   modelling: (
     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -60,53 +58,45 @@ const SERVICE_ICONS: Record<string, ReactNode> = {
   ),
 };
 
-function toServiceCardProps(s: SanityService) {
+function toServiceCardProps(s: Service) {
   return {
     title: s.title,
-    category: s.category?.title ?? "",
-    description: s.shortDescription ?? "",
-    href: `/services/${s.slug}`,
-    highlights: s.features?.slice(0, 4) ?? [],
-    icon: SERVICE_ICONS[s.icon ?? ""] ?? null,
-    image: s.image,
+    category: "Service",
+    description: s.description,
+    href: "/services",
+    highlights: [],
+    icon: SERVICE_ICONS["web"] ?? null,
+    image: undefined,
   };
 }
 
 // ─── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function HomePage() {
-  const [featuredProducts, featuredTrainings, services] = await Promise.all([
+  const [featuredProducts, allTrainings, services] = await Promise.all([
     getFeaturedProducts(),
-    getFeaturedTrainings(),
-    getAllServices(),
+    getTrainingCourses(),
+    getServices(),
   ]);
+
+  const featuredTrainings = allTrainings.slice(0, 3);
 
   return (
     <>
-      {/* 1. Header — fixed, sits above everything */}
       <NavHeader />
 
-      {/*
-        Offset wrapper — pushes all page content below the fixed header.
-        Mobile  : nav only  = h-20  → pt-20  (80px)
-        Desktop : top bar h-12 + nav h-20 = 128px → pt-32 (128px)
-      */}
       <main className="pt-20 md:pt-32">
 
-      {/* 2. Hero Section */}
       <HeroSection />
 
-      {/* ── 3. About Us ──────────────────────────────────────────────────────── */}
       <AboutSection />
 
-      {/* ── 4. Trusted Partners ──────────────────────────────────────────────── */}
       <TrustedPartners />
 
-      {/* ── 5. Products Preview ──────────────────────────────────────────────── */}
+      {/* ── Products Preview ──────────────────────────────────────────────────── */}
       <section className="py-14 px-4 sm:px-6 lg:px-8 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto">
 
-          {/* Header row — stacks on mobile, inline on sm+ */}
           <div className="flex flex-col gap-4 mb-10 sm:flex-row sm:items-end sm:justify-between lg:mb-12">
             <SectionHeading
               eyebrow="Software & Licences"
@@ -115,7 +105,7 @@ export default async function HomePage() {
             />
             <a
               href="/products"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#D9534F] hover:text-[#c9302c] transition-colors shrink-0 sm:pb-0 pb-0"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#D9534F] hover:text-[#c9302c] transition-colors shrink-0"
             >
               View all products
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -124,17 +114,16 @@ export default async function HomePage() {
             </a>
           </div>
 
-          {/* Cards: 1 col → 2 col sm → 4 col lg */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             {featuredProducts.map((product) => (
-              <ProductCard key={product._id} product={product} />
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
 
         </div>
       </section>
 
-      {/* ── 6. Training Preview ──────────────────────────────────────────────── */}
+      {/* ── Training Preview ──────────────────────────────────────────────────── */}
       <section className="py-14 px-4 sm:px-6 lg:px-8 lg:py-24 bg-[#f0f5fa]">
         <div className="max-w-7xl mx-auto">
 
@@ -155,14 +144,12 @@ export default async function HomePage() {
             </a>
           </div>
 
-          {/* Cards: 1 col → 2 col sm → 3 col lg */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mb-6 sm:mb-8">
             {featuredTrainings.map((training) => (
-              <TrainingCard key={training._id} training={training} />
+              <TrainingCard key={training.id} training={training} />
             ))}
           </div>
 
-          {/* Bespoke Training Banner */}
           <div className="bg-[#0F172A] rounded-2xl p-6 sm:p-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="text-base sm:text-lg font-semibold text-white mb-1">
@@ -185,7 +172,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── 7. Services ──────────────────────────────────────────────────────── */}
+      {/* ── Services ──────────────────────────────────────────────────────────── */}
       <section id="services" className="py-14 px-4 sm:px-6 lg:px-8 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="mb-10 lg:mb-12">
@@ -195,24 +182,21 @@ export default async function HomePage() {
               subtitle="End-to-end delivery from brief to final output — rendering, modelling, AI strategy, and web development."
             />
           </div>
-          {/* Services: 1 col → 2 col sm → 3 col lg */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {services.map((s) => (
-              <ServiceCard key={s._id} service={toServiceCardProps(s)} />
+              <ServiceCard key={s.id} service={toServiceCardProps(s)} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 8. Testimonials ──────────────────────────────────────────────────── */}
       <Testimonials />
 
-      {/* ── 9. CTA Section ───────────────────────────────────────────────────── */}
+      {/* ── CTA Section ───────────────────────────────────────────────────────── */}
       <section className="py-14 px-4 sm:px-6 lg:px-8 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="bg-[#0F172A] rounded-2xl px-6 py-12 sm:px-10 sm:py-14 lg:px-16 lg:py-16 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
 
-            {/* Copy */}
             <div className="max-w-lg">
               <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-3">
                 Get Started Today
@@ -226,7 +210,6 @@ export default async function HomePage() {
               </p>
             </div>
 
-            {/* Buttons — stacked on mobile, row on sm+ */}
             <div className="flex flex-col sm:flex-row gap-3 lg:shrink-0">
               <a
                 href="/products"
@@ -245,10 +228,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── 10. Footer ───────────────────────────────────────────────────────── */}
       <Footer />
 
-      </main>{/* /offset wrapper */}
+      </main>
     </>
   );
 }

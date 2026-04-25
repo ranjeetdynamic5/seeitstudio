@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import NavHeader from "@/app/components/NavHeader";
 import Footer from "@/app/components/Footer";
-import { getAllTrainings, getTrainingCategories } from "@/lib/sanity/queries";
+import { getTrainingCourses } from "@/lib/supabase";
 import TrainingCatalog from "./TrainingCatalog";
 
 export const metadata = {
@@ -11,16 +11,13 @@ export const metadata = {
 };
 
 export default async function TrainingPage() {
-  const [trainings, categories] = await Promise.all([
-    getAllTrainings(),
-    getTrainingCategories(),
-  ]);
+  const trainings = await getTrainingCourses();
 
   return (
     <>
       <NavHeader />
       <Suspense fallback={null}>
-        <TrainingCatalog trainings={trainings} categories={categories} />
+        <TrainingCatalog trainings={trainings} />
       </Suspense>
       <Footer />
     </>

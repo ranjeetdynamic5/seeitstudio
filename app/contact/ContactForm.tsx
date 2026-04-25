@@ -1,487 +1,284 @@
 "use client";
 
 import { useState } from "react";
-
-const INQUIRY_OPTIONS = [
-  "General Enquiry",
-  "Software Purchase",
-  "Licence Upgrade",
-  "Training & Courses",
-  "Technical Support",
-  "Partnership",
-];
-
-const HEAR_ABOUT_OPTIONS = [
-  "Google Search",
-  "Social Media",
-  "Referral / Word of mouth",
-  "Email Newsletter",
-  "Trade Show / Event",
-  "Other",
-];
-
-const PAYMENT_OPTIONS = [
-  "Credit / Debit Card",
-  "Bank Transfer",
-  "PayPal",
-  "Invoice",
-];
+import { supabase } from "@/lib/supabase";
 
 type FormState = {
   fullName: string;
-  company: string;
   email: string;
   phone: string;
+  company: string;
   inquiryType: string;
   message: string;
   hearAboutUs: string[];
-  otherInfo: string;
-  registeredUsername: string;
-  softwareProduct: string;
-  serialNumbers: string;
-  operatingSystem: string[];
-  paymentMethod: string;
-  newsletter: string;
 };
 
-const INITIAL: FormState = {
+const INITIAL_FORM: FormState = {
   fullName: "",
-  company: "",
   email: "",
   phone: "",
+  company: "",
   inquiryType: "",
   message: "",
   hearAboutUs: [],
-  otherInfo: "",
-  registeredUsername: "",
-  softwareProduct: "",
-  serialNumbers: "",
-  operatingSystem: [],
-  paymentMethod: "",
-  newsletter: "",
 };
 
-const INPUT =
-  "w-full px-4 py-2.5 text-sm text-[#0B0F19] bg-white border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-400";
+const HEAR_ABOUT_OPTIONS = ["Google", "LinkedIn", "Referral", "Social Media", "Other"];
+
+const inputClass =
+  "w-full px-4 py-3 text-sm text-[#0B0F19] bg-white border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-400";
 
 export default function ContactForm() {
-  const [step, setStep] = useState<1 | 2>(1);
-  const [form, setForm] = useState<FormState>(INITIAL);
-  const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
+  const [step, setStep] = useState(1);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [form, setForm] = useState<FormState>(INITIAL_FORM);
 
-  function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    if (errors[name as keyof FormState]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  }
+  };
 
-  function toggleArray(field: "hearAboutUs" | "operatingSystem", value: string) {
+  const handleCheckbox = (value: string) => {
     setForm((prev) => {
-      const arr = prev[field] as string[];
+      const exists = prev.hearAboutUs.includes(value);
       return {
         ...prev,
-        [field]: arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value],
+        hearAboutUs: exists
+          ? prev.hearAboutUs.filter((v) => v !== value)
+          : [...prev.hearAboutUs, value],
       };
     });
-  }
+  };
 
-  function handleNext() {
-    const errs: Partial<Record<keyof FormState, string>> = {};
-    if (!form.fullName.trim()) errs.fullName = "Full name is required.";
-    if (!form.email.trim()) errs.email = "Email address is required.";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      errs.email = "Please enter a valid email address.";
-    if (!form.inquiryType) errs.inquiryType = "Please select a nature of enquiry.";
-    setErrors(errs);
-    if (Object.keys(errs).length === 0) setStep(2);
-  }
-
-  async function handleSubmit() {
-    setStatus("loading");
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      setStatus(res.ok ? "success" : "error");
-    } catch {
-      setStatus("error");
-    }
-  }
-
-  function reset() {
-    setForm(INITIAL);
-    setErrors({});
+  const handleReset = () => {
+    setForm(INITIAL_FORM);
     setStep(1);
     setStatus("idle");
+  };
+
+  const handleSubmit = async () => {
+    setStatus("loading");
+
+    const { error } = await supabase.from("leads").insert([{
+      full_name: form.fullName,
+      email: form.email,
+      phone: form.phone,
+      company: form.company,
+      inquiry_type: form.inquiryType,
+      message: form.message,
+      source: form.hearAboutUs.join(", "),
+      status: "new",
+    }]);
+
+    if (error) {
+      console.error("Supabase insert error:", error.message);
+      setStatus("error");
+      return;
+    }
+
+    setStatus("success");
+  };
+
+  if (status === "success") {
+    return (
+      <div className="max-w-2xl mx-auto bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+        <div className="p-10 flex flex-col items-center text-center gap-6">
+          <div className="w-14 h-14 rounded-full bg-green-50 border border-green-200 flex items-center justify-center">
+            <svg className="w-7 h-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-[#0B0F19] mb-1">Enquiry Received</h3>
+            <p className="text-sm text-[#64748B] leading-relaxed max-w-sm">
+              Thank you, {form.fullName.split(" ")[0]}. We&apos;ll be in touch within one business day.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="px-6 py-2.5 text-sm font-semibold text-[#64748B] border border-slate-200 rounded-lg hover:border-slate-300 hover:bg-slate-50 transition-colors"
+          >
+            Send Another Message
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
-      <div className="max-w-3xl mx-auto">
-        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+    <div className="max-w-2xl mx-auto bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
 
-          <div className="bg-[#0F172A] px-6 sm:px-8 py-6">
-            <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-1.5">
-              Contact Form
-            </p>
-            <h2 className="text-lg font-semibold text-white">Send us a message</h2>
+      {/* Step indicator */}
+      <div className="flex border-b border-slate-200">
+        {[1, 2].map((s) => (
+          <div
+            key={s}
+            className={`flex-1 py-4 text-center text-sm font-semibold transition-colors ${
+              step === s
+                ? "text-[#D9534F] border-b-2 border-[#D9534F]"
+                : "text-[#64748B]"
+            }`}
+          >
+            Step {s} — {s === 1 ? "Your Details" : "Your Enquiry"}
           </div>
+        ))}
+      </div>
 
-          <div className="p-6 sm:p-8">
+      <div className="p-6 sm:p-8">
 
-            {status === "success" ? (
-              <div className="flex flex-col items-center justify-center py-12 text-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center">
-                  <svg className="w-7 h-7 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-base font-semibold text-[#0B0F19] mb-1">
-                    Thank you. Your enquiry has been received.
-                  </p>
-                  <p className="text-sm text-[#64748B] max-w-xs">
-                    We will get back to you within 24 hours.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={reset}
-                  className="mt-2 px-5 py-2.5 text-sm font-semibold text-[#64748B] bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors"
-                >
-                  Send another message
-                </button>
+        {/* Step 1 */}
+        {step === 1 && (
+          <div className="flex flex-col gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">
+                  Full Name <span className="text-[#D9534F]">*</span>
+                </label>
+                <input
+                  name="fullName"
+                  placeholder="Jane Smith"
+                  value={form.fullName}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
               </div>
-            ) : (
-              <>
-                {/* ── Step Indicator ─────────────────────────── */}
-                <div className="flex items-center mb-8">
-                  <div className="flex flex-col items-center gap-1.5 shrink-0">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white bg-[#D9534F]">
-                      {step > 1 ? (
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                        </svg>
-                      ) : "1"}
-                    </div>
-                    <span className="text-xs font-medium text-[#0B0F19]">Step 1</span>
-                  </div>
+              <div>
+                <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">
+                  Email Address <span className="text-[#D9534F]">*</span>
+                </label>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="jane@studio.co.uk"
+                  value={form.email}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">
+                  Phone Number
+                </label>
+                <input
+                  name="phone"
+                  type="tel"
+                  placeholder="+44 7700 000000"
+                  value={form.phone}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">
+                  Company
+                </label>
+                <input
+                  name="company"
+                  placeholder="Your Studio Ltd"
+                  value={form.company}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div>
+            </div>
 
-                  <div className="flex-1 mx-3 mb-4 relative h-px bg-slate-200">
-                    <div
-                      className="absolute inset-y-0 left-0 bg-[#D9534F] transition-all duration-500"
-                      style={{ width: step > 1 ? "100%" : "0%" }}
+            <button
+              type="button"
+              onClick={() => setStep(2)}
+              disabled={!form.fullName || !form.email}
+              className="w-full py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Continue
+            </button>
+          </div>
+        )}
+
+        {/* Step 2 */}
+        {step === 2 && (
+          <div className="flex flex-col gap-5">
+            <div>
+              <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">
+                Enquiry Type
+              </label>
+              <select
+                name="inquiryType"
+                value={form.inquiryType}
+                onChange={handleChange}
+                className={inputClass}
+              >
+                <option value="">Select an enquiry type</option>
+                <option value="Products">Products &amp; Software</option>
+                <option value="Training">Training Courses</option>
+                <option value="Services">Services &amp; Consulting</option>
+                <option value="General">General Enquiry</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">
+                Message
+              </label>
+              <textarea
+                name="message"
+                placeholder="Tell us about your project or question..."
+                value={form.message}
+                onChange={handleChange}
+                rows={5}
+                className={inputClass}
+              />
+            </div>
+
+            <div>
+              <p className="text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-2.5">
+                How did you hear about us?
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {HEAR_ABOUT_OPTIONS.map((item) => (
+                  <label key={item} className="flex items-center gap-2 text-sm text-[#0B0F19] cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={form.hearAboutUs.includes(item)}
+                      onChange={() => handleCheckbox(item)}
+                      className="w-4 h-4 accent-[#D9534F]"
                     />
-                  </div>
+                    {item}
+                  </label>
+                ))}
+              </div>
+            </div>
 
-                  <div className="flex flex-col items-center gap-1.5 shrink-0">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white ${step >= 2 ? "bg-[#D9534F]" : "bg-slate-300"}`}>
-                      2
-                    </div>
-                    <span className={`text-xs font-medium ${step >= 2 ? "text-[#0B0F19]" : "text-[#64748B]"}`}>
-                      Step 2
-                    </span>
-                  </div>
-
-                  <p className="ml-4 text-xs text-[#64748B] max-w-[150px] leading-snug hidden sm:block">
-                    For software purchase / upgrades, complete Step 2
-                  </p>
-                </div>
-
-                {/* ── Step 1 ─────────────────────────────────── */}
-                {step === 1 && (
-                  <div className="flex flex-col gap-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                      <div className="flex flex-col gap-1.5">
-                        <label htmlFor="fullName" className="text-sm font-medium text-[#0B0F19]">
-                          Full Name <span className="text-[#D9534F]">*</span>
-                        </label>
-                        <input
-                          id="fullName" name="fullName" type="text" autoComplete="name"
-                          value={form.fullName} onChange={handleChange} placeholder="Jane Smith"
-                          className={`${INPUT} ${errors.fullName ? "border-red-400" : ""}`}
-                        />
-                        {errors.fullName && (
-                          <p className="text-xs text-red-500">{errors.fullName}</p>
-                        )}
-                      </div>
-                      <div className="flex flex-col gap-1.5">
-                        <label htmlFor="company" className="text-sm font-medium text-[#0B0F19]">
-                          Company{" "}
-                          <span className="ml-1.5 text-xs font-normal text-[#64748B]">(optional)</span>
-                        </label>
-                        <input
-                          id="company" name="company" type="text" autoComplete="organization"
-                          value={form.company} onChange={handleChange} placeholder="Smith Architecture Ltd"
-                          className={INPUT}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                      <div className="flex flex-col gap-1.5">
-                        <label htmlFor="email" className="text-sm font-medium text-[#0B0F19]">
-                          Email Address <span className="text-[#D9534F]">*</span>
-                        </label>
-                        <input
-                          id="email" name="email" type="email" autoComplete="email"
-                          value={form.email} onChange={handleChange} placeholder="jane@studio.com"
-                          className={`${INPUT} ${errors.email ? "border-red-400" : ""}`}
-                        />
-                        {errors.email && (
-                          <p className="text-xs text-red-500">{errors.email}</p>
-                        )}
-                      </div>
-                      <div className="flex flex-col gap-1.5">
-                        <label htmlFor="phone" className="text-sm font-medium text-[#0B0F19]">
-                          Phone Number{" "}
-                          <span className="ml-1.5 text-xs font-normal text-[#64748B]">(optional)</span>
-                        </label>
-                        <input
-                          id="phone" name="phone" type="tel" autoComplete="tel"
-                          value={form.phone} onChange={handleChange} placeholder="+44 7700 900000"
-                          className={INPUT}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                      <label htmlFor="inquiryType" className="text-sm font-medium text-[#0B0F19]">
-                        Nature of Enquiry <span className="text-[#D9534F]">*</span>
-                      </label>
-                      <select
-                        id="inquiryType" name="inquiryType"
-                        value={form.inquiryType} onChange={handleChange}
-                        className={`${INPUT} ${errors.inquiryType ? "border-red-400" : ""}`}
-                      >
-                        <option value="">Select an option</option>
-                        {INQUIRY_OPTIONS.map((opt) => (
-                          <option key={opt} value={opt}>{opt}</option>
-                        ))}
-                      </select>
-                      {errors.inquiryType && (
-                        <p className="text-xs text-red-500">{errors.inquiryType}</p>
-                      )}
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                      <label htmlFor="message" className="text-sm font-medium text-[#0B0F19]">
-                        Additional Comments
-                      </label>
-                      <textarea
-                        id="message" name="message" rows={4}
-                        value={form.message} onChange={handleChange}
-                        placeholder="Please provide any additional details about your enquiry..."
-                        className={`${INPUT} resize-none`}
-                      />
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                      <p className="text-sm font-medium text-[#0B0F19]">
-                        Where did you hear about us?
-                      </p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        {HEAR_ABOUT_OPTIONS.map((option) => (
-                          <label key={option} className="flex items-center gap-3 cursor-pointer group">
-                            <input
-                              type="checkbox"
-                              checked={form.hearAboutUs.includes(option)}
-                              onChange={() => toggleArray("hearAboutUs", option)}
-                              className="w-4 h-4 rounded border-slate-300 text-[#D9534F] focus:ring-[#D9534F] cursor-pointer"
-                            />
-                            <span className="text-sm text-[#64748B] group-hover:text-[#0B0F19] transition-colors">
-                              {option}
-                            </span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                      <label htmlFor="otherInfo" className="text-sm font-medium text-[#0B0F19]">
-                        Anything else you&apos;d like to add?{" "}
-                        <span className="ml-1.5 text-xs font-normal text-[#64748B]">(optional)</span>
-                      </label>
-                      <input
-                        id="otherInfo" name="otherInfo" type="text"
-                        value={form.otherInfo} onChange={handleChange}
-                        placeholder="Any other relevant information..."
-                        className={INPUT}
-                      />
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={handleNext}
-                      className="w-full flex items-center justify-center gap-2 py-3.5 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] active:bg-[#b02a29] transition-colors"
-                    >
-                      Next
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                      </svg>
-                    </button>
-
-                    <p className="text-xs text-[#64748B] text-center">
-                      <span className="text-[#D9534F]">*</span> Required fields. We process your data in accordance with UK GDPR.
-                    </p>
-                  </div>
-                )}
-
-                {/* ── Step 2 ─────────────────────────────────── */}
-                {step === 2 && (
-                  <div className="flex flex-col gap-6">
-                    <div className="flex flex-col gap-1.5">
-                      <label htmlFor="registeredUsername" className="text-sm font-medium text-[#0B0F19]">
-                        Registered Username{" "}
-                        <span className="ml-1.5 text-xs font-normal text-[#64748B]">(optional)</span>
-                      </label>
-                      <input
-                        id="registeredUsername" name="registeredUsername" type="text"
-                        value={form.registeredUsername} onChange={handleChange}
-                        placeholder="Your existing account username"
-                        className={INPUT}
-                      />
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                      <label htmlFor="softwareProduct" className="text-sm font-medium text-[#0B0F19]">
-                        Software Product{" "}
-                        <span className="ml-1.5 text-xs font-normal text-[#64748B]">(optional)</span>
-                      </label>
-                      <input
-                        id="softwareProduct" name="softwareProduct" type="text"
-                        value={form.softwareProduct} onChange={handleChange}
-                        placeholder="e.g. SketchUp Pro, V-Ray, Enscape..."
-                        className={INPUT}
-                      />
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                      <label htmlFor="serialNumbers" className="text-sm font-medium text-[#0B0F19]">
-                        Existing Software Serial Numbers{" "}
-                        <span className="ml-1.5 text-xs font-normal text-[#64748B]">(optional)</span>
-                      </label>
-                      <textarea
-                        id="serialNumbers" name="serialNumbers" rows={3}
-                        value={form.serialNumbers} onChange={handleChange}
-                        placeholder="Enter your serial numbers, one per line..."
-                        className={`${INPUT} resize-none`}
-                      />
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                      <p className="text-sm font-medium text-[#0B0F19]">Computer Operating System</p>
-                      <div className="flex gap-8">
-                        {["Windows", "Mac"].map((os) => (
-                          <label key={os} className="flex items-center gap-3 cursor-pointer group">
-                            <input
-                              type="checkbox"
-                              checked={form.operatingSystem.includes(os)}
-                              onChange={() => toggleArray("operatingSystem", os)}
-                              className="w-4 h-4 rounded border-slate-300 text-[#D9534F] focus:ring-[#D9534F] cursor-pointer"
-                            />
-                            <span className="text-sm text-[#64748B] group-hover:text-[#0B0F19] transition-colors">
-                              {os}
-                            </span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                      <label htmlFor="paymentMethod" className="text-sm font-medium text-[#0B0F19]">
-                        Method of Payment{" "}
-                        <span className="ml-1.5 text-xs font-normal text-[#64748B]">(optional)</span>
-                      </label>
-                      <select
-                        id="paymentMethod" name="paymentMethod"
-                        value={form.paymentMethod} onChange={handleChange}
-                        className={INPUT}
-                      >
-                        <option value="">Select a payment method</option>
-                        {PAYMENT_OPTIONS.map((opt) => (
-                          <option key={opt} value={opt}>{opt}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                      <p className="text-sm font-medium text-[#0B0F19]">OPT-IN to Newsletter</p>
-                      <div className="flex gap-8">
-                        {["Yes", "No"].map((val) => (
-                          <label key={val} className="flex items-center gap-3 cursor-pointer group">
-                            <input
-                              type="radio"
-                              name="newsletter"
-                              value={val}
-                              checked={form.newsletter === val}
-                              onChange={handleChange}
-                              className="w-4 h-4 border-slate-300 text-[#D9534F] focus:ring-[#D9534F] cursor-pointer"
-                            />
-                            <span className="text-sm text-[#64748B] group-hover:text-[#0B0F19] transition-colors">
-                              {val}
-                            </span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* reCAPTCHA placeholder */}
-                    <div className="border border-slate-200 rounded-lg px-4 py-3 flex items-center gap-4 bg-slate-50">
-                      <div className="w-5 h-5 border-2 border-slate-300 rounded flex-shrink-0" />
-                      <span className="text-sm text-[#64748B] flex-1">I&apos;m not a robot</span>
-                      <div className="flex flex-col items-center gap-0.5 flex-shrink-0">
-                        <div className="w-10 h-10 bg-slate-200 rounded" />
-                        <span className="text-[10px] text-slate-400 leading-tight">reCAPTCHA</span>
-                        <span className="text-[9px] text-slate-400 leading-tight">Privacy · Terms</span>
-                      </div>
-                    </div>
-
-                    {status === "error" && (
-                      <p className="text-xs text-red-500 text-center">
-                        Something went wrong. Please try again or email us directly.
-                      </p>
-                    )}
-
-                    <div className="flex gap-4">
-                      <button
-                        type="button"
-                        onClick={() => setStep(1)}
-                        className="flex-1 flex items-center justify-center gap-2 py-3.5 text-sm font-semibold text-[#0B0F19] bg-slate-100 rounded-lg hover:bg-slate-200 active:bg-slate-300 transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                        </svg>
-                        Previous
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleSubmit}
-                        disabled={status === "loading"}
-                        className="flex-1 flex items-center justify-center gap-2 py-3.5 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] active:bg-[#b02a29] disabled:opacity-60 transition-colors"
-                      >
-                        {status === "loading" ? "Sending…" : "Send"}
-                      </button>
-                    </div>
-
-                    <p className="text-xs text-[#64748B] text-center">
-                      We process your data in accordance with UK GDPR.
-                    </p>
-                  </div>
-                )}
-              </>
+            {status === "error" && (
+              <div className="flex items-center gap-2.5 p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                </svg>
+                Something went wrong. Please try again or call us on 0333 121 2187.
+              </div>
             )}
 
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                disabled={status === "loading"}
+                className="flex-1 py-3 text-sm font-semibold text-[#64748B] border border-slate-200 rounded-lg hover:border-slate-300 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Back
+              </button>
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={status === "loading"}
+                className="flex-1 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+              >
+                {status === "loading" ? "Sending..." : "Send Enquiry"}
+              </button>
+            </div>
           </div>
-        </div>
+        )}
+
       </div>
-    </section>
+    </div>
   );
 }

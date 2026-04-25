@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useCartStore } from "@/lib/cartStore";
-import type { SanityCategory, SanityTrainingCategory, SanityService } from "@/lib/sanity/types";
+import type { Service } from "@/lib/supabase";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -14,44 +14,19 @@ type NavItem =
 
 // ─── Nav builder ──────────────────────────────────────────────────────────────
 
-const PRIORITY_SLUGS = ["3d-modelling", "ai-consulting", "web-development"];
-
-function buildNavItems(categories: SanityCategory[], trainingCategories: SanityTrainingCategory[], services: SanityService[]): NavItem[] {
-  const priority = PRIORITY_SLUGS.map((slug) => services.find((s) => s.slug === slug)).filter(Boolean) as SanityService[];
-  const rest = services.filter((s) => !PRIORITY_SLUGS.includes(s.slug));
-  const orderedServices = [...priority, ...rest];
-
+function buildNavItems(services: Service[]): NavItem[] {
   return [
     { label: "Home", href: "/" },
-    {
-      label: "Products",
-      href: "/products",
-      dropdown: categories.map((cat) => ({
-        label: cat.title,
-        href: `/products?category=${cat.slug}`,
-      })),
-    },
+    { label: "Products", href: "/products" },
     { label: "Events", href: "/events" },
-    {
-      label: "Training",
-      href: "/training",
-      dropdown: [
-        ...trainingCategories
-          .filter((c) => c?.title && c?.slug)
-          .map((c) => ({
-            label: `${c.title} Training`,
-            href: `/training/category/${c.slug}`,
-          })),
-        { label: "All Courses", href: "/training", description: "Browse the full course catalogue" },
-      ],
-    },
+    { label: "Training", href: "/training" },
     {
       label: "Services",
       href: "/services",
-      dropdown: orderedServices.map((s) => ({
+      dropdown: services.map((s) => ({
         label: s.title,
-        href: `/services/${s.slug}`,
-        description: s.shortDescription,
+        href: "/services",
+        description: s.description,
       })),
     },
     { label: "Blog", href: "/blog" },
@@ -110,7 +85,7 @@ function DropdownMenu({ items, isOpen }: { items: DropdownItem[]; isOpen: boolea
       <div className="p-1.5">
         {items.map((item) => (
           <Link
-            key={item.href}
+            key={item.href + item.label}
             href={item.href}
             className="flex flex-col gap-0.5 px-3 py-2.5 rounded-lg hover:bg-[#f0f5fa] transition-colors group"
           >
@@ -129,8 +104,8 @@ function DropdownMenu({ items, isOpen }: { items: DropdownItem[]; isOpen: boolea
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 
-export default function Header({ categories = [], trainingCategories = [], services = [] }: { categories?: SanityCategory[]; trainingCategories?: SanityTrainingCategory[]; services?: SanityService[] }) {
-  const NAV_ITEMS = buildNavItems(categories, trainingCategories, services);
+export default function Header({ services = [] }: { services?: Service[] }) {
+  const NAV_ITEMS = buildNavItems(services);
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
@@ -262,7 +237,6 @@ export default function Header({ categories = [], trainingCategories = [], servi
               <li key={item.label} className="relative">
                 {item.dropdown ? (
                   <div className="flex items-center">
-                    {/* Label — navigates to item.href */}
                     {item.href ? (
                       <Link
                         href={item.href}
@@ -283,7 +257,6 @@ export default function Header({ categories = [], trainingCategories = [], servi
                         {item.label}
                       </span>
                     )}
-                    {/* Chevron — toggles dropdown */}
                     <button
                       aria-label={`Toggle ${item.label} menu`}
                       aria-expanded={openDropdown === item.label}
@@ -324,7 +297,6 @@ export default function Header({ categories = [], trainingCategories = [], servi
 
           {/* Right: Cart + hamburger */}
           <div className="flex items-center gap-2">
-            {/* Cart */}
             <Link
               href="/cart"
               aria-label="View cart"
@@ -340,7 +312,6 @@ export default function Header({ categories = [], trainingCategories = [], servi
               )}
             </Link>
 
-            {/* Hamburger — below lg */}
             <button
               className="lg:hidden flex items-center justify-center w-10 h-10 rounded-lg text-[#64748B] hover:text-[#0F172A] hover:bg-[#f0f5fa] transition-colors"
               onClick={() => setMobileOpen((v) => !v)}
@@ -365,7 +336,6 @@ export default function Header({ categories = [], trainingCategories = [], servi
           <div className="lg:hidden border-t border-slate-200 bg-white max-h-[calc(100vh-4rem)] overflow-y-auto">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col gap-0.5">
 
-              {/* Mobile: top-bar contact row */}
               <div className="flex flex-wrap items-center gap-3 px-3 py-3 mb-1 border-b border-slate-100">
                 <a href="tel:03331212187" className="flex items-center gap-2 text-sm font-medium text-[#64748B]">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -381,7 +351,6 @@ export default function Header({ categories = [], trainingCategories = [], servi
                 </a>
               </div>
 
-              {/* Nav items */}
               {NAV_ITEMS.map((item) => (
                 <div key={item.label}>
                   {item.dropdown ? (
@@ -423,7 +392,7 @@ export default function Header({ categories = [], trainingCategories = [], servi
                         <div className="ml-4 mb-1 flex flex-col gap-0.5 border-l-2 border-slate-100 pl-4">
                           {item.dropdown.map((sub) => (
                             <Link
-                              key={sub.href}
+                              key={sub.href + sub.label}
                               href={sub.href}
                               onClick={() => setMobileOpen(false)}
                               className="flex flex-col gap-0.5 py-2.5 group"
@@ -451,7 +420,6 @@ export default function Header({ categories = [], trainingCategories = [], servi
                 </div>
               ))}
 
-              {/* Mobile CTA buttons */}
               <div className="pt-3 mt-2 border-t border-slate-100 grid grid-cols-3 gap-2">
                 {[
                   { label: "Support", href: "/contact" },
@@ -469,7 +437,6 @@ export default function Header({ categories = [], trainingCategories = [], servi
                 ))}
               </div>
 
-              {/* Mobile social row */}
               <div className="flex items-center justify-center gap-2 pt-3 pb-2">
                 {SOCIAL_LINKS.map((s) => (
                   <a

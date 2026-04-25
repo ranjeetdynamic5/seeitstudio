@@ -3,6 +3,39 @@
 This is a **professional, production-grade web application** targeting UK-based businesses and professionals.
 
 ---
+## ⚠️ ACTIVE TASK: SERVICES + CONTACT FORM FIX
+
+For this task:
+
+- You ARE allowed to create dynamic routes under /services
+- You ARE allowed to modify ContactForm.tsx UI and state
+- You CAN update Supabase queries and integrations
+- You CAN fix form state issues (loading, success, reset)
+
+Goals:
+
+1. Fix ContactForm:
+   - Do not show form and success together
+   - Reset status correctly
+   - Ensure buttons are not stuck disabled
+   - Maintain Supabase insert
+
+2. Services system:
+   - Use Supabase "services" table
+   - Fields: id, title, slug, description, content, image_url
+   - Create dynamic route: /services/[slug]
+   - Fetch and render service by slug
+   - Update /services page to list all services with links
+
+Rules override:
+- You CAN modify ContactForm.tsx
+- You CAN create /services/[slug]/page.tsx
+- Do NOT touch header/footer
+- Do NOT modify unrelated components
+
+Output:
+- Full files only
+- No explanation
 
 ## 🇬🇧 UK MARKET RULES (STRICT)
 

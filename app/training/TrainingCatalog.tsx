@@ -3,62 +3,25 @@
 import { useState, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import EnquiryModal from "@/app/components/EnquiryModal";
 import EnrollModal from "@/app/components/EnrollModal";
-import type { SanityTraining, SanityTrainingCategory } from "@/lib/sanity/types";
+import type { TrainingCourse } from "@/lib/supabase";
 
-// ── Constants ─────────────────────────────────────────────────────────────────
-
-const LEVEL_COLORS: Record<string, string> = {
-  Beginner: "text-emerald-700 bg-emerald-50",
-  Intermediate: "text-amber-700 bg-amber-50",
-  Advanced: "text-rose-700 bg-rose-50",
-  "All Levels": "text-blue-700 bg-blue-50",
-};
-
-// ── TrainingCatalog ───────────────────────────────────────────────────────────
-
-export default function TrainingCatalog({
-  trainings,
-  categories,
-  initialCategory,
-}: {
-  trainings: SanityTraining[];
-  categories: SanityTrainingCategory[];
-  initialCategory?: string;
-}) {
+export default function TrainingCatalog({ trainings }: { trainings: TrainingCourse[] }) {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const param = searchParams.get("category")?.toLowerCase() ?? initialCategory ?? "";
-  const activeCategory = categories.find((c) => c.slug === param)?.title ?? null;
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(searchParams.get("q") ?? "");
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTitle, setSelectedTitle] = useState("");
   const [enrollOpen, setEnrollOpen] = useState(false);
   const [enrollTitle, setEnrollTitle] = useState("");
 
   const filtered = useMemo(() => {
-    let result = activeCategory
-      ? trainings.filter((t) => t.category?.title === activeCategory)
-      : trainings;
-    if (search.trim()) {
-      const q = search.trim().toLowerCase();
-      result = result.filter((t) => t.title.toLowerCase().includes(q));
-    }
-    return result;
-  }, [trainings, activeCategory, search]);
-
-  // Pre-compute counts keyed by category label
-  const counts: Record<string, number> = { all: trainings.length };
-  for (const t of trainings) {
-    if (t.category?.title) counts[t.category.title] = (counts[t.category.title] ?? 0) + 1;
-  }
-
-  function selectTab(tabParam: string | null) {
-    router.push(tabParam ? `/training?category=${tabParam}` : "/training");
-  }
+    if (!search.trim()) return trainings;
+    const q = search.trim().toLowerCase();
+    return trainings.filter((t) => t.title.toLowerCase().includes(q));
+  }, [trainings, search]);
 
   function openEnquiry(title: string) {
     setSelectedTitle(title);
@@ -78,55 +41,28 @@ export default function TrainingCatalog({
         <div className="bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
 
-            {/* Breadcrumb */}
             <nav className="flex items-center gap-1.5 text-sm text-[#64748B] mb-4">
               <Link href="/" className="hover:text-[#0B0F19] transition-colors">Home</Link>
               <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
               </svg>
-              {activeCategory ? (
-                <>
-                  <Link href="/training" className="hover:text-[#0B0F19] transition-colors">Training</Link>
-                  <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                  </svg>
-                  <span className="text-[#0B0F19] font-medium">{activeCategory}</span>
-                </>
-              ) : (
-                <span className="text-[#0B0F19] font-medium">Training</span>
-              )}
+              <span className="text-[#0B0F19] font-medium">Training</span>
             </nav>
 
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
               <div>
                 <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B0F19]">
-                  {activeCategory ? `${activeCategory} Training` : "Online Training Courses"}
+                  Online Training Courses
                 </h1>
                 <p className="mt-2 text-base text-[#64748B] max-w-xl">
                   Expert-led training for design professionals. All courses are delivered by
                   certified instructors and tailored to real-world workflows.
                 </p>
               </div>
-              <div className="text-sm text-[#64748B] shrink-0 flex flex-col items-end gap-1">
-                <span>
-                  <span className="font-semibold text-[#0B0F19]">{filtered.length}</span>{" "}
-                  course{filtered.length !== 1 ? "s" : ""}
-                  {activeCategory && (
-                    <> in <span className="font-semibold text-[#D9534F]">{activeCategory}</span></>
-                  )}
-                </span>
-                {activeCategory && (
-                  <Link
-                    href="/training"
-                    className="text-xs text-[#64748B] hover:text-[#D9534F] transition-colors flex items-center gap-1"
-                  >
-                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    Clear filter
-                  </Link>
-                )}
-              </div>
+              <p className="text-sm text-[#64748B] shrink-0">
+                <span className="font-semibold text-[#0B0F19]">{filtered.length}</span>{" "}
+                course{filtered.length !== 1 ? "s" : ""}
+              </p>
             </div>
 
             {/* Search */}
@@ -171,66 +107,6 @@ export default function TrainingCatalog({
               ))}
             </div>
           </div>
-
-          {/* ── Category tabs ── */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div
-              className="flex items-center gap-1 overflow-x-auto scrollbar-none"
-              role="tablist"
-              aria-label="Filter by category"
-            >
-              {/* All tab */}
-              {(() => {
-                const isActive = !activeCategory;
-                return (
-                  <button
-                    key="all"
-                    role="tab"
-                    aria-selected={isActive}
-                    onClick={() => selectTab(null)}
-                    className={`relative flex items-center gap-2 px-4 py-3.5 text-sm font-medium whitespace-nowrap transition-colors border-b-2 -mb-px
-                      ${isActive
-                        ? "border-[#D9534F] text-[#D9534F]"
-                        : "border-transparent text-[#64748B] hover:text-[#0B0F19] hover:border-slate-300"
-                      }`}
-                  >
-                    All
-                    <span className={`inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-xs font-semibold
-                      ${isActive ? "bg-[#D9534F] text-white" : "bg-slate-100 text-[#64748B]"}`}
-                    >
-                      {counts.all}
-                    </span>
-                  </button>
-                );
-              })()}
-
-              {/* Dynamic category tabs */}
-              {categories.map((cat) => {
-                const isActive = cat.title === activeCategory;
-                const count = counts[cat.title] ?? 0;
-                return (
-                  <button
-                    key={cat.slug}
-                    role="tab"
-                    aria-selected={isActive}
-                    onClick={() => selectTab(cat.slug)}
-                    className={`relative flex items-center gap-2 px-4 py-3.5 text-sm font-medium whitespace-nowrap transition-colors border-b-2 -mb-px
-                      ${isActive
-                        ? "border-[#D9534F] text-[#D9534F]"
-                        : "border-transparent text-[#64748B] hover:text-[#0B0F19] hover:border-slate-300"
-                      }`}
-                  >
-                    {cat.title}
-                    <span className={`inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-xs font-semibold
-                      ${isActive ? "bg-[#D9534F] text-white" : "bg-slate-100 text-[#64748B]"}`}
-                    >
-                      {count}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
         </div>
 
         {/* ── Course grid ── */}
@@ -239,7 +115,7 @@ export default function TrainingCatalog({
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {filtered.map((training) => (
                 <CourseCard
-                  key={training._id}
+                  key={training.id}
                   training={training}
                   onEnquire={() => openEnquiry(training.title)}
                   onEnroll={() => openEnroll(training.title)}
@@ -255,13 +131,10 @@ export default function TrainingCatalog({
               </div>
               <p className="text-base font-semibold text-[#0B0F19] mb-1">No courses found</p>
               <p className="text-sm text-[#64748B] mb-6 max-w-xs">
-                {search.trim() && activeCategory
-                  ? <>No results for &ldquo;{search.trim()}&rdquo; in {activeCategory}.</>
-                  : search.trim()
-                  ? <>No results for &ldquo;{search.trim()}&rdquo;.</>
-                  : <>No courses in this category yet.</>
+                {search.trim()
+                  ? <>No results for &ldquo;{search.trim()}&rdquo;. Try a different keyword.</>
+                  : <>No courses available yet.</>
                 }
-                {" "}Try a different keyword or clear filters.
               </p>
               <button
                 type="button"
@@ -326,92 +199,35 @@ function CourseCard({
   onEnquire,
   onEnroll,
 }: {
-  training: SanityTraining;
+  training: TrainingCourse;
   onEnquire: () => void;
   onEnroll: () => void;
 }) {
   return (
     <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
 
-      {/* Image */}
-      {training.image ? (
-        <div className="relative h-44 bg-slate-100">
-          <Image
-            src={training.image}
-            alt={training.title}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-cover"
-          />
-        </div>
-      ) : (
-        <div className="h-44 bg-[#0F172A] flex items-center justify-center">
-          <svg className="w-10 h-10 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
-          </svg>
-        </div>
-      )}
-
-      {/* Header band */}
-      <div className="px-5 py-4 border-b border-slate-100 flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          {training.category && (
-            <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-1">
-              {training.category.title}
-            </p>
-          )}
-          <h3 className="text-sm font-semibold text-[#0B0F19] leading-snug">{training.title}</h3>
-        </div>
-        {training.level && (
-          <span className={`shrink-0 px-2.5 py-1 text-xs font-semibold rounded-full ${LEVEL_COLORS[training.level] ?? "text-slate-700 bg-slate-100"}`}>
-            {training.level}
-          </span>
-        )}
+      <div className="bg-[#0F172A] px-5 py-5">
+        <h3 className="text-sm font-semibold text-white leading-snug">{training.title}</h3>
       </div>
 
-      {/* Body */}
       <div className="flex flex-col flex-1 p-5 gap-4">
         {training.description && (
           <p className="text-sm text-[#64748B] leading-relaxed line-clamp-3">{training.description}</p>
         )}
 
-        {/* Meta */}
-        {(training.duration || training.format) && (
-          <div className="grid grid-cols-2 gap-2.5">
-            {training.duration && (
-              <div className="flex items-center gap-2 bg-[#f0f5fa] rounded-lg px-3 py-2.5">
-                <svg className="w-4 h-4 text-[#64748B] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span className="text-xs font-medium text-[#0B0F19] leading-tight">{training.duration}</span>
-              </div>
-            )}
-            {training.format && (
-              <div className="flex items-center gap-2 bg-[#f0f5fa] rounded-lg px-3 py-2.5">
-                <svg className="w-4 h-4 text-[#64748B] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" />
-                </svg>
-                <span className="text-xs font-medium text-[#0B0F19] leading-tight">{training.format}</span>
-              </div>
-            )}
+        {training.duration && (
+          <div className="flex items-center gap-2 bg-[#f0f5fa] rounded-lg px-3 py-2.5">
+            <svg className="w-4 h-4 text-[#64748B] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="text-xs font-medium text-[#0B0F19]">{training.duration}</span>
           </div>
         )}
 
-        {/* Price + CTAs */}
-        <div className="pt-3 border-t border-slate-100 mt-auto flex flex-col gap-3">
-          <div className="flex items-baseline gap-1">
-            {typeof training.price === "number" ? (
-              <>
-                <span className="text-lg font-semibold text-[#0F172A]">£{training.price.toFixed(2)}</span>
-                <span className="text-sm text-[#64748B] ml-1">/ person</span>
-              </>
-            ) : (
-              <span className="text-sm text-[#64748B]">Contact for price</span>
-            )}
-          </div>
+        <div className="pt-3 border-t border-slate-100 mt-auto flex flex-col gap-2">
           <div className="flex gap-2">
             <Link
-              href={`/training/${training.slug}`}
+              href={`/training/${training.id}`}
               className="flex-1 flex items-center justify-center py-2.5 text-sm font-semibold text-[#D9534F] border border-[#D9534F] rounded-lg hover:bg-[#D9534F] hover:text-white transition-colors"
             >
               View Course

@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import NavHeader from "@/app/components/NavHeader";
 import Footer from "@/app/components/Footer";
-import { getProductBySlug } from "@/lib/sanity/queries";
-import type { SanityProduct } from "@/lib/sanity/types";
+import { getProductById } from "@/lib/supabase";
+import type { Product } from "@/lib/supabase";
 import StickyBar from "./StickyBar";
 import AddToCartButton from "./AddToCartButton";
 
@@ -12,20 +12,12 @@ export default async function ProductDetailPage({
 }: {
   params: Promise<{ slug: string | string[] }>;
 }) {
-  // ✅ FIX: unwrap params (Next.js latest)
   const { slug: slugParam } = await params;
+  const id = Array.isArray(slugParam) ? slugParam[0] : slugParam;
 
-  // ✅ FIX: handle string OR array
-  const slug = Array.isArray(slugParam)
-    ? slugParam[0]
-    : slugParam;
+  const product: Product | null = await getProductById(id);
 
-  const product: SanityProduct | null = await getProductBySlug(slug);
-
-  // ✅ Not found handling
   if (!product) notFound();
-
-  const categoryName = product?.category?.title || "General";
 
   return (
     <>
@@ -41,9 +33,7 @@ export default async function ProductDetailPage({
               <span>›</span>
               <Link href="/products" className="hover:text-[#0B0F19]">Products</Link>
               <span>›</span>
-              <span className="text-[#0B0F19] font-medium">
-                {product.name}
-              </span>
+              <span className="text-[#0B0F19] font-medium">{product.title}</span>
             </nav>
           </div>
         </div>
@@ -54,10 +44,10 @@ export default async function ProductDetailPage({
 
             {/* Image */}
             <div className="bg-[#f0f5fa] rounded-xl flex items-center justify-center h-80">
-              {product.image ? (
+              {product.image_url ? (
                 <img
-                  src={product.image}
-                  alt={product.name}
+                  src={product.image_url}
+                  alt={product.title}
                   className="max-h-40 object-contain"
                 />
               ) : (
@@ -67,14 +57,7 @@ export default async function ProductDetailPage({
 
             {/* Info */}
             <div className="flex flex-col gap-5">
-
-              <span className="text-xs uppercase tracking-widest text-[#64748B]">
-                {categoryName}
-              </span>
-
-              <h1 className="text-2xl font-bold text-[#0B0F19]">
-                {product.name}
-              </h1>
+              <h1 className="text-2xl font-bold text-[#0B0F19]">{product.title}</h1>
 
               <p className="text-[#64748B]">
                 {product.description || "No description available"}
@@ -85,11 +68,10 @@ export default async function ProductDetailPage({
               </div>
 
               <AddToCartButton
-                id={product.slug}
-                name={product.name}
+                id={product.id}
+                name={product.title}
                 price={product.price}
               />
-
             </div>
           </div>
         </div>
@@ -99,8 +81,8 @@ export default async function ProductDetailPage({
       <Footer />
 
       <StickyBar
-        id={product.slug}
-        name={product.name}
+        id={product.id}
+        name={product.title}
         price={product.price}
       />
     </>

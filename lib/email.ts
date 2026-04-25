@@ -137,7 +137,7 @@ function buildAdminHtml(order: OrderEmailData): string {
     <p style="font-family:Arial,sans-serif;color:#374151"><strong>Date:</strong> ${new Date(order.createdAt).toLocaleString("en-GB")}</p>
     <hr/>
     <p style="font-family:Arial,sans-serif;color:#94a3b8;font-size:12px">
-      Manage this order in your <a href="https://seeitstudio.sanity.studio" style="color:#D9534F">Sanity Studio</a>.
+      SeeIt Studio — Order Management
     </p>
   `;
 }
