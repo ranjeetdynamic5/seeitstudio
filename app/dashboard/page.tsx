@@ -1,30 +1,18 @@
 import { createServerClient } from "@supabase/ssr";
-import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { LogoutButton } from "@/app/_components/LogoutButton";
 
-const ADMIN_EMAILS = (process.env.ADMIN_EMAILS ?? "ranjeetdynamic5@gmail.com")
-  .split(",")
-  .map((e) => e.trim());
-
-const supabaseData = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY ??
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
 type Order = {
   id: string;
   order_id: string;
-  customer_name: string;
   total_amount: number;
   created_at: string;
 };
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminOrdersPage() {
+export default async function DashboardPage() {
   const cookieStore = await cookies();
 
   const supabase = createServerClient(
@@ -52,14 +40,22 @@ export default async function AdminOrdersPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user || !ADMIN_EMAILS.includes(user.email ?? "")) {
+  if (!user) {
     redirect("/login");
   }
 
-  const { data: orders, error } = await supabaseData
+  const { data: orders } = await supabase
     .from("orders")
-    .select("id, order_id, customer_name, total_amount, created_at")
-    .order("created_at", { ascending: false });
+    .select("id, order_id, total_amount, created_at")
+    .eq("customer_email", user.email)
+    .order("created_at", { ascending: false })
+    .limit(20);
+
+  const displayName =
+    (user.user_metadata?.full_name as string | undefined) ||
+    (user.user_metadata?.name as string | undefined) ||
+    user.email?.split("@")[0] ||
+    "User";
 
   return (
     <main
@@ -70,36 +66,54 @@ export default async function AdminOrdersPage() {
         minHeight: "100vh",
       }}
     >
-      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "900px", margin: "0 auto" }}>
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "24px",
+            alignItems: "flex-start",
+            marginBottom: "32px",
           }}
         >
-          <h1
-            style={{ fontSize: "22px", fontWeight: 700, color: "#0B0F19", margin: 0 }}
-          >
-            Orders
-          </h1>
+          <div>
+            <h1
+              style={{
+                fontSize: "22px",
+                fontWeight: 700,
+                color: "#0B0F19",
+                margin: 0,
+              }}
+            >
+              My Account
+            </h1>
+            <p
+              style={{
+                fontSize: "14px",
+                color: "#64748b",
+                marginTop: "4px",
+                marginBottom: 0,
+              }}
+            >
+              {displayName} &middot; {user.email}
+            </p>
+          </div>
           <LogoutButton />
         </div>
 
-        {error && (
-          <p
-            style={{ color: "#d9534f", marginBottom: "16px", fontSize: "14px" }}
-          >
-            Error: {error.message}
-          </p>
-        )}
+        <h2
+          style={{
+            fontSize: "16px",
+            fontWeight: 600,
+            color: "#0B0F19",
+            marginBottom: "16px",
+          }}
+        >
+          Order History
+        </h2>
 
-        {!error && (!orders || orders.length === 0) && (
-          <p style={{ color: "#64748b", fontSize: "14px" }}>No orders found.</p>
-        )}
-
-        {orders && orders.length > 0 && (
+        {!orders || orders.length === 0 ? (
+          <p style={{ fontSize: "14px", color: "#64748b" }}>No orders yet.</p>
+        ) : (
           <div style={{ overflowX: "auto" }}>
             <table
               style={{
@@ -114,8 +128,7 @@ export default async function AdminOrdersPage() {
               <thead>
                 <tr style={{ background: "#f1f5f9" }}>
                   <th style={th}>Order ID</th>
-                  <th style={th}>Customer Name</th>
-                  <th style={th}>Total Amount</th>
+                  <th style={th}>Amount</th>
                   <th style={th}>Date</th>
                 </tr>
               </thead>
@@ -126,7 +139,6 @@ export default async function AdminOrdersPage() {
                     style={{ borderTop: "1px solid #e2e8f0" }}
                   >
                     <td style={td}>{order.order_id}</td>
-                    <td style={td}>{order.customer_name}</td>
                     <td style={td}>
                       £{Number(order.total_amount).toFixed(2)}
                     </td>
