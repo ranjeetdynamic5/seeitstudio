@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { getProducts } from "@/lib/supabase";
 
 const ADMIN_EMAILS = (process.env.ADMIN_EMAILS ?? "ranjeetdynamic5@gmail.com")
   .split(",")
@@ -8,7 +9,7 @@ const ADMIN_EMAILS = (process.env.ADMIN_EMAILS ?? "ranjeetdynamic5@gmail.com")
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminOrdersPage() {
+export default async function AdminProductsPage() {
   const cookieStore = await cookies();
 
   const supabase = createServerClient(
@@ -38,85 +39,94 @@ export default async function AdminOrdersPage() {
     redirect("/dashboard");
   }
 
-  const { data: orders, error } = await supabase
-    .from("orders")
-    .select("id, order_id, customer_name, customer_email, total_amount, created_at")
-    .order("created_at", { ascending: false });
+  const products = await getProducts();
 
   return (
     <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
       <div className="mb-6">
         <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
-          Orders
+          Products
         </h1>
-        {orders && (
-          <p className="text-sm text-gray-500 mt-1">
-            {orders.length} order{orders.length !== 1 ? "s" : ""}
-          </p>
-        )}
+        <p className="text-sm text-gray-500 mt-1">
+          {products.length} product{products.length !== 1 ? "s" : ""}
+        </p>
       </div>
 
-      {error && (
-        <p className="text-sm text-red-600 mb-4">
-          Error loading orders. Please try again.
-        </p>
-      )}
-
-      {!error && (!orders || orders.length === 0) && (
-        <div className="bg-white border border-gray-200 rounded-xl shadow-sm px-6 py-10 text-center">
-          <p className="text-sm text-gray-500">No orders yet.</p>
-        </div>
-      )}
-
-      {orders && orders.length > 0 && (
+      {products.length > 0 ? (
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100">
                   <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
-                    Order ID
+                    Title
                   </th>
                   <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
-                    Customer
+                    Price
                   </th>
                   <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
-                    Amount
+                    Sale
                   </th>
                   <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
-                    Date
+                    Added
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {orders.map((order) => (
-                  <tr key={order.id}>
-                    <td className="px-4 sm:px-6 py-3 font-medium text-gray-900 whitespace-nowrap">
-                      {order.order_id}
-                    </td>
-                    <td className="px-4 sm:px-6 py-3 text-gray-700">
-                      <span className="block">{order.customer_name}</span>
-                      {order.customer_email && (
-                        <span className="block text-xs text-gray-400">
-                          {order.customer_email}
+                {products.map((product) => (
+                  <tr key={product.id}>
+                    <td className="px-4 sm:px-6 py-3">
+                      <span className="font-medium text-gray-900">
+                        {product.title}
+                      </span>
+                      {product.offer_text && (
+                        <span className="block text-xs text-gray-400 mt-0.5">
+                          {product.offer_text}
                         </span>
                       )}
                     </td>
                     <td className="px-4 sm:px-6 py-3 text-gray-700 whitespace-nowrap">
-                      £{Number(order.total_amount).toFixed(2)}
+                      {product.is_on_sale && product.original_price ? (
+                        <>
+                          <span className="line-through text-gray-400 mr-1">
+                            £{Number(product.original_price).toFixed(2)}
+                          </span>
+                          <span className="font-medium">
+                            £{Number(product.price).toFixed(2)}
+                          </span>
+                        </>
+                      ) : (
+                        <span>£{Number(product.price).toFixed(2)}</span>
+                      )}
+                    </td>
+                    <td className="px-4 sm:px-6 py-3">
+                      {product.is_on_sale ? (
+                        <span className="inline-block text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700">
+                          Sale
+                        </span>
+                      ) : (
+                        <span className="text-gray-400">&mdash;</span>
+                      )}
                     </td>
                     <td className="px-4 sm:px-6 py-3 text-gray-500 whitespace-nowrap">
-                      {new Date(order.created_at).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
+                      {new Date(product.created_at).toLocaleDateString(
+                        "en-GB",
+                        {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        }
+                      )}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+        </div>
+      ) : (
+        <div className="bg-white border border-gray-200 rounded-xl shadow-sm px-6 py-10 text-center">
+          <p className="text-sm text-gray-500">No products yet.</p>
         </div>
       )}
     </main>

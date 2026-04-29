@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { getProducts } from "@/lib/supabase";
+import Link from "next/link";
 
 const ADMIN_EMAILS = (process.env.ADMIN_EMAILS ?? "ranjeetdynamic5@gmail.com")
   .split(",")
@@ -8,7 +10,7 @@ const ADMIN_EMAILS = (process.env.ADMIN_EMAILS ?? "ranjeetdynamic5@gmail.com")
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminOrdersPage() {
+export default async function AdminPage() {
   const cookieStore = await cookies();
 
   const supabase = createServerClient(
@@ -38,42 +40,68 @@ export default async function AdminOrdersPage() {
     redirect("/dashboard");
   }
 
-  const { data: orders, error } = await supabase
-    .from("orders")
-    .select("id, order_id, customer_name, customer_email, total_amount, created_at")
-    .order("created_at", { ascending: false });
+  const [{ data: recentOrders }, { count: ordersCount }, products] =
+    await Promise.all([
+      supabase
+        .from("orders")
+        .select("id, order_id, customer_name, customer_email, total_amount, created_at")
+        .order("created_at", { ascending: false })
+        .limit(5),
+      supabase.from("orders").select("id", { count: "exact", head: true }),
+      getProducts(),
+    ]);
 
   return (
     <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
-      <div className="mb-6">
+      <div className="mb-6 sm:mb-8">
         <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
-          Orders
+          Admin Dashboard
         </h1>
-        {orders && (
-          <p className="text-sm text-gray-500 mt-1">
-            {orders.length} order{orders.length !== 1 ? "s" : ""}
-          </p>
-        )}
+        <p className="text-sm text-gray-500 mt-1">Overview of your store</p>
       </div>
 
-      {error && (
-        <p className="text-sm text-red-600 mb-4">
-          Error loading orders. Please try again.
-        </p>
-      )}
-
-      {!error && (!orders || orders.length === 0) && (
-        <div className="bg-white border border-gray-200 rounded-xl shadow-sm px-6 py-10 text-center">
-          <p className="text-sm text-gray-500">No orders yet.</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+        <div className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6 shadow-sm">
+          <p className="text-sm text-gray-500">Total Orders</p>
+          <p className="text-3xl font-semibold text-gray-900 mt-1">
+            {ordersCount ?? 0}
+          </p>
+          <Link
+            href="/admin/orders"
+            className="text-sm text-gray-500 hover:text-gray-900 mt-3 inline-block transition-colors"
+          >
+            View all &rarr;
+          </Link>
         </div>
-      )}
+        <div className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6 shadow-sm">
+          <p className="text-sm text-gray-500">Total Products</p>
+          <p className="text-3xl font-semibold text-gray-900 mt-1">
+            {products.length}
+          </p>
+          <Link
+            href="/admin/products"
+            className="text-sm text-gray-500 hover:text-gray-900 mt-3 inline-block transition-colors"
+          >
+            View all &rarr;
+          </Link>
+        </div>
+      </div>
 
-      {orders && orders.length > 0 && (
-        <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-white border border-gray-200 rounded-xl shadow-sm">
+        <div className="px-4 sm:px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+          <h2 className="text-base font-medium text-gray-900">Recent Orders</h2>
+          <Link
+            href="/admin/orders"
+            className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+          >
+            View all
+          </Link>
+        </div>
+        {recentOrders && recentOrders.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-100">
+                <tr className="border-b border-gray-100">
                   <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
                     Order ID
                   </th>
@@ -89,7 +117,7 @@ export default async function AdminOrdersPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {orders.map((order) => (
+                {recentOrders.map((order) => (
                   <tr key={order.id}>
                     <td className="px-4 sm:px-6 py-3 font-medium text-gray-900 whitespace-nowrap">
                       {order.order_id}
@@ -117,8 +145,12 @@ export default async function AdminOrdersPage() {
               </tbody>
             </table>
           </div>
-        </div>
-      )}
+        ) : (
+          <p className="px-4 sm:px-6 py-6 text-sm text-gray-500">
+            No orders yet.
+          </p>
+        )}
+      </div>
     </main>
   );
 }

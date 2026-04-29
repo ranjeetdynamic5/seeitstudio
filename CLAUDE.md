@@ -4,6 +4,54 @@ This is a **professional, production-grade web application** targeting UK-based 
 
 ---
 
+## 🧠 DEBUGGING RULES (STRICT)
+
+When fixing bugs:
+
+1. ALWAYS read actual error message first
+2. NEVER assume cause without proof
+3. NEVER introduce new systems (e.g. RLS, service role) unless explicitly required
+4. Fix ONLY the exact error shown
+5. If error mentions a column → check database schema first
+6. If query fails → do NOT modify auth or UI
+7. Do NOT apply "possible fixes" — apply ONLY confirmed fix
+
+---
+
+## 🎯 ROOT CAUSE PRIORITY
+
+Follow this exact order:
+
+1. Error message
+2. Query correctness
+3. Data availability
+4. Auth state
+5. UI rendering
+
+DO NOT skip steps
+DO NOT jump to conclusions
+
+---
+
+## 🚫 FORBIDDEN IN DEBUGGING
+
+- Do NOT assume RLS issues unless explicitly stated
+- Do NOT introduce service role
+- Do NOT change database structure
+- Do NOT modify UI during debugging
+
+---
+
+## ✅ DEBUG OUTPUT RULE
+
+When debugging:
+
+- First identify exact error
+- Then fix ONLY that error
+- Then stop
+
+DO NOT chain multiple changes
+
 ## ⚠️ ACTIVE TASK CONTROL
 
 * Only implement what is asked

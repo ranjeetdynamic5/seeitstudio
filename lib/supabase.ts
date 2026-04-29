@@ -175,3 +175,13 @@ export async function getTrainingById(id: string): Promise<TrainingCourse | null
   }
   return data;
 }
+
+export type Order = {
+  id: string;
+  order_id: string;
+  customer_name: string;
+  customer_email: string;
+  total_amount: number;
+  status: "pending" | "completed";
+  created_at: string;
+};

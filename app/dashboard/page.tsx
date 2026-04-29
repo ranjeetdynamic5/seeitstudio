@@ -1,14 +1,9 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { LogoutButton } from "@/app/_components/LogoutButton";
-
-type Order = {
-  id: string;
-  order_id: string;
-  total_amount: number;
-  created_at: string;
-};
+import Link from "next/link";
+import Header from "@/app/components/Header";
+import { getServices } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
@@ -40,138 +35,134 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
+  console.log("[dashboard] user:", user);
+  console.log("[dashboard] user.email:", user?.email);
+
+  if (!user || !user.email) {
     redirect("/login");
   }
 
-  const { data: orders } = await supabase
+  const services = await getServices();
+
+  const { data: orders, error: ordersError } = await supabase
     .from("orders")
     .select("id, order_id, total_amount, created_at")
     .eq("customer_email", user.email)
     .order("created_at", { ascending: false })
     .limit(20);
 
-  const displayName =
-    (user.user_metadata?.full_name as string | undefined) ||
-    (user.user_metadata?.name as string | undefined) ||
-    user.email?.split("@")[0] ||
-    "User";
+  console.log("[dashboard] orders:", JSON.stringify(orders, null, 2));
+  console.log("[dashboard] ordersError:", ordersError);
+
+  const role =
+    (user.user_metadata?.role as string | undefined) || "user";
 
   return (
-    <main
-      style={{
-        fontFamily: "Arial, sans-serif",
-        padding: "40px",
-        background: "#f8fafc",
-        minHeight: "100vh",
-      }}
-    >
-      <div style={{ maxWidth: "900px", margin: "0 auto" }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            marginBottom: "32px",
-          }}
-        >
-          <div>
-            <h1
-              style={{
-                fontSize: "22px",
-                fontWeight: 700,
-                color: "#0B0F19",
-                margin: 0,
-              }}
-            >
-              My Account
+    <>
+      <Header services={services} />
+
+      <main className="min-h-screen bg-gray-50 pt-20 md:pt-32">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+
+          {/* Page heading */}
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
+              Dashboard
             </h1>
-            <p
-              style={{
-                fontSize: "14px",
-                color: "#64748b",
-                marginTop: "4px",
-                marginBottom: 0,
-              }}
-            >
-              {displayName} &middot; {user.email}
+            <p className="text-sm text-gray-500 mt-1 truncate max-w-xs sm:max-w-none">
+              Welcome back, {user.email}
             </p>
           </div>
-          <LogoutButton />
-        </div>
 
-        <h2
-          style={{
-            fontSize: "16px",
-            fontWeight: 600,
-            color: "#0B0F19",
-            marginBottom: "16px",
-          }}
-        >
-          Order History
-        </h2>
+          {/* Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
 
-        {!orders || orders.length === 0 ? (
-          <p style={{ fontSize: "14px", color: "#64748b" }}>No orders yet.</p>
-        ) : (
-          <div style={{ overflowX: "auto" }}>
-            <table
-              style={{
-                width: "100%",
-                borderCollapse: "collapse",
-                background: "#fff",
-                borderRadius: "8px",
-                overflow: "hidden",
-                border: "1px solid #e2e8f0",
-              }}
-            >
-              <thead>
-                <tr style={{ background: "#f1f5f9" }}>
-                  <th style={th}>Order ID</th>
-                  <th style={th}>Amount</th>
-                  <th style={th}>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(orders as Order[]).map((order) => (
-                  <tr
-                    key={order.id}
-                    style={{ borderTop: "1px solid #e2e8f0" }}
+            {/* Account Details Card */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6 shadow-sm">
+              <h2 className="text-base sm:text-lg font-medium text-gray-900 mb-4">
+                Account Details
+              </h2>
+              <dl className="space-y-3">
+                <div>
+                  <dt className="text-sm text-gray-500">Email address</dt>
+                  <dd className="mt-0.5 text-sm font-medium text-gray-900 break-all">
+                    {user.email}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm text-gray-500">Role</dt>
+                  <dd className="mt-0.5">
+                    <span className="inline-block text-xs font-medium px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-700 capitalize">
+                      {role}
+                    </span>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+
+            {/* Order History Card */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6 shadow-sm">
+              <h2 className="text-base sm:text-lg font-medium text-gray-900 mb-4">
+                Order History
+              </h2>
+
+              {orders && orders.length > 0 ? (
+                <div className="overflow-x-auto -mx-4 sm:mx-0">
+                  <table className="min-w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-100">
+                        <th className="pb-2 pr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
+                          Order ID
+                        </th>
+                        <th className="pb-2 pr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
+                          Amount
+                        </th>
+                        <th className="pb-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
+                          Date
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {orders.map((order) => (
+                        <tr key={order.id}>
+                          <td className="py-3 pr-4 font-medium text-gray-900 whitespace-nowrap">
+                            {order.order_id}
+                          </td>
+                          <td className="py-3 pr-4 text-gray-700 whitespace-nowrap">
+                            £{Number(order.total_amount).toFixed(2)}
+                          </td>
+                          <td className="py-3 text-gray-500 whitespace-nowrap">
+                            {new Date(order.created_at).toLocaleDateString("en-GB", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-6 sm:py-8 text-center gap-2">
+                  <span className="text-3xl" aria-hidden>📦</span>
+                  <p className="text-sm font-medium text-gray-700">No orders yet</p>
+                  <p className="text-sm text-gray-500">
+                    You haven&apos;t placed any orders yet.
+                  </p>
+                  <Link
+                    href="/products"
+                    className="mt-3 w-full sm:w-auto inline-flex items-center justify-center bg-gray-900 text-white px-4 py-2 rounded-md text-sm hover:bg-gray-800 transition-colors"
                   >
-                    <td style={td}>{order.order_id}</td>
-                    <td style={td}>
-                      £{Number(order.total_amount).toFixed(2)}
-                    </td>
-                    <td style={td}>
-                      {new Date(order.created_at).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    Browse Products
+                  </Link>
+                </div>
+              )}
+            </div>
+
           </div>
-        )}
-      </div>
-    </main>
+        </div>
+      </main>
+    </>
   );
 }
-
-const th: React.CSSProperties = {
-  padding: "11px 16px",
-  textAlign: "left",
-  fontSize: "12px",
-  fontWeight: 600,
-  color: "#64748b",
-  textTransform: "uppercase",
-  letterSpacing: "0.4px",
-};
-
-const td: React.CSSProperties = {
-  padding: "12px 16px",
-  fontSize: "14px",
-  color: "#0B0F19",
-};
