@@ -65,6 +65,24 @@ export default function LoginPage() {
     setToast(null);
   }
 
+  async function handleForgotPassword() {
+    if (!email.trim()) {
+      showToast("Enter your email address first.", "error");
+      return;
+    }
+    setLoading(true);
+    const supabase = getSupabase();
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (error) {
+      showToast(error.message, "error");
+    } else {
+      showToast("Password reset email sent — check your inbox.", "success");
+    }
+  }
+
   async function handleGoogleLogin() {
     const supabase = getSupabase();
     const { error } = await supabase.auth.signInWithOAuth({
@@ -74,7 +92,7 @@ export default function LoginPage() {
     if (error) showToast(error.message, "error");
   }
 
-  async function handleEmailAuth(e: React.FormEvent<HTMLFormElement>) {
+  async function handleEmailAuth(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     setToast(null);
 
@@ -188,6 +206,19 @@ export default function LoginPage() {
               <EyeIcon open={showPassword} />
             </button>
           </div>
+
+          {mode === "signin" && (
+            <div className="flex justify-end -mt-1">
+              <button
+                type="button"
+                onClick={handleForgotPassword}
+                disabled={loading}
+                className="text-xs text-[#64748b] hover:text-[#d9534f] transition-colors disabled:opacity-60"
+              >
+                Forgot password?
+              </button>
+            </div>
+          )}
 
           {mode === "signup" && (
             <div className="relative">
