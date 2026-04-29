@@ -9,7 +9,7 @@ import EnrollButton from "./EnrollButton";
 
 export async function generateStaticParams() {
   const trainings = await getTrainingCourses();
-  return trainings.map((t) => ({ slug: t.id }));
+  return trainings.map((t) => ({ slug: String(t.id ?? "") })).filter((p) => p.slug);
 }
 
 export async function generateMetadata({
