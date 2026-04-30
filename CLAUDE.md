@@ -1,230 +1,129 @@
-# 🎯 PROJECT: SEELT STUDIO (UK MARKET)
+## 🔐 AUTH SYSTEM (STRICT)
 
-This is a **professional, production-grade web application** targeting UK-based businesses and professionals.
+Authentication must use separate pages:
 
----
+Routes:
 
-## 🧠 DEBUGGING RULES (STRICT)
+* /login
+* /signup
+* /forgot-password
 
-When fixing bugs:
+Rules:
 
-1. ALWAYS read actual error message first
-2. NEVER assume cause without proof
-3. NEVER introduce new systems (e.g. RLS, service role) unless explicitly required
-4. Fix ONLY the exact error shown
-5. If error mentions a column → check database schema first
-6. If query fails → do NOT modify auth or UI
-7. Do NOT apply "possible fixes" — apply ONLY confirmed fix
+1. All pages must use SAME UI layout (reuse login card design)
+2. DO NOT redesign UI
+3. Only change inner content
 
----
+### LOGIN:
 
-## 🎯 ROOT CAUSE PRIORITY
+* Email
+* Password
+* "Forgot password?" → /forgot-password
+* "Create account" → /signup
+* Optional: Google login
 
-Follow this exact order:
+### SIGNUP:
 
-1. Error message
-2. Query correctness
-3. Data availability
-4. Auth state
-5. UI rendering
+* Email
+* Password
+* Confirm Password (required)
+* Validate passwords match
+* Redirect to /dashboard after signup
 
-DO NOT skip steps
-DO NOT jump to conclusions
+### FORGOT PASSWORD:
 
----
+* Email input
+* Send reset link via Supabase
+* Redirect to /login after success
 
-## 🚫 FORBIDDEN IN DEBUGGING
+### REDIRECT LOGIC:
 
-- Do NOT assume RLS issues unless explicitly stated
-- Do NOT introduce service role
-- Do NOT change database structure
-- Do NOT modify UI during debugging
+* Admin → /admin
+* Normal user → /dashboard
 
----
-
-## ✅ DEBUG OUTPUT RULE
-
-When debugging:
-
-- First identify exact error
-- Then fix ONLY that error
-- Then stop
-
-DO NOT chain multiple changes
-
-## ⚠️ ACTIVE TASK CONTROL
-
-* Only implement what is asked
-* Do NOT add extra features
-* Do NOT redesign UI
-* Do NOT modify unrelated files
+❌ Do NOT mix pages
+❌ Do NOT change UI structure
+✔ Only reuse and adapt
 
 ---
 
-## 🇬🇧 UK MARKET RULES (STRICT)
+## 🏗️ PROJECT ARCHITECTURE (STRICT)
 
-* Always use **GBP (£)** currency
-* Use **UK English spelling** (e.g. "colour", "organisation")
-* Tone must be:
+### Folder Structure Rules
 
-  * Professional
-  * Trustworthy
-  * Calm and confident
+- /app → ONLY pages, layouts, routes
+- /components → reusable UI components
+- /lib → utilities (supabase clients, helpers)
 
-❌ Never use:
-
-* Hype language
-* Aggressive tone
-* Clickbait
+❌ NEVER create components inside /app/_components  
+❌ NEVER mix UI components inside route folders  
+✅ ALWAYS use /components for reusable UI
 
 ---
 
-## 🎨 UI / DESIGN SYSTEM
+## 🔐 SUPABASE AUTH (STRICT)
 
-* Clean, minimal layout
-* Grid-based structure
-* Strong whitespace
-* Clear hierarchy
+- Use @supabase/ssr
+- Server client must be async
+- Always use:
+  - /lib/supabase/server.ts
+  - /lib/supabase/client.ts
 
-### Colors:
-
-* Primary: `#d9534f`
-* Neutral: White, greys, soft black
-
-### Typography:
-
-* Clean and readable
-* No decorative fonts
+❌ DO NOT create multiple Supabase clients  
+❌ DO NOT use deprecated auth methods  
 
 ---
 
-## 🧠 UX PRINCIPLES
+## 👤 ROLE SYSTEM
 
-* Clarity over creativity
-* Every page must answer:
+- Roles stored in `profiles` table
+- Roles:
+  - admin
+  - user
 
-  * What is this?
-  * Why trust it?
-  * What to do next?
+- Admin pages:
+  - /admin (protected)
+- User pages:
+  - /dashboard
 
----
-
-## 🛍️ E-COMMERCE RULES
-
-* Price format: `£XX.XX`
-* Show:
-
-  * Product title
-  * Price
-  * Image
-  * Category
-* Keep layout clean
+❌ DO NOT use email-based admin check  
+✅ ALWAYS fetch role from database
 
 ---
 
-## 🔌 DATABASE RULES (SUPABASE ONLY)
+## 🔘 COMPONENT RULES
 
-* Use Supabase for ALL dynamic data
-* Do NOT use Sanity
-* Do NOT use GROQ
-* Use existing client: `lib/supabase.ts`
+- LogoutButton must be a client component
+- Place in: /components/LogoutButton.tsx
 
-### Tables:
+Usage:
+import LogoutButton from '@/components/LogoutButton'
 
-* products
-* product_categories
-* services
-* training_courses
-* training_categories
-
-### Rules:
-
-* Always fetch from Supabase
-* No hardcoded data
-* Keep queries minimal
+❌ DO NOT inline logout logic in pages  
+❌ DO NOT duplicate logout code  
 
 ---
 
-## 💸 PRODUCT OFFER SYSTEM
+## 🚫 STRICT NO-CHANGE RULES
 
-Products may include:
-
-* original_price (numeric)
-* discount_percent (int)
-* is_on_sale (boolean)
-* offer_text (text)
-
-### UI Rules:
-
-If `is_on_sale = true`:
-
-* Show original_price (line-through)
-* Show price (bold)
-* Show discount badge (top-left)
-* Show offer_text below title
-
-If false:
-
-* Show only price
-
-⚠️ Do NOT redesign card layout
-⚠️ Only enhance existing UI
+- DO NOT redesign UI
+- DO NOT break existing auth system
+- DO NOT modify middleware unless asked
 
 ---
 
-## 🧩 COMPONENT RULES
+## 🎯 CURRENT TASK CONTEXT
 
-* Keep components reusable
-* Separate UI & data logic
-* Avoid large components
-
----
-
-## 🚫 UI SAFETY (VERY STRICT)
-
-* Do NOT change header/footer
-* Do NOT change spacing/colors
-* Do NOT redesign components
-* Do NOT remove classes
+- Fix component structure
+- Move /app/_components → /components
+- Fix all imports
+- Ensure LogoutButton works in dashboard and admin
 
 ---
 
-## 🧼 CODE QUALITY
+## 🧾 OUTPUT RULES
 
-* Clean TypeScript
-* No `any`
-* Proper naming
-* No unnecessary logic
-
----
-
-## 📦 OUTPUT RULES
-
-* Return only changed files
-* No explanation
-* Minimal response
-
----
-
-## ⚡ PERFORMANCE
-
-* Smallest working code
-* Avoid heavy imports
-
----
-
-## ❗ UNCERTAINTY RULE
-
-If unclear → ASK
-Do NOT assume
-
----
-
-## 🚨 FAIL CONDITION
-
-If task requires:
-
-* UI redesign
-* Major refactor
-
-→ STOP and ask
+- Show updated folder structure
+- Show changed imports
+- Keep code minimal
+- Do NOT refactor unrelated files

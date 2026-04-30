@@ -21,8 +21,8 @@ export default function AdminNav() {
               href={link.href}
               className={`text-sm font-medium h-full flex items-center border-b-2 transition-colors ${
                 pathname === link.href
-                  ? "border-gray-900 text-gray-900"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
+                  ? "border-brand text-brand"
+                  : "border-transparent text-gray-500 hover:text-brand"
               }`}
             >
               {link.label}

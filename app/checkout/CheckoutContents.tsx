@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { createBrowserClient } from "@supabase/ssr";
 import { useCartStore } from "@/lib/cartStore";
 
 type FormFields = {
@@ -48,6 +49,13 @@ function validate(fields: FormFields): FormErrors {
   return errors;
 }
 
+function getSupabase() {
+  return createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+}
+
 export default function CheckoutContents() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -63,6 +71,52 @@ export default function CheckoutContents() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
   const [orderError, setOrderError] = useState<string | null>(null);
+
+  // Auth state
+  const [checkoutMode, setCheckoutMode] = useState<"guest" | "login">("guest");
+  const [loggedInUser, setLoggedInUser] = useState<{ id: string; email: string } | null>(null);
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getSupabase()
+      .auth.getUser()
+      .then(({ data: { user } }) => {
+        if (user) {
+          setLoggedInUser({ id: user.id, email: user.email ?? "" });
+          setForm((prev) => ({
+            ...prev,
+            email: user.email ?? prev.email,
+            fullName: (user.user_metadata?.full_name as string | undefined) ?? prev.fullName,
+          }));
+        }
+      });
+  }, []);
+
+  async function handleLogin() {
+    setLoginError(null);
+    setLoginLoading(true);
+    const supabase = getSupabase();
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: loginEmail,
+      password: loginPassword,
+    });
+    setLoginLoading(false);
+    if (error) {
+      setLoginError(error.message);
+      return;
+    }
+    if (data.user) {
+      setLoggedInUser({ id: data.user.id, email: data.user.email ?? "" });
+      setForm((prev) => ({
+        ...prev,
+        email: data.user.email ?? prev.email,
+        fullName: (data.user.user_metadata?.full_name as string | undefined) ?? prev.fullName,
+      }));
+    }
+  }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -120,6 +174,7 @@ export default function CheckoutContents() {
 
       clearCart();
       sessionStorage.setItem("orderComplete", "1");
+      sessionStorage.setItem("orderEmail", form.email);
       router.push(`/success?orderId=${id}`);
     } catch {
       setOrderError("There was a problem placing your order. Please try again.");
@@ -167,6 +222,79 @@ export default function CheckoutContents() {
 
             {/* ── Left: Customer form ── */}
             <form onSubmit={handleSubmit} noValidate className="flex-1 bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
+
+              {/* Guest / Login switcher */}
+              {!loggedInUser && (
+                <div className="flex gap-1.5 mb-6 p-1 bg-slate-50 border border-slate-200 rounded-lg">
+                  <button
+                    type="button"
+                    onClick={() => setCheckoutMode("guest")}
+                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${
+                      checkoutMode === "guest"
+                        ? "bg-white shadow-sm text-[#0B0F19]"
+                        : "text-[#64748B] hover:text-[#0B0F19]"
+                    }`}
+                  >
+                    Continue as Guest
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCheckoutMode("login")}
+                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${
+                      checkoutMode === "login"
+                        ? "bg-white shadow-sm text-[#0B0F19]"
+                        : "text-[#64748B] hover:text-[#0B0F19]"
+                    }`}
+                  >
+                    Sign In
+                  </button>
+                </div>
+              )}
+
+              {/* Logged in badge */}
+              {loggedInUser && (
+                <div className="mb-6 flex items-center gap-2 px-3 py-2.5 bg-green-50 border border-green-200 rounded-lg">
+                  <svg className="w-4 h-4 text-green-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-sm text-green-700">
+                    Signed in as <span className="font-medium">{loggedInUser.email}</span>
+                  </p>
+                </div>
+              )}
+
+              {/* Inline login section */}
+              {checkoutMode === "login" && !loggedInUser && (
+                <div className="mb-6 pb-6 border-b border-slate-100 flex flex-col gap-3">
+                  <p className="text-xs text-[#64748B]">Sign in to pre-fill your details and track your order.</p>
+                  <input
+                    type="email"
+                    placeholder="Email address"
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
+                    disabled={loginLoading}
+                    className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
+                  />
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    disabled={loginLoading}
+                    className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
+                  />
+                  {loginError && <p className="text-xs text-red-500">{loginError}</p>}
+                  <button
+                    type="button"
+                    onClick={handleLogin}
+                    disabled={loginLoading}
+                    className="w-full py-2.5 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] disabled:opacity-60 transition-colors"
+                  >
+                    {loginLoading ? "Signing in…" : "Sign In"}
+                  </button>
+                </div>
+              )}
+
               <h2 className="text-base font-semibold text-[#0B0F19] mb-6">Delivery Details</h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">

@@ -1,63 +1,69 @@
-import { createServerClient } from "@supabase/ssr";
-import { NextRequest, NextResponse } from "next/server";
-
-const ADMIN_EMAILS = (process.env.ADMIN_EMAILS ?? "ranjeetdynamic5@gmail.com")
-  .split(",")
-  .map((e) => e.trim());
+import { createServerClient } from '@supabase/ssr'
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 export async function middleware(req: NextRequest) {
-  let res = NextResponse.next({
-    request: { headers: req.headers },
-  });
+  let res = NextResponse.next()
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() {
-          return req.cookies.getAll();
+        get(name) {
+          return req.cookies.get(name)?.value
         },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => req.cookies.set(name, value));
-          res = NextResponse.next({ request: req });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            res.cookies.set(name, value, options)
-          );
+        set(name, value, options) {
+          res.cookies.set(name, value, options)
+        },
+        remove(name, options) {
+          res.cookies.set(name, '', options)
         },
       },
     }
-  );
+  )
 
+  // 🔥 MUST: refresh session
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getUser()
 
-  const { pathname } = req.nextUrl;
+  const url = req.nextUrl.clone()
+  const pathname = url.pathname
 
-  if (pathname.startsWith("/admin")) {
-    if (!user) {
-      return NextResponse.redirect(new URL("/login", req.url));
-    }
-    if (!ADMIN_EMAILS.includes(user.email ?? "")) {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
-    }
+  // 🔐 Protected routes
+  if (!user && pathname.startsWith('/dashboard')) {
+    url.pathname = '/login'
+    return NextResponse.redirect(url)
   }
 
-  if (pathname.startsWith("/dashboard") && !user) {
-    return NextResponse.redirect(new URL("/login", req.url));
+  // 🔐 Future admin routes (ready)
+  if (!user && pathname.startsWith('/admin')) {
+    url.pathname = '/login'
+    return NextResponse.redirect(url)
   }
 
-  if (pathname === "/login" && user) {
-    const isAdmin = ADMIN_EMAILS.includes(user.email ?? "");
-    return NextResponse.redirect(
-      new URL(isAdmin ? "/admin/orders" : "/dashboard", req.url)
-    );
+  // 🔁 Block auth pages if logged in
+  if (
+    user &&
+    (pathname === '/login' || pathname === '/signup')
+  ) {
+    url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
   }
 
-  return res;
+  return res
 }
 
+// ⚡ PERFORMANCE BOOST (VERY IMPORTANT)
 export const config = {
-  matcher: ["/admin/:path*", "/dashboard/:path*", "/login", "/reset-password"],
-};
+  matcher: [
+    /*
+     * Exclude:
+     * - _next (static files)
+     * - images
+     * - favicon
+     */
+    '/((?!_next/static|_next/image|favicon.ico).*)',
+  ],
+}

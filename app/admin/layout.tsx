@@ -1,6 +1,6 @@
 import { getServices } from "@/lib/supabase";
 import Header from "@/app/components/Header";
-import AdminNav from "@/app/_components/AdminNav";
+import AdminNav from "@/components/AdminNav";
 
 export default async function AdminLayout({
   children,
