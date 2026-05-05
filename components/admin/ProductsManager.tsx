@@ -2,6 +2,11 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import dynamic from 'next/dynamic'
+import '@uiw/react-md-editor/markdown-editor.css'
+import '@uiw/react-markdown-preview/markdown.css'
+
+const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 
 type Product = {
   id: number
@@ -11,7 +16,9 @@ type Product = {
   original_price: number | null
   discount_percent: number | null
   is_on_sale: boolean
+  is_featured: boolean
   image_url: string | null
+  description: string | null
   created_at: string
 }
 
@@ -22,8 +29,13 @@ const empty = {
   original_price: '',
   discount_percent: '',
   is_on_sale: false,
+  is_featured: false,
   image_url: '',
+  description: '',
 }
+
+const generateSlug = (title: string) =>
+  title.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
 export default function ProductsManager({ products }: { products: Product[] }) {
   const [data, setData] = useState<Product[]>(products ?? [])
@@ -65,12 +77,14 @@ export default function ProductsManager({ products }: { products: Product[] }) {
     const image_url = await uploadImage()
     const payload = {
       title: form.title,
-      slug: form.slug,
+      slug: form.slug || generateSlug(form.title),
       price: Number(form.price),
       original_price: form.original_price ? Number(form.original_price) : null,
       discount_percent: form.discount_percent ? Number(form.discount_percent) : null,
       is_on_sale: form.is_on_sale,
+      is_featured: form.is_featured,
       image_url,
+      description: form.description || null,
     }
 
     if (editId) {
@@ -104,7 +118,9 @@ export default function ProductsManager({ products }: { products: Product[] }) {
       original_price: p.original_price ? String(p.original_price) : '',
       discount_percent: p.discount_percent ? String(p.discount_percent) : '',
       is_on_sale: p.is_on_sale,
+      is_featured: p.is_featured,
       image_url: p.image_url ?? '',
+      description: p.description ?? '',
     })
     setImagePreview(p.image_url ?? null)
     setImageFile(null)
@@ -127,12 +143,22 @@ export default function ProductsManager({ products }: { products: Product[] }) {
           {editId ? 'Edit Product' : 'Add New Product'}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <input placeholder="Title" value={form.title}
-            onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-            className="border px-3 py-2 rounded text-sm" />
-          <input placeholder="Slug (e.g. sketchup-pro)" value={form.slug}
+          <input
+            placeholder="Title"
+            value={form.title}
+            onChange={e => setForm(f => ({
+              ...f,
+              title: e.target.value,
+              slug: generateSlug(e.target.value)
+            }))}
+            className="border px-3 py-2 rounded text-sm"
+          />
+          <input
+            placeholder="Slug (auto-generated)"
+            value={form.slug}
             onChange={e => setForm(f => ({ ...f, slug: e.target.value }))}
-            className="border px-3 py-2 rounded text-sm" />
+            className="border px-3 py-2 rounded text-sm bg-gray-50"
+          />
           <input placeholder="Price (£)" type="number" value={form.price}
             onChange={e => setForm(f => ({ ...f, price: e.target.value }))}
             className="border px-3 py-2 rounded text-sm" />
@@ -142,11 +168,37 @@ export default function ProductsManager({ products }: { products: Product[] }) {
           <input placeholder="Discount %" type="number" value={form.discount_percent}
             onChange={e => setForm(f => ({ ...f, discount_percent: e.target.value }))}
             className="border px-3 py-2 rounded text-sm" />
-          <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={form.is_on_sale}
-              onChange={e => setForm(f => ({ ...f, is_on_sale: e.target.checked }))} />
-            On Sale
-          </label>
+          <div className="flex flex-col gap-2">
+            <label className="flex items-center gap-2 text-sm">
+              <input type="checkbox" checked={form.is_on_sale}
+                onChange={e => setForm(f => ({ ...f, is_on_sale: e.target.checked }))} />
+              On Sale
+            </label>
+            <label className="flex items-center gap-2 text-sm">
+              <input type="checkbox" checked={form.is_featured}
+                onChange={e => setForm(f => ({ ...f, is_featured: e.target.checked }))} />
+              Featured on Homepage
+            </label>
+          </div>
+        </div>
+
+        {/* Description */}
+        <div className="mt-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+          <div data-color-mode="light">
+            <MDEditor
+              value={form.description}
+              onChange={val => setForm(f => ({ ...f, description: val ?? '' }))}
+              height={300}
+              preview="live"
+            />
+          </div>
+          <p className="text-xs text-gray-400 mt-1">
+            Use <code className="bg-gray-100 px-1 rounded">## Heading</code> for headings,{' '}
+            <code className="bg-gray-100 px-1 rounded">- item</code> for bullets,{' '}
+            <code className="bg-gray-100 px-1 rounded">**text**</code> for bold
+          </p>
+          <p className="text-xs text-gray-400 mt-0.5">{form.description.length} characters</p>
         </div>
 
         {/* Image Upload */}
@@ -189,6 +241,7 @@ export default function ProductsManager({ products }: { products: Product[] }) {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sale</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Featured</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
             </tr>
           </thead>
@@ -212,6 +265,12 @@ export default function ProductsManager({ products }: { products: Product[] }) {
                   {p.is_on_sale
                     ? <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">On Sale</span>
                     : <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">Regular</span>
+                  }
+                </td>
+                <td className="px-6 py-3">
+                  {p.is_featured
+                    ? <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Featured</span>
+                    : <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">No</span>
                   }
                 </td>
                 <td className="px-6 py-3">

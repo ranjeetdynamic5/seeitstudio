@@ -72,7 +72,6 @@ export default function CheckoutContents() {
   const [loading, setLoading] = useState(false);
   const [orderError, setOrderError] = useState<string | null>(null);
 
-  // Auth state
   const [checkoutMode, setCheckoutMode] = useState<"guest" | "login">("guest");
   const [loggedInUser, setLoggedInUser] = useState<{ id: string; email: string } | null>(null);
   const [loginEmail, setLoginEmail] = useState("");
@@ -120,6 +119,7 @@ export default function CheckoutContents() {
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
+    if (name === "email" && loggedInUser) return // logged in user ka email change nahi hoga
     setForm((prev) => ({ ...prev, [name]: value }));
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
@@ -138,6 +138,7 @@ export default function CheckoutContents() {
     setOrderError(null);
 
     const id = `UK${Math.floor(10000 + Math.random() * 90000)}`;
+    const finalEmail = loggedInUser?.email || form.email
 
     try {
       const res = await fetch("/api/create-order", {
@@ -146,7 +147,7 @@ export default function CheckoutContents() {
         body: JSON.stringify({
           orderId: id,
           customerName: form.fullName,
-          email: form.email,
+          email: finalEmail,
           products: items.map((item) => ({
             productId: item.id,
             name: item.name,
@@ -167,14 +168,14 @@ export default function CheckoutContents() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           orderId: id,
-          customerEmail: form.email,
+          customerEmail: finalEmail,
           customerName: form.fullName,
         }),
       });
 
       clearCart();
       sessionStorage.setItem("orderComplete", "1");
-      sessionStorage.setItem("orderEmail", form.email);
+      sessionStorage.setItem("orderEmail", finalEmail);
       router.push(`/success?orderId=${id}`);
     } catch {
       setOrderError("There was a problem placing your order. Please try again.");
@@ -190,7 +191,6 @@ export default function CheckoutContents() {
     <main className="pt-20 md:pt-32 min-h-screen bg-[#f8fafc]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
 
-        {/* Breadcrumb */}
         <nav className="flex items-center gap-1.5 text-sm text-[#64748B] mb-6">
           <Link href="/" className="hover:text-[#0B0F19] transition-colors">Home</Link>
           <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -205,7 +205,6 @@ export default function CheckoutContents() {
 
         <h1 className="text-3xl font-semibold tracking-tight text-[#0B0F19] mb-8">Checkout</h1>
 
-        {/* Empty cart guard */}
         {mounted && items.length === 0 && (
           <div className="bg-white border border-slate-200 rounded-xl px-8 py-16 flex flex-col items-center text-center max-w-md mx-auto">
             <p className="text-base font-semibold text-[#0B0F19] mb-1">Your cart is empty</p>
@@ -216,42 +215,24 @@ export default function CheckoutContents() {
           </div>
         )}
 
-        {/* Main layout */}
         {mounted && items.length > 0 && (
           <div className="flex flex-col lg:flex-row gap-8 items-start">
 
-            {/* ── Left: Customer form ── */}
             <form onSubmit={handleSubmit} noValidate className="flex-1 bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
 
-              {/* Guest / Login switcher */}
               {!loggedInUser && (
                 <div className="flex gap-1.5 mb-6 p-1 bg-slate-50 border border-slate-200 rounded-lg">
-                  <button
-                    type="button"
-                    onClick={() => setCheckoutMode("guest")}
-                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${
-                      checkoutMode === "guest"
-                        ? "bg-white shadow-sm text-[#0B0F19]"
-                        : "text-[#64748B] hover:text-[#0B0F19]"
-                    }`}
-                  >
+                  <button type="button" onClick={() => setCheckoutMode("guest")}
+                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${checkoutMode === "guest" ? "bg-white shadow-sm text-[#0B0F19]" : "text-[#64748B] hover:text-[#0B0F19]"}`}>
                     Continue as Guest
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => setCheckoutMode("login")}
-                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${
-                      checkoutMode === "login"
-                        ? "bg-white shadow-sm text-[#0B0F19]"
-                        : "text-[#64748B] hover:text-[#0B0F19]"
-                    }`}
-                  >
+                  <button type="button" onClick={() => setCheckoutMode("login")}
+                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${checkoutMode === "login" ? "bg-white shadow-sm text-[#0B0F19]" : "text-[#64748B] hover:text-[#0B0F19]"}`}>
                     Sign In
                   </button>
                 </div>
               )}
 
-              {/* Logged in badge */}
               {loggedInUser && (
                 <div className="mb-6 flex items-center gap-2 px-3 py-2.5 bg-green-50 border border-green-200 rounded-lg">
                   <svg className="w-4 h-4 text-green-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -263,33 +244,18 @@ export default function CheckoutContents() {
                 </div>
               )}
 
-              {/* Inline login section */}
               {checkoutMode === "login" && !loggedInUser && (
                 <div className="mb-6 pb-6 border-b border-slate-100 flex flex-col gap-3">
                   <p className="text-xs text-[#64748B]">Sign in to pre-fill your details and track your order.</p>
-                  <input
-                    type="email"
-                    placeholder="Email address"
-                    value={loginEmail}
-                    onChange={(e) => setLoginEmail(e.target.value)}
-                    disabled={loginLoading}
-                    className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
-                  />
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                    disabled={loginLoading}
-                    className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
-                  />
+                  <input type="email" placeholder="Email address" value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)} disabled={loginLoading}
+                    className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300" />
+                  <input type="password" placeholder="Password" value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)} disabled={loginLoading}
+                    className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300" />
                   {loginError && <p className="text-xs text-red-500">{loginError}</p>}
-                  <button
-                    type="button"
-                    onClick={handleLogin}
-                    disabled={loginLoading}
-                    className="w-full py-2.5 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] disabled:opacity-60 transition-colors"
-                  >
+                  <button type="button" onClick={handleLogin} disabled={loginLoading}
+                    className="w-full py-2.5 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] disabled:opacity-60 transition-colors">
                     {loginLoading ? "Signing in…" : "Sign In"}
                   </button>
                 </div>
@@ -298,23 +264,25 @@ export default function CheckoutContents() {
               <h2 className="text-base font-semibold text-[#0B0F19] mb-6">Delivery Details</h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <Field label="Full Name" name="fullName" type="text" autoComplete="name" value={form.fullName} error={errors.fullName} onChange={handleChange} className="sm:col-span-2" />
-                <Field label="Email Address" name="email" type="email" autoComplete="email" value={form.email} error={errors.email} onChange={handleChange} />
-                <Field label="Phone Number" name="phone" type="tel" autoComplete="tel" value={form.phone} error={errors.phone} onChange={handleChange} />
-                <Field label="Address" name="address" type="text" autoComplete="street-address" value={form.address} error={errors.address} onChange={handleChange} className="sm:col-span-2" />
-                <Field label="City" name="city" type="text" autoComplete="address-level2" value={form.city} error={errors.city} onChange={handleChange} />
-                <Field label="Postcode" name="postcode" type="text" autoComplete="postal-code" value={form.postcode} error={errors.postcode} onChange={handleChange} />
+                <Field label="Full Name" name="fullName" type="text" autoComplete="name"
+                  value={form.fullName} error={errors.fullName} onChange={handleChange} className="sm:col-span-2" />
+                <Field label="Email Address" name="email" type="email" autoComplete="email"
+                  value={loggedInUser?.email || form.email} error={errors.email} onChange={handleChange}
+                  disabled={!!loggedInUser} />
+                <Field label="Phone Number" name="phone" type="tel" autoComplete="tel"
+                  value={form.phone} error={errors.phone} onChange={handleChange} />
+                <Field label="Address" name="address" type="text" autoComplete="street-address"
+                  value={form.address} error={errors.address} onChange={handleChange} className="sm:col-span-2" />
+                <Field label="City" name="city" type="text" autoComplete="address-level2"
+                  value={form.city} error={errors.city} onChange={handleChange} />
+                <Field label="Postcode" name="postcode" type="text" autoComplete="postal-code"
+                  value={form.postcode} error={errors.postcode} onChange={handleChange} />
               </div>
 
-              {orderError && (
-                <p className="mt-6 text-sm text-red-500 font-medium">{orderError}</p>
-              )}
+              {orderError && <p className="mt-6 text-sm text-red-500 font-medium">{orderError}</p>}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="mt-8 w-full flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
-              >
+              <button type="submit" disabled={loading}
+                className="mt-8 w-full flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] disabled:opacity-60 disabled:cursor-not-allowed transition-colors">
                 {loading ? (
                   <>
                     <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -323,17 +291,13 @@ export default function CheckoutContents() {
                     </svg>
                     Processing&hellip;
                   </>
-                ) : (
-                  "Complete Secure Order →"
-                )}
+                ) : "Complete Secure Order →"}
               </button>
             </form>
 
-            {/* ── Right: Order summary ── */}
             <div className="lg:w-80 shrink-0 w-full">
               <div className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col gap-5 sticky top-36">
                 <h2 className="text-base font-semibold text-[#0B0F19]">Order Summary</h2>
-
                 <ul className="flex flex-col gap-2">
                   {items.map((item) => (
                     <li key={item.id} className="flex justify-between text-sm text-[#64748B]">
@@ -342,7 +306,6 @@ export default function CheckoutContents() {
                     </li>
                   ))}
                 </ul>
-
                 <div className="border-t border-slate-100 pt-4 flex flex-col gap-2.5 text-sm">
                   <div className="flex justify-between text-[#64748B]">
                     <span>Subtotal</span>
@@ -350,19 +313,14 @@ export default function CheckoutContents() {
                   </div>
                   <div className="flex justify-between text-[#64748B]">
                     <span>Shipping</span>
-                    <span className="font-medium text-[#0B0F19]">
-                      {shipping === 0 ? "Free" : `£${shipping.toFixed(2)}`}
-                    </span>
+                    <span className="font-medium text-[#0B0F19]">{shipping === 0 ? "Free" : `£${shipping.toFixed(2)}`}</span>
                   </div>
-                  {shipping === 0 && (
-                    <p className="text-xs text-green-600">Free shipping applied (orders over £50)</p>
-                  )}
+                  {shipping === 0 && <p className="text-xs text-green-600">Free shipping applied (orders over £50)</p>}
                   <div className="flex justify-between text-base font-semibold text-[#0B0F19] pt-2 border-t border-slate-100">
                     <span>Total</span>
                     <span>£{total.toFixed(2)}</span>
                   </div>
                 </div>
-
                 <div className="border-t border-slate-100 pt-4 flex flex-col gap-2">
                   <TrustBadge icon="lock">Secure checkout</TrustBadge>
                   <TrustBadge icon="shield">Trusted by UK professionals</TrustBadge>
@@ -373,13 +331,10 @@ export default function CheckoutContents() {
 
           </div>
         )}
-
       </div>
     </main>
   );
 }
-
-// ── Sub-components ──────────────────────────────────────────────────────────
 
 type FieldProps = {
   label: string;
@@ -390,28 +345,22 @@ type FieldProps = {
   error?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
+  disabled?: boolean;
 };
 
-function Field({ label, name, type, autoComplete, value, error, onChange, className = "" }: FieldProps) {
+function Field({ label, name, type, autoComplete, value, error, onChange, className = "", disabled = false }: FieldProps) {
   return (
     <div className={className}>
-      <label htmlFor={name} className="block text-sm font-medium text-[#374151] mb-1.5">
-        {label}
-      </label>
+      <label htmlFor={name} className="block text-sm font-medium text-[#374151] mb-1.5">{label}</label>
       <input
-        id={name}
-        name={name}
-        type={type}
-        autoComplete={autoComplete}
-        value={value}
-        onChange={onChange}
+        id={name} name={name} type={type} autoComplete={autoComplete}
+        value={value} onChange={onChange} disabled={disabled}
         className={`w-full px-3.5 py-2.5 text-sm text-[#0B0F19] bg-white border rounded-lg outline-none transition-colors placeholder:text-slate-300
-          ${error
-            ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
-            : "border-slate-200 focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50"
-          }`}
+          ${disabled ? "bg-gray-50 text-gray-500 cursor-not-allowed" : ""}
+          ${error ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100" : "border-slate-200 focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50"}`}
       />
       {error && <p className="mt-1.5 text-xs text-red-500">{error}</p>}
+      {disabled && <p className="mt-1 text-xs text-gray-400">Email is linked to your account</p>}
     </div>
   );
 }

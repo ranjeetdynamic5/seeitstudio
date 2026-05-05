@@ -16,15 +16,27 @@ export async function GET() {
 
   if (profile?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
-  // Service role - RLS bypass
+  // Service role client - RLS bypass karta hai
   const serviceClient = createServiceClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
 
-  const { data: users } = await serviceClient
+  const { count: usersCount } = await serviceClient
     .from('profiles')
-    .select('id, role, email')
+    .select('*', { count: 'exact', head: true })
 
-  return NextResponse.json(users ?? [])
+  const { count: servicesCount } = await supabase
+    .from('services')
+    .select('*', { count: 'exact', head: true })
+
+  const { count: productsCount } = await supabase
+    .from('products')
+    .select('*', { count: 'exact', head: true })
+
+  return NextResponse.json({
+    users: usersCount || 0,
+    services: servicesCount || 0,
+    products: productsCount || 0,
+  })
 }

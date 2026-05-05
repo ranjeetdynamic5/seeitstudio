@@ -1,3 +1,4 @@
+import AdminStats from '@/components/AdminStats'
 import UserManager from '@/components/UserManager'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
@@ -15,11 +16,15 @@ export default async function AdminPage() {
     redirect('/login')
   }
 
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from('profiles')
     .select('role')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
+
+  console.log('[Admin] user.id:', user.id)
+  console.log('[Admin] profile:', profile)
+  console.log('[Admin] profile error:', profileError?.code, profileError?.message)
 
   if (profile?.role !== 'admin') {
     redirect('/dashboard')
@@ -44,6 +49,7 @@ export default async function AdminPage() {
       <div className="max-w-6xl mx-auto px-6 py-8">
 
       {/* 👇 userManager */}
+      <AdminStats />
       <UserManager />
 
     </div>

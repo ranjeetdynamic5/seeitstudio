@@ -10,20 +10,20 @@ export async function middleware(req: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name) {
+        get(name: string) {
           return req.cookies.get(name)?.value
         },
-        set(name, value, options) {
+        set(name: string, value: string, options: any) {
           res.cookies.set(name, value, options)
         },
-        remove(name, options) {
+        remove(name: string, options: any) {
           res.cookies.set(name, '', options)
         },
       },
     }
   )
 
-  // 🔥 MUST: refresh session
+  // 🔐 Refresh session
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -31,23 +31,35 @@ export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone()
   const pathname = url.pathname
 
-  // 🔐 Protected routes
-  if (!user && pathname.startsWith('/dashboard')) {
+  // ==============================
+  // 🔒 NOT LOGGED IN
+  // ==============================
+  if (!user && (pathname.startsWith('/dashboard') || pathname.startsWith('/admin'))) {
     url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
-  // 🔐 Future admin routes (ready)
-  if (!user && pathname.startsWith('/admin')) {
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
+  // ==============================
+  // 🔒 ADMIN PROTECTION
+  // ==============================
+  if (user && pathname.startsWith('/admin')) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    // ❌ Not admin → block
+    if (profile?.role !== 'admin') {
+      url.pathname = '/dashboard'
+      return NextResponse.redirect(url)
+    }
   }
 
-  // 🔁 Block auth pages if logged in
-  if (
-    user &&
-    (pathname === '/login' || pathname === '/signup')
-  ) {
+  // ==============================
+  // 🔁 BLOCK AUTH PAGES
+  // ==============================
+  if (user && (pathname === '/login' || pathname === '/signup')) {
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
   }
@@ -55,15 +67,11 @@ export async function middleware(req: NextRequest) {
   return res
 }
 
-// ⚡ PERFORMANCE BOOST (VERY IMPORTANT)
+// ==============================
+// ⚡ PERFORMANCE CONFIG
+// ==============================
 export const config = {
   matcher: [
-    /*
-     * Exclude:
-     * - _next (static files)
-     * - images
-     * - favicon
-     */
     '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
 }

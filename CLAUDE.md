@@ -1,129 +1,188 @@
-## 🔐 AUTH SYSTEM (STRICT)
+# 🚀 Seeit Studio — Claude Code Instructions
 
-Authentication must use separate pages:
-
-Routes:
-
-* /login
-* /signup
-* /forgot-password
-
-Rules:
-
-1. All pages must use SAME UI layout (reuse login card design)
-2. DO NOT redesign UI
-3. Only change inner content
-
-### LOGIN:
-
-* Email
-* Password
-* "Forgot password?" → /forgot-password
-* "Create account" → /signup
-* Optional: Google login
-
-### SIGNUP:
-
-* Email
-* Password
-* Confirm Password (required)
-* Validate passwords match
-* Redirect to /dashboard after signup
-
-### FORGOT PASSWORD:
-
-* Email input
-* Send reset link via Supabase
-* Redirect to /login after success
-
-### REDIRECT LOGIC:
-
-* Admin → /admin
-* Normal user → /dashboard
-
-❌ Do NOT mix pages
-❌ Do NOT change UI structure
-✔ Only reuse and adapt
+## ⚠️ STRICT RULES (NEVER VIOLATE)
+- DO NOT redesign any existing UI unless explicitly asked
+- DO NOT change folder structure without asking
+- DO NOT touch auth system unless explicitly asked
+- DO NOT use email-based role checks
+- DO NOT create client-side auth for security
+- DO NOT bypass RLS
+- ALWAYS use server-side Supabase client for sensitive operations
+- ALWAYS validate role in API routes
+- ALWAYS use service role key for admin API routes
 
 ---
 
-## 🏗️ PROJECT ARCHITECTURE (STRICT)
+## 🎨 BRAND COLORS (STRICTLY USE THESE)
 
-### Folder Structure Rules
+| Purpose | Color |
+|---|---|
+| Primary Navy | #00334e |
+| Secondary Navy | #00527d |
+| Accent Blue | #0088cc |
+| CTA Button | #f0a500 |
+| CTA Hover | #d4890a |
+| Light Tint | #e0f0f8 |
+| Page Background | #F7F9FA |
+| Dark Text | #0B0F19 |
+| Body Text | #64748B |
+| Border | #e2e8f0 |
 
-- /app → ONLY pages, layouts, routes
+### Color Replacement Rules (Old → New)
+- #D9534F → #f0a500 (CTA buttons)
+- #c9302c → #d4890a (CTA hover)
+- #0F172A → #00334e (dark backgrounds)
+- #1e293b → #00527d (secondary dark)
+- text #D9534F → #0088cc (links)
+- hover text #c9302c → #00527d (link hover)
+- rose-50 → blue-50 (focus rings)
+
+### Typography
+- Font: Inter (inherit from site)
+- Headings: font-bold, tracking-tight, #0B0F19
+- Body: #64748B
+- Labels: #374151
+
+---
+
+## 🏗️ PROJECT ARCHITECTURE
+
+### Stack
+- Next.js 15 (App Router)
+- Supabase (Auth + Database + RLS + Storage)
+- Tailwind CSS
+- @uiw/react-md-editor (for rich text)
+
+### Folder Structure
+- /app → pages, layouts, API routes
 - /components → reusable UI components
-- /lib → utilities (supabase clients, helpers)
+- /components/admin → admin-specific components
+- /lib → utilities (supabase, helpers)
 
-❌ NEVER create components inside /app/_components  
-❌ NEVER mix UI components inside route folders  
+❌ NEVER create components inside /app
 ✅ ALWAYS use /components for reusable UI
 
 ---
 
-## 🔐 SUPABASE AUTH (STRICT)
+## 🔐 AUTH SYSTEM
 
+### Routes
+- /login
+- /signup
+- /forgot-password
+
+### Rules
 - Use @supabase/ssr
-- Server client must be async
-- Always use:
-  - /lib/supabase/server.ts
-  - /lib/supabase/client.ts
+- Server client: /lib/supabase/server.ts
+- Client client: /lib/supabase/client.ts
+- Same UI layout for all auth pages
+- DO NOT redesign UI
 
-❌ DO NOT create multiple Supabase clients  
-❌ DO NOT use deprecated auth methods  
+### Redirect Logic
+- Admin → /admin
+- Normal user → /dashboard
 
 ---
 
 ## 👤 ROLE SYSTEM
 
-- Roles stored in `profiles` table
-- Roles:
-  - admin
-  - user
+### Profiles Table
+- id (UUID = auth.users.id)
+- email (text)
+- role (text: 'admin' | 'user')
+- full_name (text)
 
-- Admin pages:
-  - /admin (protected)
-- User pages:
-  - /dashboard
-
-❌ DO NOT use email-based admin check  
-✅ ALWAYS fetch role from database
+### Rules
+- ALWAYS fetch role from profiles table
+- NEVER use email-based role check
+- Admin APIs must use service role client
 
 ---
 
-## 🔘 COMPONENT RULES
-
-- LogoutButton must be a client component
-- Place in: /components/LogoutButton.tsx
-
-Usage:
-import LogoutButton from '@/components/LogoutButton'
-
-❌ DO NOT inline logout logic in pages  
-❌ DO NOT duplicate logout code  
+## 🔒 RLS STATUS
+- profiles: ✅ RLS enabled
+- products: ✅ RLS enabled
+- orders: ✅ RLS enabled
+- services: ✅ RLS enabled
+- leads: ✅ RLS enabled
+- training_courses: ✅ RLS enabled
+- product_categories: ❌ RLS not checked
 
 ---
 
-## 🚫 STRICT NO-CHANGE RULES
+## 🗄️ DATABASE SCHEMA
 
-- DO NOT redesign UI
-- DO NOT break existing auth system
-- DO NOT modify middleware unless asked
+### profiles
+- id, email, role, full_name, created_at
+
+### products
+- id, title, slug, price, original_price, discount_percent, is_on_sale, is_featured, image_url, description, created_at
+
+### orders
+- id, order_id, customer_name, customer_email, total_amount, products (jsonb), status, created_at
+
+### services
+- id, title, slug, description, content, image_url, created_at
+
+### leads
+- id, full_name, email, phone, company, message, service, inquiry_type, status, created_at
+
+### training_courses
+- id, title, slug, description, content, image_url, duration, is_featured, created_at
 
 ---
 
-## 🎯 CURRENT TASK CONTEXT
-
-- Fix component structure
-- Move /app/_components → /components
-- Fix all imports
-- Ensure LogoutButton works in dashboard and admin
+## 🔐 MIDDLEWARE
+File: /middleware.ts
+- Block /dashboard if not logged in
+- Block /admin if not logged in
+- Allow /admin only if role = admin
+- Redirect logged-in users away from /login and /signup
 
 ---
 
-## 🧾 OUTPUT RULES
+## 🔐 API SECURITY
+- All admin APIs → use service role client
+- Check user session first with regular client
+- Check role from profiles table
+- Use SUPABASE_SERVICE_ROLE_KEY for DB operations
 
-- Show updated folder structure
-- Show changed imports
-- Keep code minimal
-- Do NOT refactor unrelated files
+### Pattern:
+```typescript
+const supabase = await createClient()
+const { data: { user } } = await supabase.auth.getUser()
+if (!user) return 401
+
+const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+if (profile?.role !== 'admin') return 403
+
+const serviceClient = createServiceClient(URL, SERVICE_ROLE_KEY)
+// do DB operations
+```
+
+---
+
+## ✅ COMPLETED FEATURES
+- Auth system (login/signup/forgot password)
+- Role system (admin/user)
+- Middleware protection
+- Admin dashboard with stats
+- Orders Management (status change)
+- User Management (role change)
+- Products Management (image upload, markdown, featured, slug)
+- Training Management (image upload, markdown, featured)
+- Services Management
+- Leads Management (status tracking)
+- Supabase Storage (product-images, course-images buckets)
+- Service pages (/services/rendering-services, /3d-modelling, /ai-consulting, /web-development)
+- User dashboard (orders, profile settings, password change)
+- Checkout flow (email linked to logged-in user)
+- Homepage featured products/training
+
+## 🚧 IN PROGRESS
+- Design/branding update (new color scheme)
+
+## ❌ NOT STARTED
+- Analytics/Revenue dashboard
+- Subscription Management
+- Deploy to Vercel

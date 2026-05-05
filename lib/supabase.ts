@@ -26,6 +26,7 @@ export type Product = {
   original_price?: number;
   discount_percent?: number;
   is_on_sale?: boolean;
+  is_featured?: boolean;
   offer_text?: string;
   image_url?: string;
   category_id?: number;
@@ -47,6 +48,9 @@ export type TrainingCourse = {
   title: string;
   description: string;
   duration?: string;
+  is_featured?: boolean;
+  image_url?: string;
+  slug?: string;
   category_id?: number;
   created_at: string;
 };
@@ -117,8 +121,9 @@ export async function getFeaturedProducts(): Promise<Product[]> {
   const { data, error } = await supabase
     .from("products")
     .select("*")
+    .eq("is_featured", true)
     .order("created_at", { ascending: false })
-    .limit(4);
+    .limit(5);
   if (error) {
     console.error("Error fetching featured products:", error);
     return [];
@@ -158,6 +163,20 @@ export async function getTrainingCourses(): Promise<TrainingCourse[]> {
     .order("title");
   if (error) {
     console.error("Error fetching training courses:", error);
+    return [];
+  }
+  return data ?? [];
+}
+
+export async function getFeaturedTrainingCourses(): Promise<TrainingCourse[]> {
+  const { data, error } = await supabase
+    .from("training_courses")
+    .select("*")
+    .eq("is_featured", true)
+    .order("title")
+    .limit(5);
+  if (error) {
+    console.error("Error fetching featured training courses:", error);
     return [];
   }
   return data ?? [];

@@ -7,6 +7,9 @@ const links = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/products", label: "Products" },
+  { href: "/admin/training", label: "Training" },
+  { href: "/admin/services", label: "Services" },
+  { href: "/admin/leads", label: "Leads" },
 ];
 
 export default function AdminNav() {

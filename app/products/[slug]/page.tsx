@@ -6,6 +6,7 @@ import { getProductBySlug } from "@/lib/supabase";
 import type { Product } from "@/lib/supabase";
 import StickyBar from "./StickyBar";
 import AddToCartButton from "./AddToCartButton";
+import DescriptionPreview from "./DescriptionPreview";
 
 export default async function ProductDetailPage({
   params,
@@ -68,10 +69,6 @@ export default async function ProductDetailPage({
                 <p className="text-sm text-[#D9534F] font-medium">{product.offer_text}</p>
               )}
 
-              <p className="text-[#64748B]">
-                {product.description || "No description available"}
-              </p>
-
               {product.is_on_sale && product.original_price != null ? (
                 <div className="flex items-baseline gap-3">
                   <span className="text-2xl font-bold text-[#0F172A]">
@@ -95,6 +92,16 @@ export default async function ProductDetailPage({
             </div>
           </div>
         </div>
+
+        {/* Full Description Section */}
+        {product.description && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div className="bg-white rounded-xl border border-slate-200 p-8">
+              <h2 className="text-xl font-semibold text-[#0B0F19] mb-6">Product Details</h2>
+              <DescriptionPreview source={product.description} />
+            </div>
+          </div>
+        )}
 
       </main>
 

@@ -47,7 +47,7 @@ export default function ProductCard({ product }: { product: Product }) {
           <img
             src={product.image_url}
             alt={product.title}
-            className="max-h-16 max-w-[70%] object-contain"
+            className="max-h-80 max-w-[100%] object-contain"
           />
         ) : (
           <svg className="w-10 h-10 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
@@ -70,8 +70,10 @@ export default function ProductCard({ product }: { product: Product }) {
         )}
 
         <p className="text-sm text-[#64748B] leading-relaxed line-clamp-2 flex-1">
-          {product.description || "No description available"}
-        </p>
+  {product.description
+    ? product.description.replace(/#{1,6}\s/g, '').replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1').replace(/\n/g, ' ').trim()
+    : "No description available"}
+</p>
 
         {/* Price + CTA */}
         <div className="pt-3 border-t border-slate-100 flex flex-col gap-3">

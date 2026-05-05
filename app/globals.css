@@ -3,11 +3,22 @@
 @theme {
   --color-brand: #00334e;
   --color-brand-dark: #00263a;
+  --color-brand-secondary: #00527d;
+  --color-accent: #0088cc;
+  --color-cta: #f0a500;
+  --color-cta-hover: #d4890a;
+  --color-light: #e0f0f8;
+  --color-bg: #F7F9FA;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #F7F9FA;
+    color: #0b0f19;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -17,11 +28,6 @@
   }
 }
 
-body {
-  background-color: #ffffff;
-  color: #0b0f19;
-}
-
 /* ── Blog article prose ─────────────────────────────────────────────────── */
 .prose-custom {
   font-size: 0.9375rem;
@@ -29,9 +35,7 @@ body {
   color: #334155;
 }
 
-.prose-custom p {
-  margin-bottom: 1.25rem;
-}
+.prose-custom p { margin-bottom: 1.25rem; }
 
 .prose-custom h2 {
   font-size: 1.125rem;
@@ -53,9 +57,7 @@ body {
   margin-bottom: 1.25rem;
 }
 
-.prose-custom ul li {
-  margin-bottom: 0.375rem;
-}
+.prose-custom ul li { margin-bottom: 0.375rem; }
 
 .prose-custom ol {
   list-style: decimal;
@@ -64,13 +66,9 @@ body {
 }
 
 .prose-custom a {
-  color: #d9534f;
+  color: #0088cc;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
-.prose-custom a:hover {
-  color: #c9302c;
-}
-
-
+.prose-custom a:hover { color: #00527d; }
