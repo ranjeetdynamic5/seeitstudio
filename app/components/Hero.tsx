@@ -11,7 +11,7 @@ export default function Hero() {
           <div className="flex-1 min-w-0">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 border border-white/20 rounded-full mb-6 lg:mb-8">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D9534F] inline-block shrink-0"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#0066FF] inline-block shrink-0"></span>
               <span className="text-xs font-medium text-slate-300 tracking-wide">
                 UK-Based Digital Studio &amp; Software Marketplace
               </span>
@@ -20,7 +20,7 @@ export default function Hero() {
             {/* Headline */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-semibold text-white leading-tight tracking-tight mb-5 lg:mb-6">
               Software, Training &amp;{" "}
-              <span className="text-[#D9534F]">Creative Services</span>{" "}
+              <span className="text-[#0066FF]">Creative Services</span>{" "}
               for Design Professionals
             </h1>
 
@@ -35,7 +35,7 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row gap-3">
               <a
                 href="/products"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
               >
                 Browse Products
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -70,7 +70,7 @@ export default function Hero() {
           <div className="hidden lg:flex lg:w-[420px] xl:w-[480px] shrink-0 flex-col gap-4">
             {/* Feature highlight cards */}
             <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-              <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-4">
+              <p className="text-xs font-semibold text-[#0066FF] uppercase tracking-widest mb-4">
                 Why design studios choose us
               </p>
               <ul className="flex flex-col gap-3.5">
@@ -83,7 +83,7 @@ export default function Hero() {
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm text-slate-300">
                     <svg
-                      className="w-4 h-4 text-[#D9534F] shrink-0 mt-0.5"
+                      className="w-4 h-4 text-[#0066FF] shrink-0 mt-0.5"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -116,7 +116,7 @@ export default function Hero() {
                       </svg>
                     </div>
                     {p.badge && (
-                      <span className="text-[10px] font-semibold px-1.5 py-0.5 bg-[#D9534F]/20 text-red-300 rounded-full">
+                      <span className="text-[10px] font-semibold px-1.5 py-0.5 bg-[#0066FF]/20 text-red-300 rounded-full">
                         {p.badge}
                       </span>
                     )}

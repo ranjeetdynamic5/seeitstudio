@@ -64,7 +64,7 @@ export default function EnrollModal({ isOpen, onClose, courseTitle }: Props) {
         {/* Header */}
         <div className="flex items-start justify-between gap-4 mb-6">
           <div>
-            <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-1">Enrolment</p>
+            <p className="text-xs font-semibold text-[#0066FF] uppercase tracking-widest mb-1">Enrolment</p>
             <h2 id="enroll-modal-title" className="text-lg font-bold text-[#0B0F19] leading-snug">
               {courseTitle}
             </h2>
@@ -73,7 +73,7 @@ export default function EnrollModal({ isOpen, onClose, courseTitle }: Props) {
             type="button"
             onClick={reset}
             aria-label="Close"
-            className="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg text-[#64748B] hover:text-[#0B0F19] hover:bg-[#f0f5fa] transition-colors"
+            className="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg text-[#64748B] hover:text-[#0B0F19] hover:bg-[#f8f9fa] transition-colors"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -95,7 +95,7 @@ export default function EnrollModal({ isOpen, onClose, courseTitle }: Props) {
             <button
               type="button"
               onClick={reset}
-              className="mt-2 px-6 py-2.5 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors"
+              className="mt-2 px-6 py-2.5 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
             >
               Close
             </button>
@@ -111,7 +111,7 @@ export default function EnrollModal({ isOpen, onClose, courseTitle }: Props) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Jane Smith"
-                className="px-4 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-400"
+                className="px-4 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-400"
               />
             </div>
 
@@ -124,7 +124,7 @@ export default function EnrollModal({ isOpen, onClose, courseTitle }: Props) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="jane@example.com"
-                className="px-4 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-400"
+                className="px-4 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-400"
               />
             </div>
 
@@ -137,7 +137,7 @@ export default function EnrollModal({ isOpen, onClose, courseTitle }: Props) {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+44 7700 900000"
-                className="px-4 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-400"
+                className="px-4 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-400"
               />
             </div>
 
@@ -148,7 +148,7 @@ export default function EnrollModal({ isOpen, onClose, courseTitle }: Props) {
             <button
               type="submit"
               disabled={status === "submitting"}
-              className="mt-2 w-full py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+              className="mt-2 w-full py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
             >
               {status === "submitting" ? "Submitting…" : "Enroll Now"}
             </button>

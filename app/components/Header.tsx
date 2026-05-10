@@ -86,19 +86,19 @@ const SOCIAL_LINKS = [
 function DropdownMenu({ items, isOpen }: { items: DropdownItem[]; isOpen: boolean }) {
   if (!isOpen) return null;
   return (
-    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-72 bg-white border border-slate-200 rounded-xl shadow-lg z-50 overflow-hidden">
+    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-72 bg-white border border-[#e8e8e8] rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.07)] z-50 overflow-hidden">
       <div className="p-1.5">
         {items.map((item) => (
           <Link
             key={item.href + item.label}
             href={item.href}
-            className="flex flex-col gap-0.5 px-3 py-2.5 rounded-lg hover:bg-[#f0f5fa] transition-colors group"
+            className="flex flex-col gap-0.5 px-3 py-2.5 rounded-lg hover:bg-[#f7f7f7] transition-colors group"
           >
-            <span className="text-base font-medium text-[#0B0F19] group-hover:text-[#0088cc] transition-colors">
+            <span className="text-[15px] font-medium text-[#1d1d1f] group-hover:text-[#1d1d1f] transition-colors">
               {item.label}
             </span>
             {item.description && (
-              <span className="text-sm text-[#64748B]">{item.description}</span>
+              <span className="text-sm text-[#6b7280]">{item.description}</span>
             )}
           </Link>
         ))}
@@ -165,11 +165,10 @@ export default function Header({ services = [] }: { services?: Service[] }) {
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       const target = e.target as Node;
+      if (userMenuRef.current?.contains(target)) return;
+      setUserMenuOpen(false);
       if (navRef.current && !navRef.current.contains(target)) {
         setOpenDropdown(null);
-        setUserMenuOpen(false);
-      } else if (userMenuRef.current && !userMenuRef.current.contains(target)) {
-        setUserMenuOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClick);
@@ -190,7 +189,7 @@ export default function Header({ services = [] }: { services?: Service[] }) {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-shadow duration-300 ${
-        scrolled ? "shadow-md" : "shadow-sm"
+        scrolled ? "shadow-[0_1px_16px_rgba(0,0,0,0.09)]" : "shadow-[0_1px_4px_rgba(0,0,0,0.04)]"
       }`}
     >
       {toast && (
@@ -203,7 +202,7 @@ export default function Header({ services = [] }: { services?: Service[] }) {
         </div>
       )}
       {/* ── ROW 1: Top Bar ─────────────────────────────────────────────────────── */}
-      <div className="hidden md:block bg-[#f8fafc] border-b border-slate-200">
+      <div className="hidden md:block bg-[#0B0F19] border-b border-[#1e293b]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-12">
 
@@ -211,7 +210,7 @@ export default function Header({ services = [] }: { services?: Service[] }) {
             <div className="flex items-center gap-6">
               <a
                 href="tel:03331212187"
-                className="flex items-center gap-2 text-sm font-medium text-[#64748B] hover:text-[#0B0F19] transition-colors"
+                className="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors"
               >
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
@@ -220,7 +219,7 @@ export default function Header({ services = [] }: { services?: Service[] }) {
               </a>
               <a
                 href="mailto:jamesogston@seeit3d.co.uk"
-                className="flex items-center gap-2 text-sm font-medium text-[#64748B] hover:text-[#0B0F19] transition-colors"
+                className="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors"
               >
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -238,49 +237,34 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                   aria-label={s.label}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-8 h-8 rounded-md text-[#64748B] hover:text-[#0B0F19] hover:bg-slate-200 transition-colors"
+                  className="flex items-center justify-center w-8 h-8 rounded-md text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
                 >
                   {s.icon}
                 </a>
               ))}
             </div>
 
-            {/* Right: Action buttons */}
-            <div className="flex items-center gap-2">
-              {[
-                { label: "Support", href: "/contact" },
-                { label: "Shop", href: "/shop" },
-                { label: "Sign Up", href: "/signup" },
-              ].map((btn) => (
-                <a
-                  key={btn.label}
-                  href={btn.href}
-                  className="inline-flex items-center justify-center px-4 py-1.5 text-sm font-semibold text-white bg-[#f0a500] rounded-md hover:bg-[#d4890a] transition-colors"
-                >
-                  {btn.label}
-                </a>
-              ))}
-            </div>
           </div>
         </div>
       </div>
 
       {/* ── ROW 2: Main Navbar ──────────────────────────────────────────────────── */}
-      <nav ref={navRef} className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
+      <nav ref={navRef} className="bg-white border-b border-[#e8e8e8]">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-[auto_1fr_auto] items-center h-20">
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 shrink-0">
-            <div className="w-10 h-10 bg-[#00334e] rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-[#1d1d1f] rounded-lg flex items-center justify-center">
               <span className="text-white text-base font-bold tracking-tight">S</span>
             </div>
-            <span className="text-[#00334e] font-semibold text-xl tracking-tight">
+            <span className="text-[#1d1d1f] font-medium text-xl tracking-tight">
               SeeIt Studio
             </span>
           </Link>
 
           {/* Desktop Nav — lg+ */}
-          <ul className="hidden lg:flex items-center gap-1">
+          <ul className="hidden lg:flex justify-center items-center gap-2">
+            
             {NAV_ITEMS.map((item) => (
               <li key={item.label} className="relative">
                 {item.dropdown ? (
@@ -288,18 +272,18 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                     {item.href ? (
                       <Link
                         href={item.href}
-                        className={`px-3 py-2.5 rounded-l-lg text-base font-medium transition-colors whitespace-nowrap ${
+                        className={`px-3.5 py-2.5 rounded-l-lg text-[15px] font-medium tracking-[0.01em] transition-colors whitespace-nowrap ${
                           openDropdown === item.label
-                            ? "text-[#00334e] bg-[#f0f5fa]"
-                            : "text-[#64748B] hover:text-[#00334e] hover:bg-[#f0f5fa]"
+                            ? "text-[#1d1d1f] bg-[#f7f7f7]"
+                            : "text-[#6b7280] hover:text-[#1d1d1f] hover:bg-[#f7f7f7]"
                         }`}
                       >
                         {item.label}
                       </Link>
                     ) : (
                       <span
-                        className={`px-3 py-2.5 text-base font-medium whitespace-nowrap ${
-                          openDropdown === item.label ? "text-[#00334e]" : "text-[#64748B]"
+                        className={`px-3.5 py-2.5 text-[15px] font-medium tracking-[0.01em] whitespace-nowrap ${
+                          openDropdown === item.label ? "text-[#1d1d1f]" : "text-[#6b7280]"
                         }`}
                       >
                         {item.label}
@@ -310,8 +294,8 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                       aria-expanded={openDropdown === item.label}
                       className={`flex items-center px-1.5 py-2.5 rounded-r-lg transition-colors ${
                         openDropdown === item.label
-                          ? "text-[#00334e] bg-[#f0f5fa]"
-                          : "text-[#64748B] hover:text-[#00334e] hover:bg-[#f0f5fa]"
+                          ? "text-[#1d1d1f] bg-[#f7f7f7]"
+                          : "text-[#6b7280] hover:text-[#1d1d1f] hover:bg-[#f7f7f7]"
                       }`}
                       onClick={() =>
                         setOpenDropdown(openDropdown === item.label ? null : item.label)
@@ -331,7 +315,7 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                 ) : (
                   <Link
                     href={item.href}
-                    className="block px-3 py-2.5 rounded-lg text-base font-medium text-[#64748B] hover:text-[#00334e] hover:bg-[#f0f5fa] transition-colors whitespace-nowrap"
+                    className="block px-3.5 py-2.5 rounded-lg text-[15px] font-medium tracking-[0.01em] text-[#6b7280] hover:text-[#1d1d1f] hover:bg-[#f7f7f7] transition-colors whitespace-nowrap"
                   >
                     {item.label}
                   </Link>
@@ -343,73 +327,83 @@ export default function Header({ services = [] }: { services?: Service[] }) {
             ))}
           </ul>
 
-          {/* Right: User section + Cart + hamburger */}
-          <div className="flex items-center gap-2">
-            {!userLoading && (
-              user ? (
-                <div className="relative hidden lg:block" ref={userMenuRef}>
-                  <button
-                    onClick={() => setUserMenuOpen((v) => !v)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-[#0B0F19] border border-slate-200 rounded-lg hover:bg-[#f0f5fa] transition-colors"
-                  >
-                    <span className="w-6 h-6 rounded-full bg-[#f0a500] text-white text-xs font-bold flex items-center justify-center shrink-0">
-                      {(user.email?.[0] ?? "U").toUpperCase()}
-                    </span>
-                    <span className="max-w-[110px] truncate text-[#64748B] text-sm">
-                      {user.email}
-                    </span>
-                    <svg
-                      className={`w-3.5 h-3.5 text-[#94a3b8] shrink-0 transition-transform duration-200 ${userMenuOpen ? "rotate-180" : ""}`}
-                      fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                    </svg>
-                  </button>
-                  {userMenuOpen && (
-                    <div className="absolute top-full right-0 mt-1 w-44 bg-white border border-slate-200 rounded-xl shadow-lg z-50 overflow-hidden">
-                      <div className="p-1.5 flex flex-col gap-0.5">
-                        <Link href={role === 'admin' ? '/admin' : '/dashboard'} onClick={() => setUserMenuOpen(false)}
-                          className="block px-3 py-2.5 rounded-lg text-sm font-medium text-[#0B0F19] hover:bg-[#f0f5fa] transition-colors"
-                        >
-                          Dashboard
-                        </Link>
-                        <button
-                          onClick={handleLogout}
-                          disabled={logoutLoading}
-                          className="text-left w-full px-3 py-2.5 rounded-lg text-sm font-medium text-[#0088cc] hover:bg-[#f0f5fa] transition-colors disabled:opacity-60"
-                        >
-                          {logoutLoading ? "Signing out…" : "Sign out"}
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <Link
-                  href="/login"
-                  className="hidden lg:inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-[#0B0F19] border border-slate-200 rounded-lg hover:bg-[#f0f5fa] transition-colors"
-                >
-                  Login
-                </Link>
-              )
-            )}
+          {/* Right: Cart + User (desktop) · Cart + Hamburger (mobile) */}
+          <div className="flex shrink-0 items-center gap-2">
+
+            {/* Cart — all breakpoints */}
             <Link
               href="/cart"
               aria-label="View cart"
-              className="relative flex items-center justify-center w-10 h-10 rounded-lg text-[#64748B] hover:text-[#00334e] hover:bg-[#f0f5fa] transition-colors"
+              className="relative flex items-center justify-center w-9 h-9 rounded-lg text-[#6b7280] hover:text-[#1d1d1f] hover:bg-[#f7f7f7] transition-colors"
             >
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.836l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 110-1.5.75.75 0 010 1.5zm12.75 0a.75.75 0 110-1.5.75.75 0 010 1.5z" />
               </svg>
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-[#f0a500] text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none">
+                <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-0.5 bg-[#1d1d1f] text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
                   {cartCount}
                 </span>
               )}
             </Link>
 
+            {/* User — desktop only */}
+            {!userLoading && (
+              <div className="block" ref={userMenuRef}>
+                {user ? (
+                  <div className="relative">
+                    <button
+                      onClick={() => setUserMenuOpen((v) => !v)}
+                      className="flex items-center gap-2 px-2.5 py-1.5 text-sm font-medium text-[#6b7280] hover:text-[#1d1d1f] hover:bg-[#f7f7f7] rounded-lg transition-colors"
+                    >
+                      <span className="w-6 h-6 rounded-full bg-[#1d1d1f] text-white text-xs font-bold flex items-center justify-center shrink-0">
+                        {(user.email?.[0] ?? "U").toUpperCase()}
+                      </span>
+                      <span className="hidden sm:block max-w-[110px] truncate text-sm">
+                        {user.email}
+                      </span>
+                      <svg
+                        className={`w-3.5 h-3.5 text-[#6b7280] shrink-0 transition-transform duration-200 ${userMenuOpen ? "rotate-180" : ""}`}
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                      </svg>
+                    </button>
+                    {userMenuOpen && (
+                      <div className="absolute top-full right-0 mt-1.5 w-44 bg-white border border-[#e8e8e8] rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.07)] z-50 overflow-hidden">
+                        <div className="p-1.5 flex flex-col gap-0.5">
+                          <Link href={role === 'admin' ? '/admin' : '/dashboard'} onClick={() => setUserMenuOpen(false)}
+                            className="block px-3 py-2.5 rounded-lg text-sm font-medium text-[#1d1d1f] hover:bg-[#f7f7f7] transition-colors"
+                          >
+                            Dashboard
+                          </Link>
+                          <button
+                            onClick={handleLogout}
+                            disabled={logoutLoading}
+                            className="text-left w-full px-3 py-2.5 rounded-lg text-sm font-medium text-[#6b7280] hover:text-[#1d1d1f] hover:bg-[#f7f7f7] transition-colors disabled:opacity-60"
+                          >
+                            {logoutLoading ? "Signing out…" : "Sign out"}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="inline-flex items-center justify-center px-4 py-1.5 text-sm font-medium text-[#1d1d1f] border border-[#e8e8e8] rounded-lg hover:bg-[#f7f7f7] transition-colors"
+                  >
+                    Login
+                  </Link>
+                )}
+              </div>
+            )}
+
+            {/* Separator — mobile only */}
+            <div className="lg:hidden w-px h-5 bg-[#e8e8e8]" />
+
+            {/* Hamburger — mobile only */}
             <button
-              className="lg:hidden flex items-center justify-center w-10 h-10 rounded-lg text-[#64748B] hover:text-[#00334e] hover:bg-[#f0f5fa] transition-colors"
+              className="lg:hidden flex items-center justify-center w-10 h-10 rounded-lg text-[#6b7280] hover:text-[#1d1d1f] hover:bg-[#f7f7f7] transition-colors"
               onClick={() => setMobileOpen((v) => !v)}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
@@ -429,10 +423,10 @@ export default function Header({ services = [] }: { services?: Service[] }) {
 
         {/* ── Mobile Menu ── */}
         {mobileOpen && (
-          <div className="lg:hidden border-t border-slate-200 bg-white max-h-[calc(100vh-4rem)] overflow-y-auto">
+          <div className="lg:hidden border-t border-[#e8e8e8] bg-white max-h-[calc(100vh-4rem)] overflow-y-auto">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col gap-0.5">
 
-              <div className="flex flex-wrap items-center gap-3 px-3 py-3 mb-1 border-b border-slate-100">
+              <div className="flex flex-wrap items-center gap-3 px-3 py-3 mb-1 border-b border-[#ebebeb]">
                 <a href="tel:03331212187" className="flex items-center gap-2 text-sm font-medium text-[#64748B]">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
@@ -451,17 +445,17 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                 <div key={item.label}>
                   {item.dropdown ? (
                     <>
-                      <div className="flex items-center rounded-xl hover:bg-[#f0f5fa] transition-colors">
+                      <div className="flex items-center rounded-xl hover:bg-[#f8f9fa] transition-colors">
                         {item.href ? (
                           <Link
                             href={item.href}
                             onClick={() => setMobileOpen(false)}
-                            className="flex-1 px-4 py-3.5 text-base font-medium text-[#0B0F19]"
+                            className="flex-1 px-4 py-3.5 text-[15px] font-medium tracking-[0.01em] text-[#1d1d1f]"
                           >
                             {item.label}
                           </Link>
                         ) : (
-                          <span className="flex-1 px-4 py-3.5 text-base font-medium text-[#0B0F19]">
+                          <span className="flex-1 px-4 py-3.5 text-[15px] font-medium tracking-[0.01em] text-[#1d1d1f]">
                             {item.label}
                           </span>
                         )}
@@ -485,7 +479,7 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                         </button>
                       </div>
                       {mobileExpanded === item.label && (
-                        <div className="ml-4 mb-1 flex flex-col gap-0.5 border-l-2 border-slate-100 pl-4">
+                        <div className="ml-4 mb-1 flex flex-col gap-0.5 border-l-2 border-[#ebebeb] pl-4">
                           {item.dropdown.map((sub) => (
                             <Link
                               key={sub.href + sub.label}
@@ -493,11 +487,11 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                               onClick={() => setMobileOpen(false)}
                               className="flex flex-col gap-0.5 py-2.5 group"
                             >
-                              <span className="text-sm font-medium text-[#0B0F19] group-hover:text-[#0088cc] transition-colors">
+                              <span className="text-sm font-medium text-[#1d1d1f] group-hover:text-[#6b7280] transition-colors">
                                 {sub.label}
                               </span>
                               {sub.description && (
-                                <span className="text-xs text-[#64748B]">{sub.description}</span>
+                                <span className="text-xs text-[#6b7280]">{sub.description}</span>
                               )}
                             </Link>
                           ))}
@@ -508,7 +502,7 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                     <Link
                       href={item.href}
                       onClick={() => setMobileOpen(false)}
-                      className="block px-4 py-3.5 rounded-xl text-base font-medium text-[#0B0F19] hover:bg-[#f0f5fa] transition-colors"
+                      className="block px-4 py-3.5 rounded-xl text-[15px] font-medium tracking-[0.01em] text-[#1d1d1f] hover:bg-[#f7f7f7] transition-colors"
                     >
                       {item.label}
                     </Link>
@@ -516,7 +510,7 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                 </div>
               ))}
 
-              <div className="pt-3 mt-2 border-t border-slate-100 flex flex-col gap-2">
+              <div className="pt-3 mt-2 border-t border-[#ebebeb] flex flex-col gap-2">
                 <div className="grid grid-cols-3 gap-2">
                   {[
                     { label: "Support", href: "/contact" },
@@ -527,7 +521,7 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                       key={btn.label}
                       href={btn.href}
                       onClick={() => setMobileOpen(false)}
-                      className="flex items-center justify-center py-3 text-sm font-semibold text-white bg-[#f0a500] rounded-xl hover:bg-[#d4890a] transition-colors"
+                      className="flex items-center justify-center py-3 text-sm font-semibold text-white bg-[#1d1d1f] rounded-xl hover:bg-[#3a3a3c] transition-colors"
                     >
                       {btn.label}
                     </a>
@@ -536,14 +530,14 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                 {user ? (
                   <div className="grid grid-cols-2 gap-2">
                     <Link href={role === 'admin' ? '/admin' : '/dashboard'} onClick={() => setMobileOpen(false)}
-                      className="flex items-center justify-center py-3 text-sm font-semibold text-[#0B0F19] border border-slate-200 rounded-xl hover:bg-[#f0f5fa] transition-colors"
+                      className="flex items-center justify-center py-3 text-sm font-semibold text-[#1d1d1f] border border-[#e8e8e8] rounded-xl hover:bg-[#f7f7f7] transition-colors"
                     >
                       Dashboard
                     </Link>
                     <button
                       onClick={() => { setMobileOpen(false); handleLogout(); }}
                       disabled={logoutLoading}
-                      className="flex items-center justify-center py-3 text-sm font-semibold text-[#0088cc] border border-slate-200 rounded-xl hover:bg-[#f0f5fa] transition-colors disabled:opacity-60"
+                      className="flex items-center justify-center py-3 text-sm font-semibold text-[#6b7280] border border-[#e8e8e8] rounded-xl hover:bg-[#f7f7f7] transition-colors disabled:opacity-60"
                     >
                       {logoutLoading ? "Signing out…" : "Sign out"}
                     </button>
@@ -552,7 +546,7 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                   <a
                     href="/login"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center justify-center py-3 text-sm font-semibold text-white bg-[#f0a500] rounded-xl hover:bg-[#d4890a] transition-colors"
+                    className="flex items-center justify-center py-3 text-sm font-semibold text-white bg-[#1d1d1f] rounded-xl hover:bg-[#3a3a3c] transition-colors"
                   >
                     Login
                   </a>
@@ -567,7 +561,7 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                     aria-label={s.label}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center w-8 h-8 rounded-lg text-[#64748B] hover:text-[#0B0F19] hover:bg-slate-100 transition-colors"
+                    className="flex items-center justify-center w-8 h-8 rounded-lg text-[#6b7280] hover:text-[#1d1d1f] hover:bg-[#f7f7f7] transition-colors"
                   >
                     {s.icon}
                   </a>

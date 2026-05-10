@@ -387,7 +387,7 @@ export default async function BlogPostPage({
               <div className="mt-12 pt-8 border-t border-slate-200">
                 <Link
                   href="/blog"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#64748B] hover:text-[#D9534F] transition-colors"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#64748B] hover:text-[#0066FF] transition-colors"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -419,7 +419,7 @@ export default async function BlogPostPage({
                   </p>
                   <Link
                     href="/about"
-                    className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[#D9534F] hover:text-[#c9302c] transition-colors"
+                    className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[#0066FF] hover:text-[#0052cc] transition-colors"
                   >
                     About SeeIt Studio
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -440,7 +440,7 @@ export default async function BlogPostPage({
                         href={`/blog/${r.slug}`}
                         className="group flex flex-col gap-1"
                       >
-                        <p className="text-sm font-medium text-[#0B0F19] group-hover:text-[#D9534F] transition-colors leading-snug">
+                        <p className="text-sm font-medium text-[#0B0F19] group-hover:text-[#0066FF] transition-colors leading-snug">
                           {r.title}
                         </p>
                         <div className="flex items-center gap-2 text-xs text-[#64748B]">
@@ -456,7 +456,7 @@ export default async function BlogPostPage({
 
               {/* CTA */}
               <div className="bg-[#0F172A] rounded-xl p-5">
-                <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-2">
+                <p className="text-xs font-semibold text-[#0066FF] uppercase tracking-widest mb-2">
                   Learn more
                 </p>
                 <p className="text-sm font-semibold text-white mb-2 leading-snug">
@@ -467,7 +467,7 @@ export default async function BlogPostPage({
                 </p>
                 <Link
                   href="/training"
-                  className="w-full flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
                 >
                   View Training Courses
                 </Link>
@@ -481,7 +481,7 @@ export default async function BlogPostPage({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
           <div className="bg-[#0F172A] rounded-2xl px-6 py-10 sm:px-10 sm:py-12 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-2">
+              <p className="text-xs font-semibold text-[#0066FF] uppercase tracking-widest mb-2">
                 Keep reading
               </p>
               <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-2">
@@ -500,7 +500,7 @@ export default async function BlogPostPage({
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
               >
                 Get in Touch
               </Link>

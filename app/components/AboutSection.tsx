@@ -17,47 +17,42 @@ const highlights = [
 
 export default function AboutSection() {
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 lg:py-24 bg-white">
+    <section className="py-20 px-4 sm:px-6 lg:px-8 lg:py-32 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-16 xl:gap-24">
+        <div className="flex flex-col lg:flex-row lg:items-center gap-14 lg:gap-20 xl:gap-28">
 
           {/* ── Left: Visual Panel ── */}
-          <div className="lg:w-[480px] xl:w-[520px] shrink-0">
-            <div className="bg-[#0F172A] rounded-2xl overflow-hidden">
-              {/* Top accent bar */}
-              <div className="h-1.5 bg-[#D9534F]" />
+          <div className="lg:w-[460px] xl:w-[500px] shrink-0">
+            <div className="bg-[#f5f5f7] border border-[#e8e8e8] rounded-2xl overflow-hidden shadow-[0_1px_16px_rgba(0,0,0,0.05)]">
 
-              <div className="p-8 sm:p-10">
+              <div className="p-9 sm:p-12">
                 {/* Studio identifier */}
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center shrink-0">
-                    <span className="text-[#0F172A] text-sm font-bold">S</span>
+                <div className="flex items-center gap-3 mb-10">
+                  <div className="w-8 h-8 bg-[#1d1d1f] rounded-md flex items-center justify-center shrink-0">
+                    <span className="text-white text-xs font-bold tracking-tight">S</span>
                   </div>
                   <div>
-                    <p className="text-white text-sm font-semibold leading-tight">SeeIt Studio</p>
-                    <p className="text-slate-400 text-xs">Est. 2014 &middot; London, UK</p>
+                    <p className="text-[#1d1d1f] text-sm font-semibold leading-tight">SeeIt Studio</p>
+                    <p className="text-[#6e6e73] text-xs">Est. 2014 &middot; London, UK</p>
                   </div>
                 </div>
 
-                {/* Stats grid */}
-                <div className="grid grid-cols-2 gap-4 mb-8">
+                {/* Stats grid — editorial hairline style */}
+                <div className="grid grid-cols-2 gap-px bg-[#e8e8e8] border border-[#e8e8e8] rounded-xl overflow-hidden mb-10">
                   {stats.map((stat) => (
-                    <div
-                      key={stat.label}
-                      className="bg-white/5 border border-white/10 rounded-xl p-4"
-                    >
-                      <p className="text-2xl font-semibold text-white mb-1">{stat.value}</p>
-                      <p className="text-xs text-slate-400 leading-snug">{stat.label}</p>
+                    <div key={stat.label} className="bg-white p-6">
+                      <p className="text-3xl font-semibold text-[#1d1d1f] mb-1.5 tracking-tight">{stat.value}</p>
+                      <p className="text-xs text-[#6e6e73] leading-normal">{stat.label}</p>
                     </div>
                   ))}
                 </div>
 
                 {/* Highlights list */}
-                <ul className="flex flex-col gap-3">
+                <ul className="flex flex-col gap-3.5">
                   {highlights.map((item) => (
-                    <li key={item} className="flex items-start gap-2.5">
+                    <li key={item} className="flex items-start gap-3">
                       <svg
-                        className="w-4 h-4 text-[#D9534F] shrink-0 mt-0.5"
+                        className="w-4 h-4 text-[#1d1d1f]/40 shrink-0 mt-0.5"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -65,28 +60,30 @@ export default function AboutSection() {
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                       </svg>
-                      <span className="text-sm text-slate-300 leading-snug">{item}</span>
+                      <span className="text-sm text-[#6e6e73] leading-relaxed">{item}</span>
                     </li>
                   ))}
                 </ul>
+
+                <div className="mt-10 h-px bg-[#e8e8e8]" />
               </div>
             </div>
           </div>
 
           {/* ── Right: Content ── */}
-          <div className="flex flex-col gap-6 flex-1 min-w-0">
+          <div className="flex flex-col gap-7 flex-1 min-w-0">
             {/* Eyebrow */}
-            <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest">
+            <p className="text-xs font-medium text-black/35 uppercase tracking-[0.18em]">
               About SeeIt Studio
             </p>
 
             {/* Heading */}
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-[#0B0F19] leading-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-[#1d1d1f] leading-tight">
               The UK&apos;s dedicated hub for design software, training &amp; creative services
             </h2>
 
             {/* Body copy */}
-            <div className="flex flex-col gap-4 text-[#64748B] leading-relaxed text-sm sm:text-base">
+            <div className="flex flex-col gap-5 text-[#6b7280] leading-relaxed text-sm sm:text-base">
               <p>
                 Founded in London, SeeIt Studio has spent over a decade working exclusively with
                 architects, designers, and creative studios to improve the way they work. We are
@@ -105,11 +102,11 @@ export default function AboutSection() {
               </p>
             </div>
 
-            {/* Divider */}
-            <div className="border-t border-slate-100 pt-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            {/* CTAs */}
+            <div className="border-t border-[#ebebeb] pt-8 flex flex-col sm:flex-row items-start sm:items-center gap-5">
               <a
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#1d1d1f] rounded-lg hover:bg-[#3a3a3c] transition-colors"
               >
                 Contact Us
                 <svg
@@ -124,7 +121,7 @@ export default function AboutSection() {
               </a>
               <a
                 href="/about"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0B0F19] hover:text-[#D9534F] transition-colors"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0B0F19] hover:text-black/60 transition-colors"
               >
                 Our story
                 <svg

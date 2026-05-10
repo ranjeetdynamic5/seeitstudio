@@ -103,7 +103,7 @@ export default async function ServiceDetailPage({
             <aside className="lg:col-span-1">
               <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm sticky top-28">
                 <div className="bg-[#0F172A] px-5 py-6">
-                  <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-1.5">
+                  <p className="text-xs font-semibold text-[#0066FF] uppercase tracking-widest mb-1.5">
                     Get started
                   </p>
                   <h3 className="text-base font-semibold text-white">
@@ -128,7 +128,7 @@ export default async function ServiceDetailPage({
 
                   <Link
                     href="/contact"
-                    className="w-full flex items-center justify-center gap-2 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors mt-1"
+                    className="w-full flex items-center justify-center gap-2 py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors mt-1"
                   >
                     Enquire Now
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -151,7 +151,7 @@ export default async function ServiceDetailPage({
               <div className="mt-4">
                 <Link
                   href="/services"
-                  className="flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#D9534F] transition-colors"
+                  className="flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#0066FF] transition-colors"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -173,15 +173,15 @@ export default async function ServiceDetailPage({
                 <Link
                   key={s.id}
                   href={`/services/${s.slug}`}
-                  className="bg-white border border-slate-200 rounded-xl px-5 py-4 hover:border-[#D9534F] hover:shadow-sm transition-all group flex items-center justify-between gap-3"
+                  className="bg-white border border-slate-200 rounded-xl px-5 py-4 hover:border-[#0066FF] hover:shadow-sm transition-all group flex items-center justify-between gap-3"
                 >
                   <div>
-                    <p className="text-sm font-semibold text-[#0B0F19] group-hover:text-[#D9534F] transition-colors">
+                    <p className="text-sm font-semibold text-[#0B0F19] group-hover:text-[#0066FF] transition-colors">
                       {s.title}
                     </p>
                     <p className="text-xs text-[#64748B] mt-0.5 line-clamp-1">{s.description}</p>
                   </div>
-                  <svg className="w-4 h-4 text-slate-400 shrink-0 group-hover:text-[#D9534F] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <svg className="w-4 h-4 text-slate-400 shrink-0 group-hover:text-[#0066FF] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                   </svg>
                 </Link>

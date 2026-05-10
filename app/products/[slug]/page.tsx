@@ -44,9 +44,9 @@ export default async function ProductDetailPage({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 lg:grid-cols-2 gap-10">
 
             {/* Image */}
-            <div className="relative bg-[#f0f5fa] rounded-xl flex items-center justify-center h-80">
+            <div className="relative bg-[#f8f9fa] rounded-xl flex items-center justify-center h-80">
               {product.is_on_sale && product.discount_percent != null && (
-                <span className="absolute top-3 left-3 bg-[#D9534F] text-white text-xs font-semibold px-2.5 py-1 rounded">
+                <span className="absolute top-3 left-3 bg-[#0066FF] text-white text-xs font-semibold px-2.5 py-1 rounded">
                   {product.discount_percent}% OFF
                 </span>
               )}
@@ -66,7 +66,7 @@ export default async function ProductDetailPage({
               <h1 className="text-2xl font-bold text-[#0B0F19]">{product.title}</h1>
 
               {product.is_on_sale && product.offer_text && (
-                <p className="text-sm text-[#D9534F] font-medium">{product.offer_text}</p>
+                <p className="text-sm text-[#0066FF] font-medium">{product.offer_text}</p>
               )}
 
               {product.is_on_sale && product.original_price != null ? (

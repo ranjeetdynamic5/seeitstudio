@@ -111,7 +111,7 @@ function UpcomingCard({ event }: { event: Event }) {
       {/* Date block */}
       <div className="bg-[#0F172A] flex flex-row sm:flex-col items-center justify-center gap-3 sm:gap-0 px-6 py-4 sm:py-6 sm:w-24 shrink-0">
         <span className="text-3xl sm:text-4xl font-bold text-white leading-none">{dayNum}</span>
-        <span className="text-xs font-semibold text-[#D9534F] tracking-widest sm:mt-1">{monthStr}</span>
+        <span className="text-xs font-semibold text-[#0066FF] tracking-widest sm:mt-1">{monthStr}</span>
         <span className="text-xs text-slate-400 sm:mt-0.5 hidden sm:block">
           {d.getFullYear()}
         </span>
@@ -141,7 +141,7 @@ function UpcomingCard({ event }: { event: Event }) {
         <div className="mt-auto pt-3 border-t border-slate-100">
           <Link
             href="/contact"
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
           >
             Register Now
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -247,7 +247,7 @@ export default function EventsPage() {
           <section>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-[#0B0F19] tracking-tight">Upcoming Events</h2>
-              <span className="px-3 py-1 text-xs font-semibold text-[#D9534F] bg-rose-50 rounded-full">
+              <span className="px-3 py-1 text-xs font-semibold text-[#0066FF] bg-rose-50 rounded-full">
                 {upcoming.length} scheduled
               </span>
             </div>
@@ -289,7 +289,7 @@ export default function EventsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
           <div className="bg-[#0F172A] rounded-2xl px-6 py-10 sm:px-10 sm:py-12 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-2">
+              <p className="text-xs font-semibold text-[#0066FF] uppercase tracking-widest mb-2">
                 Private & group sessions
               </p>
               <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-2">
@@ -312,7 +312,7 @@ export default function EventsPage() {
               </a>
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
               >
                 Contact Us
               </Link>

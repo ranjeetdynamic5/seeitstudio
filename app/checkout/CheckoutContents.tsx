@@ -209,7 +209,7 @@ export default function CheckoutContents() {
           <div className="bg-white border border-slate-200 rounded-xl px-8 py-16 flex flex-col items-center text-center max-w-md mx-auto">
             <p className="text-base font-semibold text-[#0B0F19] mb-1">Your cart is empty</p>
             <p className="text-sm text-[#64748B] mb-6">Add items to your cart before checking out.</p>
-            <Link href="/products" className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors">
+            <Link href="/products" className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors">
               Browse Products
             </Link>
           </div>
@@ -249,13 +249,13 @@ export default function CheckoutContents() {
                   <p className="text-xs text-[#64748B]">Sign in to pre-fill your details and track your order.</p>
                   <input type="email" placeholder="Email address" value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)} disabled={loginLoading}
-                    className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300" />
+                    className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300" />
                   <input type="password" placeholder="Password" value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)} disabled={loginLoading}
-                    className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300" />
+                    className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300" />
                   {loginError && <p className="text-xs text-red-500">{loginError}</p>}
                   <button type="button" onClick={handleLogin} disabled={loginLoading}
-                    className="w-full py-2.5 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] disabled:opacity-60 transition-colors">
+                    className="w-full py-2.5 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] disabled:opacity-60 transition-colors">
                     {loginLoading ? "Signing in…" : "Sign In"}
                   </button>
                 </div>
@@ -282,7 +282,7 @@ export default function CheckoutContents() {
               {orderError && <p className="mt-6 text-sm text-red-500 font-medium">{orderError}</p>}
 
               <button type="submit" disabled={loading}
-                className="mt-8 w-full flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] disabled:opacity-60 disabled:cursor-not-allowed transition-colors">
+                className="mt-8 w-full flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] disabled:opacity-60 disabled:cursor-not-allowed transition-colors">
                 {loading ? (
                   <>
                     <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -357,7 +357,7 @@ function Field({ label, name, type, autoComplete, value, error, onChange, classN
         value={value} onChange={onChange} disabled={disabled}
         className={`w-full px-3.5 py-2.5 text-sm text-[#0B0F19] bg-white border rounded-lg outline-none transition-colors placeholder:text-slate-300
           ${disabled ? "bg-gray-50 text-gray-500 cursor-not-allowed" : ""}
-          ${error ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100" : "border-slate-200 focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50"}`}
+          ${error ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100" : "border-slate-200 focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50"}`}
       />
       {error && <p className="mt-1.5 text-xs text-red-500">{error}</p>}
       {disabled && <p className="mt-1 text-xs text-gray-400">Email is linked to your account</p>}

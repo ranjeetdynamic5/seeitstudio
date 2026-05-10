@@ -50,7 +50,7 @@ export default function CartContents() {
             <p className="text-sm text-[#64748B] mb-6">Browse our products and add items to get started.</p>
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
             >
               Browse Products
             </Link>
@@ -64,7 +64,7 @@ export default function CartContents() {
             <div className="flex-1 flex flex-col gap-3">
               {items.map((item) => (
                 <div key={item.id} className="bg-white border border-slate-200 rounded-xl p-5 flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-lg bg-[#f0f5fa] flex items-center justify-center shrink-0">
+                  <div className="w-16 h-16 rounded-lg bg-[#f8f9fa] flex items-center justify-center shrink-0">
                     <svg className="w-7 h-7 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
                     </svg>
@@ -80,7 +80,7 @@ export default function CartContents() {
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
                       aria-label="Decrease quantity"
-                      className="w-7 h-7 flex items-center justify-center rounded-md border border-slate-200 text-[#64748B] hover:border-[#D9534F] hover:text-[#D9534F] transition-colors"
+                      className="w-7 h-7 flex items-center justify-center rounded-md border border-slate-200 text-[#64748B] hover:border-[#0066FF] hover:text-[#0066FF] transition-colors"
                     >
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
@@ -90,7 +90,7 @@ export default function CartContents() {
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                       aria-label="Increase quantity"
-                      className="w-7 h-7 flex items-center justify-center rounded-md border border-slate-200 text-[#64748B] hover:border-[#D9534F] hover:text-[#D9534F] transition-colors"
+                      className="w-7 h-7 flex items-center justify-center rounded-md border border-slate-200 text-[#64748B] hover:border-[#0066FF] hover:text-[#0066FF] transition-colors"
                     >
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -105,7 +105,7 @@ export default function CartContents() {
                   <button
                     onClick={() => removeFromCart(item.id)}
                     aria-label={`Remove ${item.name}`}
-                    className="text-slate-300 hover:text-[#D9534F] transition-colors shrink-0"
+                    className="text-slate-300 hover:text-[#0066FF] transition-colors shrink-0"
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -116,7 +116,7 @@ export default function CartContents() {
 
               <button
                 onClick={clearCart}
-                className="self-start text-sm text-[#64748B] hover:text-[#D9534F] transition-colors mt-1"
+                className="self-start text-sm text-[#64748B] hover:text-[#0066FF] transition-colors mt-1"
               >
                 Clear cart
               </button>
@@ -159,7 +159,7 @@ export default function CartContents() {
 
                 <Link
                   href="/checkout"
-                  className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors"
+                  className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
                 >
                   Proceed to Checkout
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -169,7 +169,7 @@ export default function CartContents() {
 
                 <Link
                   href="/products"
-                  className="text-center text-sm text-[#64748B] hover:text-[#D9534F] transition-colors"
+                  className="text-center text-sm text-[#64748B] hover:text-[#0066FF] transition-colors"
                 >
                   Continue shopping
                 </Link>

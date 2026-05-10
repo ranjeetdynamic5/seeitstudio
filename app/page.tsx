@@ -27,7 +27,7 @@ function SectionHeading({
   const base = align === "center" ? "text-center mx-auto max-w-2xl" : "max-w-xl";
   return (
     <div className={base}>
-      <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-3">
+      <p className="text-xs font-medium text-neutral-500 uppercase tracking-widest mb-3">
         {eyebrow}
       </p>
       <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-[#0B0F19] mb-3 sm:mb-4">
@@ -105,7 +105,7 @@ export default async function HomePage() {
             />
             <a
               href="/products"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#D9534F] hover:text-[#c9302c] transition-colors shrink-0"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-700 hover:text-black transition-colors shrink-0"
             >
               View all products
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -124,7 +124,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── Training Preview ──────────────────────────────────────────────────── */}
-      <section className="py-14 px-4 sm:px-6 lg:px-8 lg:py-24 bg-[#f0f5fa]">
+      <section className="py-14 px-4 sm:px-6 lg:px-8 lg:py-24 bg-[#f8f9fa]">
         <div className="max-w-7xl mx-auto">
 
           <div className="flex flex-col gap-4 mb-10 sm:flex-row sm:items-end sm:justify-between lg:mb-12">
@@ -135,7 +135,7 @@ export default async function HomePage() {
             />
             <a
               href="/training"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#D9534F] hover:text-[#c9302c] transition-colors shrink-0"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-700 hover:text-black transition-colors shrink-0"
             >
               View all courses
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -144,7 +144,7 @@ export default async function HomePage() {
             </a>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mb-6 sm:mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-6 sm:mb-8">
             {featuredTrainings.map((training) => (
               <TrainingCard key={training.id} training={training} />
             ))}
@@ -182,7 +182,7 @@ export default async function HomePage() {
               subtitle="End-to-end delivery from brief to final output — rendering, modelling, AI strategy, and web development."
             />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-5">
             {services.map((s) => (
               <ServiceCard key={s.id} service={toServiceCardProps(s)} />
             ))}
@@ -198,7 +198,7 @@ export default async function HomePage() {
           <div className="bg-[#0F172A] rounded-2xl px-6 py-12 sm:px-10 sm:py-14 lg:px-16 lg:py-16 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
 
             <div className="max-w-lg">
-              <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-3">
+              <p className="text-xs font-medium text-white/50 uppercase tracking-[0.18em] mb-3">
                 Get Started Today
               </p>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-white tracking-tight mb-4">
@@ -219,7 +219,7 @@ export default async function HomePage() {
               </a>
               <a
                 href="/contact"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-3 text-sm font-semibold text-[#0B0F19] bg-[#1f2937] rounded-lg hover:bg-[#0052cc] transition-colors"
               >
                 Contact Our Team
               </a>

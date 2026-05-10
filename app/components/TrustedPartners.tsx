@@ -21,9 +21,9 @@ const logos = [
   { src: "/logos/supodium.png", alt: "SU Podium" },
   { src: "/logos/3d_connexion.png", alt: "3Dconnexion" },
   { src: "/logos/Dell.png", alt: "Dell" },
-   { src: "/logos/HP.png", alt: "HP" },
-   { src: "/logos/Lenovo.png", alt: "Lenovo" },
-   { src: "/logos/PNY.png", alt: "PNY" },
+  { src: "/logos/HP.png", alt: "HP" },
+  { src: "/logos/Lenovo.png", alt: "Lenovo" },
+  { src: "/logos/PNY.png", alt: "PNY" },
   { src: "/logos/Nvidia.png", alt: "NVIDIA" },
   { src: "/logos/Radeon.png", alt: "AMD Radeon" },
   { src: "/logos/3skng.png", alt: "3Skeng" },
@@ -31,47 +31,47 @@ const logos = [
 
 export default function TrustedPartners() {
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 lg:py-24 bg-[#f0f5fa] border-t border-slate-100">
-      <div className="max-w-6xl mx-auto">
+    <section className="py-20 px-4 sm:px-6 lg:px-8 lg:py-28 bg-[#f5f5f7] border-t border-[#ebebeb]">
+      <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <div className="text-center mb-12 lg:mb-16">
-          <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-3">
+        <div className="text-center mb-14 lg:mb-20">
+          <p className="text-[10px] font-medium text-[#6b7280] uppercase tracking-[0.18em] mb-4">
             Our Partners &amp; Affiliations
           </p>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-[#0B0F19] mb-4">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-[#1d1d1f] mb-4">
             Trusted by Leading Design &amp; Technology Brands
           </h2>
-          <p className="text-sm sm:text-base text-[#64748B] max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-[#6b7280] max-w-xl mx-auto leading-relaxed">
             We collaborate with industry-leading software and hardware partners to deliver
             high-quality solutions.
           </p>
         </div>
 
-        {/* Logo grid — no boxes, no borders, logos only
+        {/* Logo grid
             Mobile:  2 columns
             sm:      3 columns
-            lg:      4 columns (strict)
+            lg:      3 columns
         */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-10 gap-y-10 sm:gap-x-12 sm:gap-y-12 lg:gap-x-16 lg:gap-y-14 items-center justify-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-5">
           {logos.map((logo) => (
             <div
               key={logo.src}
-              className="group flex items-center justify-center w-full"
+              className="group flex items-center justify-center bg-white border border-[#e8e8e8] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.04)] hover:shadow-[0_2px_16px_rgba(0,0,0,0.07)] hover:border-[#d8d8d8] transition-all duration-300"
             >
               <Image
                 src={logo.src}
                 alt={logo.alt}
-                width={230}
-                height={70}
-                className="h-[67px] w-auto object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                width={160}
+                height={56}
+                className="h-14 w-auto object-contain grayscale opacity-55 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
               />
             </div>
           ))}
         </div>
 
         {/* Trademark note */}
-        <p className="text-xs text-slate-400 text-center mt-14">
+        <p className="text-xs text-[#6b7280]/50 text-center mt-16">
           All brand names and logos are trademarks of their respective owners.
         </p>
 

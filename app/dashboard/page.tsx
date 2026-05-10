@@ -61,7 +61,7 @@ export default async function DashboardPage() {
             {/* Welcome */}
             <div className="bg-white rounded-xl border shadow-sm p-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-[#D9534F] text-white font-bold text-lg flex items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-full bg-[#0066FF] text-white font-bold text-lg flex items-center justify-center shrink-0">
                   {(profile?.full_name?.[0] ?? user.email?.[0] ?? 'U').toUpperCase()}
                 </div>
                 <div>
@@ -82,7 +82,7 @@ export default async function DashboardPage() {
                 <div className="px-6 py-10 text-center">
                   <p className="text-sm text-gray-500 mb-4">No orders yet.</p>
                   <Link href="/products"
-                    className="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors">
+                    className="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors">
                     Browse Products
                   </Link>
                 </div>
@@ -162,21 +162,21 @@ export default async function DashboardPage() {
                 <Link href="/products"
                   className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors group">
                   <span className="text-sm font-medium text-[#0B0F19]">Browse Products</span>
-                  <svg className="w-4 h-4 text-gray-400 group-hover:text-[#D9534F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="w-4 h-4 text-gray-400 group-hover:text-[#0066FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                   </svg>
                 </Link>
                 <Link href="/training"
                   className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors group">
                   <span className="text-sm font-medium text-[#0B0F19]">Training Courses</span>
-                  <svg className="w-4 h-4 text-gray-400 group-hover:text-[#D9534F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="w-4 h-4 text-gray-400 group-hover:text-[#0066FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                   </svg>
                 </Link>
                 <Link href="/contact"
                   className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors group">
                   <span className="text-sm font-medium text-[#0B0F19]">Contact Support</span>
-                  <svg className="w-4 h-4 text-gray-400 group-hover:text-[#D9534F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="w-4 h-4 text-gray-400 group-hover:text-[#0066FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                   </svg>
                 </Link>

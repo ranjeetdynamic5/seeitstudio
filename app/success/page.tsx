@@ -126,7 +126,7 @@ export default function SuccessPage() {
 
         <a
           href="/products"
-          className="inline-block px-6 py-3 bg-[#D9534F] text-white rounded-lg hover:bg-[#c9302c]"
+          className="inline-block px-6 py-3 bg-[#0066FF] text-white rounded-lg hover:bg-[#0052cc]"
         >
           Continue Shopping
         </a>
@@ -156,7 +156,7 @@ export default function SuccessPage() {
                   required
                   minLength={6}
                   disabled={createLoading}
-                  className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
+                  className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
                 />
                 <input
                   type="password"
@@ -166,13 +166,13 @@ export default function SuccessPage() {
                   required
                   minLength={6}
                   disabled={createLoading}
-                  className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
+                  className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
                 />
                 {createError && <p className="text-xs text-red-500">{createError}</p>}
                 <button
                   type="submit"
                   disabled={createLoading}
-                  className="w-full py-2.5 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] disabled:opacity-60 transition-colors"
+                  className="w-full py-2.5 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] disabled:opacity-60 transition-colors"
                 >
                   {createLoading ? "Creating account…" : "Create Account"}
                 </button>
@@ -195,13 +195,13 @@ export default function SuccessPage() {
                   onChange={(e) => setLoginPassword(e.target.value)}
                   required
                   disabled={loginLoading}
-                  className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
+                  className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
                 />
                 {loginError && <p className="text-xs text-red-500">{loginError}</p>}
                 <button
                   type="submit"
                   disabled={loginLoading}
-                  className="w-full py-2.5 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] disabled:opacity-60 transition-colors"
+                  className="w-full py-2.5 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] disabled:opacity-60 transition-colors"
                 >
                   {loginLoading ? "Logging in…" : "Login"}
                 </button>

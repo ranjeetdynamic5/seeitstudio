@@ -41,11 +41,11 @@ const trustedBy = [
 
 export default function Testimonials() {
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 lg:py-24 bg-[#f0f5fa]">
+    <section className="py-16 px-4 sm:px-6 lg:px-8 lg:py-24 bg-[#f8f9fa]">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="max-w-xl mb-10 lg:mb-14">
-          <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-3">
+          <p className="text-xs font-semibold text-[#0066FF] uppercase tracking-widest mb-3">
             Client Testimonials
           </p>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-[#0B0F19] mb-4">

@@ -33,13 +33,13 @@ export default function ProductNotFound() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/products"
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-xl hover:bg-[#c9302c] transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-xl hover:bg-[#0052cc] transition-colors"
             >
               Browse all products
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-[#0B0F19] bg-white border border-slate-200 rounded-xl hover:bg-[#f0f5fa] transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-[#0B0F19] bg-white border border-slate-200 rounded-xl hover:bg-[#f8f9fa] transition-colors"
             >
               Contact us
             </Link>

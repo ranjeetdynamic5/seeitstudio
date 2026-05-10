@@ -6,7 +6,7 @@ import Footer from '@/app/components/Footer'
 
 const SERVICE = 'Web Development'
 
-const inputCls = 'w-full px-4 py-3 border border-slate-200 rounded-lg text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#f0a500] focus:ring-2 focus:ring-[#f0a500]/10 transition-colors'
+const inputCls = 'w-full px-4 py-3 border border-slate-200 rounded-lg text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-[#0066FF]/10 transition-colors'
 
 const features = [
   {
@@ -119,7 +119,7 @@ export default function WebDevelopmentPage() {
           }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center w-full">
-            <p className="text-[#f0a500] text-sm font-semibold uppercase tracking-widest mb-4">Services</p>
+            <p className="text-[#0066FF] text-sm font-semibold uppercase tracking-widest mb-4">Services</p>
             <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
               Web Development for Architects &amp; Designers
             </h1>
@@ -128,7 +128,7 @@ export default function WebDevelopmentPage() {
             </p>
             <a
               href="#enquiry-form"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white bg-[#f0a500] rounded-lg hover:bg-[#d4890a] transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
             >
               Get a Free Quote
             </a>
@@ -147,7 +147,7 @@ export default function WebDevelopmentPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               {features.map((f) => (
                 <div key={f.title} className="bg-white border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
-                  <div className="w-12 h-12 bg-[#f0a500]/10 text-[#f0a500] rounded-lg flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 bg-[#0066FF]/10 text-[#0066FF] rounded-lg flex items-center justify-center mb-4">
                     {f.icon}
                   </div>
                   <h3 className="font-semibold text-[#0F172A] mb-2">{f.title}</h3>
@@ -171,7 +171,7 @@ export default function WebDevelopmentPage() {
               {steps.map((step, i) => (
                 <Fragment key={step.title}>
                   <div className="flex-1 flex flex-col items-center text-center px-2">
-                    <div className="w-12 h-12 rounded-full bg-[#f0a500] text-white flex items-center justify-center font-bold text-lg mb-5 shrink-0">
+                    <div className="w-12 h-12 rounded-full bg-[#0066FF] text-white flex items-center justify-center font-bold text-lg mb-5 shrink-0">
                       {i + 1}
                     </div>
                     <h3 className="font-semibold text-[#0F172A] text-lg mb-2">{step.title}</h3>
@@ -213,13 +213,13 @@ export default function WebDevelopmentPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-sm font-medium text-[#0F172A] mb-1.5">
-                        Full Name <span className="text-[#f0a500]">*</span>
+                        Full Name <span className="text-[#0066FF]">*</span>
                       </label>
                       <input required name="full_name" type="text" placeholder="Jane Smith" className={inputCls} />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[#0F172A] mb-1.5">
-                        Email Address <span className="text-[#f0a500]">*</span>
+                        Email Address <span className="text-[#0066FF]">*</span>
                       </label>
                       <input required name="email" type="email" placeholder="jane@studio.co.uk" className={inputCls} />
                     </div>
@@ -227,7 +227,7 @@ export default function WebDevelopmentPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-sm font-medium text-[#0F172A] mb-1.5">
-                        Phone Number <span className="text-[#f0a500]">*</span>
+                        Phone Number <span className="text-[#0066FF]">*</span>
                       </label>
                       <input required name="phone" type="tel" placeholder="+44 7700 000000" className={inputCls} />
                     </div>
@@ -240,7 +240,7 @@ export default function WebDevelopmentPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-[#0F172A] mb-1.5">
-                      Message <span className="text-[#f0a500]">*</span>
+                      Message <span className="text-[#0066FF]">*</span>
                     </label>
                     <textarea
                       required
@@ -258,7 +258,7 @@ export default function WebDevelopmentPage() {
                   <button
                     type="submit"
                     disabled={status === 'loading'}
-                    className="w-full py-4 bg-[#f0a500] text-white font-semibold rounded-lg hover:bg-[#d4890a] transition-colors disabled:opacity-60 text-base"
+                    className="w-full py-4 bg-[#0066FF] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-colors disabled:opacity-60 text-base"
                   >
                     {status === 'loading' ? 'Sending…' : 'Send Enquiry'}
                   </button>

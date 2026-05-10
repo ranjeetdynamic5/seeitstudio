@@ -15,7 +15,7 @@ export default function HeroContent() {
         <div className="max-w-3xl">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 border border-white/20 rounded-full mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#D9534F] inline-block shrink-0" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#0066FF] inline-block shrink-0" />
             <span className="text-xs font-medium text-slate-300 tracking-wide">
               UK-Based Digital Studio &amp; Software Marketplace
             </span>
@@ -24,7 +24,7 @@ export default function HeroContent() {
           {/* Headline */}
           <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-semibold text-white leading-tight tracking-tight mb-5">
             Software, Training &amp;{" "}
-            <span className="text-[#D9534F]">Creative Services</span>{" "}
+            <span className="text-[#0066FF]">Creative Services</span>{" "}
             for Design Professionals
           </h1>
 
@@ -39,7 +39,7 @@ export default function HeroContent() {
           <div className="flex flex-col sm:flex-row gap-3">
             <a
               href="/products"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
             >
               Browse Products
               <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

@@ -26,7 +26,7 @@ const INITIAL_FORM: FormState = {
 const HEAR_ABOUT_OPTIONS = ["Google", "LinkedIn", "Referral", "Social Media", "Other"];
 
 const inputClass =
-  "w-full px-4 py-3 text-sm text-[#0B0F19] bg-white border border-slate-200 rounded-lg outline-none focus:border-[#D9534F] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-400";
+  "w-full px-4 py-3 text-sm text-[#0B0F19] bg-white border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-400";
 
 export default function ContactForm() {
   const [step, setStep] = useState(1);
@@ -116,7 +116,7 @@ export default function ContactForm() {
             key={s}
             className={`flex-1 py-4 text-center text-sm font-semibold transition-colors ${
               step === s
-                ? "text-[#D9534F] border-b-2 border-[#D9534F]"
+                ? "text-[#0066FF] border-b-2 border-[#0066FF]"
                 : "text-[#64748B]"
             }`}
           >
@@ -133,7 +133,7 @@ export default function ContactForm() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">
-                  Full Name <span className="text-[#D9534F]">*</span>
+                  Full Name <span className="text-[#0066FF]">*</span>
                 </label>
                 <input
                   name="fullName"
@@ -145,7 +145,7 @@ export default function ContactForm() {
               </div>
               <div>
                 <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">
-                  Email Address <span className="text-[#D9534F]">*</span>
+                  Email Address <span className="text-[#0066FF]">*</span>
                 </label>
                 <input
                   name="email"
@@ -187,7 +187,7 @@ export default function ContactForm() {
               type="button"
               onClick={() => setStep(2)}
               disabled={!form.fullName || !form.email}
-              className="w-full py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Continue
             </button>
@@ -240,7 +240,7 @@ export default function ContactForm() {
                       type="checkbox"
                       checked={form.hearAboutUs.includes(item)}
                       onChange={() => handleCheckbox(item)}
-                      className="w-4 h-4 accent-[#D9534F]"
+                      className="w-4 h-4 accent-[#0066FF]"
                     />
                     {item}
                   </label>
@@ -270,7 +270,7 @@ export default function ContactForm() {
                 type="button"
                 onClick={handleSubmit}
                 disabled={status === "loading"}
-                className="flex-1 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
               >
                 {status === "loading" ? "Sending..." : "Send Enquiry"}
               </button>

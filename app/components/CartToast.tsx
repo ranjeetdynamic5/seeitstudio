@@ -47,7 +47,7 @@ export default function CartToast() {
         <span>
           <span className="font-semibold">{lastName}</span> added to cart
         </span>
-        <Link href="/cart" className="ml-1 text-[#D9534F] hover:underline font-semibold shrink-0">
+        <Link href="/cart" className="ml-1 text-[#0066FF] hover:underline font-semibold shrink-0">
           View cart
         </Link>
       </div>

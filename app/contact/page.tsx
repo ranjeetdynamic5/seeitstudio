@@ -58,7 +58,7 @@ export default function ContactPage() {
 
             <div className="flex flex-col gap-6">
               <div>
-                <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-2">
+                <p className="text-xs font-semibold text-[#0066FF] uppercase tracking-widest mb-2">
                   Get in touch
                 </p>
                 <h2 className="text-2xl sm:text-3xl font-bold text-[#0B0F19] tracking-tight mb-4">
@@ -84,7 +84,7 @@ export default function ContactPage() {
                   information solely to respond to your enquiry and will not share it with third
                   parties without your consent. You may withdraw consent at any time by contacting
                   us at{" "}
-                  <a href="mailto:jamesogston@seeit3d.co.uk" className="text-[#D9534F] hover:underline">
+                  <a href="mailto:jamesogston@seeit3d.co.uk" className="text-[#0066FF] hover:underline">
                     jamesogston@seeit3d.co.uk
                   </a>
                   .
@@ -93,7 +93,7 @@ export default function ContactPage() {
 
               <Link
                 href="#contact-form"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] active:bg-[#b02a29] transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] active:bg-[#0052cc] transition-colors"
               >
                 Click here to OPT-IN to receive our newsletter
               </Link>
@@ -108,7 +108,7 @@ export default function ContactPage() {
 
               <div className="flex flex-col gap-6">
                 <div>
-                  <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-2">
+                  <p className="text-xs font-semibold text-[#0066FF] uppercase tracking-widest mb-2">
                     Software &amp; Licences
                   </p>
                   <h2 className="text-2xl sm:text-3xl font-bold text-[#0B0F19] tracking-tight mb-4">
@@ -123,7 +123,7 @@ export default function ContactPage() {
                 <div>
                   <Link
                     href="/products"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#D9534F] rounded-lg hover:bg-[#c9302c] active:bg-[#b02a29] transition-colors"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] active:bg-[#0052cc] transition-colors"
                   >
                     Order Now
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -155,7 +155,7 @@ export default function ContactPage() {
         <section className="bg-[#0F172A]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div>
-              <p className="text-xs font-semibold text-[#D9534F] uppercase tracking-widest mb-2">
+              <p className="text-xs font-semibold text-[#0066FF] uppercase tracking-widest mb-2">
                 Newsletter
               </p>
               <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
