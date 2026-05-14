@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import NavHeader from "@/app/components/NavHeader";
-import Footer from "@/app/components/Footer";
+import NavHeader from "@/components/NavHeader";
+import Footer from "@/components/Footer";
 import { getProductBySlug } from "@/lib/supabase";
 import type { Product } from "@/lib/supabase";
 import StickyBar from "./StickyBar";

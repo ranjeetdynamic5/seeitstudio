@@ -1,5 +1,5 @@
-import NavHeader from "@/app/components/NavHeader";
-import Footer from "@/app/components/Footer";
+import NavHeader from "@/components/NavHeader";
+import Footer from "@/components/Footer";
 import CheckoutContents from "./CheckoutContents";
 
 export default function CheckoutPage() {

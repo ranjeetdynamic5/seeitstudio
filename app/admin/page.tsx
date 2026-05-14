@@ -75,13 +75,6 @@ export default async function AdminPage() {
           </div>
 
           <div className="bg-white p-5 rounded-xl border">
-            <h3 className="font-medium mb-2">Services</h3>
-            <p className="text-sm text-gray-500">
-              Manage services
-            </p>
-          </div>
-
-          <div className="bg-white p-5 rounded-xl border">
             <h3 className="font-medium mb-2">Products</h3>
             <p className="text-sm text-gray-500">
               Manage products

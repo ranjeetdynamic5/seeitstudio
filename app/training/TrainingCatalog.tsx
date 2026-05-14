@@ -4,8 +4,8 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import EnquiryModal from "@/app/components/EnquiryModal";
-import EnrollModal from "@/app/components/EnrollModal";
+import EnquiryModal from "@/components/EnquiryModal";
+import EnrollModal from "@/components/EnrollModal";
 import type { TrainingCourse } from "@/lib/supabase";
 
 export default function TrainingCatalog({ trainings }: { trainings: TrainingCourse[] }) {

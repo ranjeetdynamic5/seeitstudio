@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import EnrollModal from "@/app/components/EnrollModal";
+import EnrollModal from "@/components/EnrollModal";
 
 export default function EnrollButton({ courseTitle }: { courseTitle: string }) {
   const [open, setOpen] = useState(false);

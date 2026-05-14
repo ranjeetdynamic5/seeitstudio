@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CartToast from "./components/CartToast";
+import CartToast from "@/components/CartToast";
 
 import "./globals.css";
 

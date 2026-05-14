@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 export default function AdminStats() {
   const [stats, setStats] = useState({
     users: 0,
-    services: 0,
     products: 0,
   })
 
@@ -29,11 +28,6 @@ export default function AdminStats() {
       <div className="bg-white p-5 rounded-xl border shadow-sm">
         <h3 className="text-sm text-gray-500">Total Users</h3>
         <p className="text-2xl font-semibold">{stats.users}</p>
-      </div>
-
-      <div className="bg-white p-5 rounded-xl border shadow-sm">
-        <h3 className="text-sm text-gray-500">Services</h3>
-        <p className="text-2xl font-semibold">{stats.services}</p>
       </div>
 
       <div className="bg-white p-5 rounded-xl border shadow-sm">

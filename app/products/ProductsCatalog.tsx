@@ -2,7 +2,7 @@
 
 import { useState, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "@/components/ProductCard";
 import type { Product } from "../../lib/supabase";
 
 type SortOption = "default" | "price-asc" | "price-desc";

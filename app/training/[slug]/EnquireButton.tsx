@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import EnquiryModal from "@/app/components/EnquiryModal";
+import EnquiryModal from "@/components/EnquiryModal";
 
 export default function EnquireButton({ training }: { training: any }) {
   const [open, setOpen] = useState(false);

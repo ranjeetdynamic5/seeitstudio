@@ -1,6 +1,6 @@
 import Link from "next/link";
-import NavHeader from "../../components/NavHeader";
-import Footer from "../../components/Footer";
+import NavHeader from "@/components/NavHeader";
+import Footer from "@/components/Footer";
 
 export default function ProductNotFound() {
   return (

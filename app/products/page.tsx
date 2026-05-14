@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import NavHeader from "../components/NavHeader";
-import Footer from "../components/Footer";
+import NavHeader from "@/components/NavHeader";
+import Footer from "@/components/Footer";
 import { getProducts } from "../../lib/supabase";
 import ProductsCatalog from "./ProductsCatalog";
 

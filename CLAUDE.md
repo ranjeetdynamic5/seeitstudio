@@ -186,3 +186,142 @@ const serviceClient = createServiceClient(URL, SERVICE_ROLE_KEY)
 - Analytics/Revenue dashboard
 - Subscription Management
 - Deploy to Vercel
+
+# 🎨 PREMIUM UI/UX & UK DESIGN RULES
+
+## 🇬🇧 UK DESIGN STYLE
+
+### Design Direction
+- Use modern UK agency-style design
+- Professional and trustworthy aesthetic
+- Clean enterprise SaaS feel
+- Premium but minimal layouts
+- Elegant whitespace usage
+- Conversion-focused structure
+- High-end professional presentation
+- Modern but restrained visual style
+
+### Avoid
+- Flashy startup UI
+- Overdesigned sections
+- Neon colors
+- Loud gradients
+- Cartoonish design
+- Crypto-style aesthetics
+- Crowded layouts
+- Template-looking sections
+
+---
+
+# 🍎 APPLE-INSPIRED DESIGN SYSTEM
+
+### Core Philosophy
+- Apple-inspired visual cleanliness
+- Minimal and elegant layouts
+- Spacious but balanced section spacing
+- Strong typography hierarchy
+- Refined premium appearance
+- Editorial-style composition
+- Smooth visual rhythm
+- High-end UI polish
+
+### IMPORTANT
+- Combine Apple minimalism with UK professional SaaS usability
+- Maintain strong conversion-focused UX
+- Preserve readability and trust
+- Keep CTA sections visually strong
+- Do not make layouts overly empty
+- Focus on clarity and professionalism
+
+---
+
+# 🧱 UI STRUCTURE RULES
+
+### Layout Rules
+- Use consistent 8px spacing system
+- Prefer spacious layouts over crowded layouts
+- Maintain strong alignment consistency
+- Use clean content flow between sections
+- Use generous section spacing
+- Ensure visual balance throughout the page
+
+### Card Design
+- Modern premium card styling
+- Soft subtle shadows only
+- Elegant border radius (rounded-2xl preferred)
+- Clean hover interactions
+- Spacious internal padding
+- Minimal visual clutter
+
+### Typography Rules
+- Strong heading hierarchy
+- Large bold headings
+- Comfortable paragraph width
+- Clear readability
+- Avoid dense text blocks
+- Use elegant spacing between headings and content
+
+### CTA Rules
+- Strong visual hierarchy
+- Professional CTA sections
+- Clean button styling
+- Clear conversion-focused layouts
+- Premium hover states
+- Trust-focused design
+
+---
+
+# 🎞️ FRAMER MOTION RULES
+
+### Animation Style
+- Use subtle premium animations only
+- Smooth fade-up reveals
+- Gentle stagger animations
+- Soft hover transitions
+- Smooth mobile menu animations
+- Elegant section transitions
+
+### Motion Philosophy
+- Motion should feel premium and restrained
+- Avoid excessive animations
+- Avoid distracting movement
+- Animations should enhance UX, not dominate it
+- Follow Apple-style smoothness
+
+### Preferred Effects
+- opacity + y transitions
+- staggerChildren
+- whileHover scale effects (subtle only)
+- smooth easing
+- viewport-triggered reveals
+
+---
+
+# 📱 RESPONSIVE & UX RULES
+
+### Mobile First
+- Always design mobile-first
+- Ensure clean tablet layouts
+- Maintain spacing consistency on all devices
+- Prevent visual overcrowding on mobile
+
+### UX Priorities
+1. Trust
+2. Clarity
+3. Professionalism
+4. Readability
+5. Conversion
+6. Premium feel
+
+---
+
+# ⚠️ IMPORTANT FRONTEND RULES
+
+- Improve UI quality while preserving structure unless explicitly asked to redesign
+- Do not generate generic Tailwind-style layouts
+- Do not overuse gradients or effects
+- Focus on premium SaaS polish
+- Maintain professional UK business aesthetic
+- Keep visual consistency across all pages
+- Use Framer Motion only where it improves user experience
+- Prioritize clean spacing and typography over excessive decoration
