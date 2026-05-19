@@ -30,7 +30,7 @@ function buildNavItems(services: Service[]): NavItem[] {
       href: "/services",
       dropdown: services.map((s) => ({
         label: s.title,
-        href: "/services",
+        href: `/services/${s.slug}`,
         description: s.description,
       })),
     },
@@ -83,15 +83,16 @@ const SOCIAL_LINKS = [
 
 // ─── Dropdown ─────────────────────────────────────────────────────────────────
 
-function DropdownMenu({ items, isOpen }: { items: DropdownItem[]; isOpen: boolean }) {
+function DropdownMenu({ items, isOpen, onClose }: { items: DropdownItem[]; isOpen: boolean; onClose: () => void }) {
   if (!isOpen) return null;
   return (
-    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-72 bg-white border border-[#e8e8e8] rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.07)] z-50 overflow-hidden">
+    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-72 bg-white border border-[#e8e8e8] rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.07)] z-[200] overflow-hidden">
       <div className="p-1.5">
         {items.map((item) => (
           <Link
             key={item.href + item.label}
             href={item.href}
+            onClick={onClose}
             className="flex flex-col gap-0.5 px-3 py-2.5 rounded-lg hover:bg-[#f7f7f7] transition-colors group"
           >
             <span className="text-[15px] font-medium text-[#1d1d1f] group-hover:text-[#1d1d1f] transition-colors">
@@ -110,7 +111,25 @@ function DropdownMenu({ items, isOpen }: { items: DropdownItem[]; isOpen: boolea
 // ─── Header ───────────────────────────────────────────────────────────────────
 
 export default function Header({ services = [] }: { services?: Service[] }) {
-  const NAV_ITEMS = buildNavItems(services);
+  const [navServices, setNavServices] = useState<Service[]>(services);
+
+  useEffect(() => {
+    if (services.length > 0) return;
+    const supabase = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+    supabase
+      .from("services")
+      .select("id, title, slug, description, image_url, created_at")
+      .order("id")
+      .then(({ data }) => {
+        if (data && data.length > 0) setNavServices(data as Service[]);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const NAV_ITEMS = buildNavItems(navServices);
 
   const router = useRouter();
   const { user, role, loading: userLoading } = useUser();
@@ -188,13 +207,13 @@ export default function Header({ services = [] }: { services?: Service[] }) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-shadow duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[100] transition-shadow duration-300 ${
         scrolled ? "shadow-[0_1px_16px_rgba(0,0,0,0.09)]" : "shadow-[0_1px_4px_rgba(0,0,0,0.04)]"
       }`}
     >
       {toast && (
         <div
-          className={`fixed top-5 left-1/2 -translate-x-1/2 z-[100] px-5 py-3 rounded-lg text-sm font-medium shadow-lg ${
+          className={`fixed top-5 left-1/2 -translate-x-1/2 z-[300] px-5 py-3 rounded-lg text-sm font-medium shadow-lg ${
             toast.type === "success" ? "bg-green-600 text-white" : "bg-red-600 text-white"
           }`}
         >
@@ -321,7 +340,11 @@ export default function Header({ services = [] }: { services?: Service[] }) {
                   </Link>
                 )}
                 {item.dropdown && (
-                  <DropdownMenu items={item.dropdown} isOpen={openDropdown === item.label} />
+                  <DropdownMenu
+                    items={item.dropdown}
+                    isOpen={openDropdown === item.label}
+                    onClose={() => setOpenDropdown(null)}
+                  />
                 )}
               </li>
             ))}

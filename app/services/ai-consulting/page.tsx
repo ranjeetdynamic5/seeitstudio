@@ -3,6 +3,14 @@
 import { useState, useRef, Fragment } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import Breadcrumb from '@/components/Breadcrumb'
+import ExploreServices from '@/components/ExploreServices'
+
+const BREADCRUMB = [
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
+  { label: 'AI Consulting' },
+]
 
 const SERVICE = 'AI Consulting'
 
@@ -99,7 +107,8 @@ export default function AiConsultingPage() {
   return (
     <div className="min-h-screen flex flex-col scroll-smooth">
       <Header />
-      <main className="flex-1 pt-20">
+      <main className="flex-1 pt-20 md:pt-32">
+        <Breadcrumb items={BREADCRUMB} />
 
         {/* Hero */}
         <section
@@ -190,6 +199,8 @@ export default function AiConsultingPage() {
             </div>
           </div>
         </section>
+
+        <ExploreServices currentSlug="ai-consulting" />
 
         {/* Enquiry Form */}
         <section id="enquiry-form" className="py-20 bg-slate-50">
