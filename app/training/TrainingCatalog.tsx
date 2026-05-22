@@ -229,7 +229,7 @@ function CourseCard({
             </svg>
           )}
           {(training as any).price && (
-            <div className="absolute top-3 right-3 bg-[#0066FF] text-[#0B0F19] text-xs font-bold px-2.5 py-1 rounded-full z-10">
+            <div className="absolute top-3 left-3 bg-[#f0a500] text-[#0B0F19] text-xs font-bold px-2.5 py-1 rounded-full z-10">
               £{(training as any).price}
             </div>
           )}

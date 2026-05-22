@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { motion, MotionConfigContext, LayoutGroup } from 'framer-motion';
+import { motion, MotionConfigContext, LayoutGroup, type MotionStyle } from 'framer-motion';
 
 interface Props {
   heading?: string;
@@ -48,11 +48,11 @@ export const IconHover3D: React.FC<Props> = ({
   const handleMouseLeave = async () => { setGestureState({ isHovered: false }); setCurrentVariant('Default'); };
 
   const cubeSliceVariants = { zEwHlJ7zp: { "--border-color": "rgb(0, 102, 255)" } };
-  const titleTransition = { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94], type: "tween" as const };
+  const titleTransition = { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number], type: "tween" as const };
   const sliceCubeVariants = { zEwHlJ7zp: { rotateX: -28, rotateY: -43, scale: 1.1 } };
   const cornerScaleVariants = { zEwHlJ7zp: { scale: 2.2 } };
 
-  const sliceStyle = (extra?: React.CSSProperties): React.CSSProperties => ({
+  const sliceStyle = (extra?: MotionStyle): MotionStyle => ({
     alignContent: "center", alignItems: "center", display: "flex", flex: "none",
     flexDirection: "column", flexWrap: "nowrap", gap: "10px", height: "34px",
     justifyContent: "center", overflow: "hidden", padding: "0px", position: "relative",

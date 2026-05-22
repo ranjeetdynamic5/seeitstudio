@@ -80,14 +80,16 @@ export async function getTrainingCategories(): Promise<TrainingCategory[]> {
 }
 
 export async function getProducts(): Promise<Product[]> {
+  console.log("[getProducts] fetching from Supabase...");
   const { data, error } = await supabase
     .from("products")
     .select("*")
     .order("title");
   if (error) {
-    console.error("Error fetching products:", error);
+    console.error("[getProducts] error:", error);
     return [];
   }
+  console.log("[getProducts] returned", data?.length ?? 0, "rows");
   return data ?? [];
 }
 

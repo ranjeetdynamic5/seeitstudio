@@ -147,9 +147,9 @@ export default function ContactPage() {
         </section>
 
         {/* ── 4. CONTACT FORM (client component) ──────────────────────────────── */}
-        <div id="contact-form">
-          <ContactForm />
-        </div>
+        <section id="contact-form" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+  <ContactForm />
+</section>
 
         {/* ── 5. NEWSLETTER SECTION ───────────────────────────────────────────── */}
         <section className="bg-[#0F172A]">

@@ -17,8 +17,8 @@ export type Service = {
 
 function ServiceIcon({ title, hovered }: { title: string; hovered: boolean }) {
   const t = title.toLowerCase()
-  const outer = { width: 90, height: 90, overflow: 'hidden' as const }
-  const inner = { width: 300, height: 300, transform: 'scale(0.300)', transformOrigin: 'top left' as const }
+  const outer = { width: 130, height: 130, overflow: 'hidden' as const }
+  const inner = { width: 300, height: 300, transform: 'scale(0.4333)', transformOrigin: 'top left' as const }
 
   if (t.includes('render')) return (
     <div style={outer} className={hovered ? "text-[#00334e]" : "text-[#00527d]"}>
