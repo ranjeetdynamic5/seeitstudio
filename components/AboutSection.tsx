@@ -52,7 +52,7 @@ export default function AboutSection() {
                   {highlights.map((item) => (
                     <li key={item} className="flex items-start gap-3">
                       <svg
-                        className="w-4 h-4 text-[#1d1d1f]/40 shrink-0 mt-0.5"
+                        className="w-4 h-4 text-[#0066FF] shrink-0 mt-0.5"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -73,7 +73,7 @@ export default function AboutSection() {
           {/* ── Right: Content ── */}
           <div className="flex flex-col gap-7 flex-1 min-w-0">
             {/* Eyebrow */}
-            <p className="text-xs font-medium text-black/35 uppercase tracking-[0.18em]">
+            <p className="text-xs font-medium text-[#0066FF] uppercase tracking-widest">
               About SeeIt Studio
             </p>
 
@@ -106,7 +106,7 @@ export default function AboutSection() {
             <div className="border-t border-[#ebebeb] pt-8 flex flex-col sm:flex-row items-start sm:items-center gap-5">
               <a
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#1d1d1f] rounded-lg hover:bg-[#3a3a3c] transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
               >
                 Contact Us
                 <svg

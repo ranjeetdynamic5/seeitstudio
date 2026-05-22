@@ -19,6 +19,7 @@ type Product = {
   is_featured: boolean
   image_url: string | null
   description: string | null
+  platform: 'windows' | 'mac' | 'both' | 'none' | null
   created_at: string
 }
 
@@ -32,6 +33,7 @@ const empty = {
   is_featured: false,
   image_url: '',
   description: '',
+  platform: 'none',
 }
 
 const generateSlug = (title: string) =>
@@ -85,6 +87,7 @@ export default function ProductsManager({ products }: { products: Product[] }) {
       is_featured: form.is_featured,
       image_url,
       description: form.description || null,
+      platform: form.platform || 'none',
     }
 
     if (editId) {
@@ -121,6 +124,7 @@ export default function ProductsManager({ products }: { products: Product[] }) {
       is_featured: p.is_featured,
       image_url: p.image_url ?? '',
       description: p.description ?? '',
+      platform: p.platform ?? 'none',
     })
     setImagePreview(p.image_url ?? null)
     setImageFile(null)
@@ -179,6 +183,19 @@ export default function ProductsManager({ products }: { products: Product[] }) {
                 onChange={e => setForm(f => ({ ...f, is_featured: e.target.checked }))} />
               Featured on Homepage
             </label>
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">Platform</label>
+            <select
+              value={form.platform}
+              onChange={e => setForm(f => ({ ...f, platform: e.target.value }))}
+              className="border px-3 py-2 rounded text-sm"
+            >
+              <option value="none">None</option>
+              <option value="windows">Windows</option>
+              <option value="mac">Mac</option>
+              <option value="both">Windows & Mac</option>
+            </select>
           </div>
         </div>
 
@@ -242,6 +259,7 @@ export default function ProductsManager({ products }: { products: Product[] }) {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sale</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Featured</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Platform</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
             </tr>
           </thead>
@@ -273,6 +291,7 @@ export default function ProductsManager({ products }: { products: Product[] }) {
                     : <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">No</span>
                   }
                 </td>
+                <td className="px-6 py-3 text-xs text-gray-500 capitalize">{p.platform ?? 'none'}</td>
                 <td className="px-6 py-3">
                   <div className="flex gap-2">
                     <button onClick={() => handleEdit(p)}

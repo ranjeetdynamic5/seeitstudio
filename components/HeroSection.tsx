@@ -60,6 +60,9 @@ export default function HeroSection() {
 
   return (
     <section className="relative w-full h-[300px] md:h-[400px] overflow-hidden bg-black">
+      <h1 className="sr-only">
+        SeeIt Studio — UK's Leading 3D Design Software, Training & Creative Services | SketchUp, V-Ray, Enscape & Web Development for Architects and Designers
+      </h1>
       {/* Carousel */}
       <div className="overflow-hidden h-full" ref={emblaRef}>
         <div className="flex h-full">

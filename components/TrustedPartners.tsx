@@ -51,20 +51,20 @@ export default function TrustedPartners() {
         {/* Logo grid
             Mobile:  2 columns
             sm:      3 columns
-            lg:      3 columns
+            lg:      4 columns
         */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
           {logos.map((logo) => (
             <div
               key={logo.src}
-              className="group flex items-center justify-center bg-white border border-[#e8e8e8] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.04)] hover:shadow-[0_2px_16px_rgba(0,0,0,0.07)] hover:border-[#d8d8d8] transition-all duration-300"
+              className="group flex items-center justify-center bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-300"
             >
               <Image
                 src={logo.src}
                 alt={logo.alt}
                 width={160}
-                height={56}
-                className="h-14 w-auto object-contain grayscale opacity-55 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                height={110}
+                className="h-20 w-auto object-contain transition-all duration-300"
               />
             </div>
           ))}
