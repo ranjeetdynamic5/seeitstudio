@@ -52,13 +52,13 @@ export const IconHover3D: React.FC<Props> = ({
   const sliceCubeVariants = { zEwHlJ7zp: { rotateX: -28, rotateY: -43, scale: 1.1 } };
   const cornerScaleVariants = { zEwHlJ7zp: { scale: 2.2 } };
 
-  const sliceStyle = (extra?: MotionStyle): MotionStyle => ({
+  const sliceBaseStyle: MotionStyle = {
     alignContent: "center", alignItems: "center", display: "flex", flex: "none",
     flexDirection: "column", flexWrap: "nowrap", gap: "10px", height: "34px",
     justifyContent: "center", overflow: "hidden", padding: "0px", position: "relative",
     width: "240px", border: "4px solid var(--foreground)", backgroundColor: "var(--background)",
-    zIndex: 120, ...extra
-  });
+    zIndex: 120,
+  };
 
   return (
     <div style={{ width, height }}>
@@ -83,20 +83,27 @@ export const IconHover3D: React.FC<Props> = ({
               <motion.div style={{ alignContent: "center", alignItems: "center", display: "flex", flex: "none", flexDirection: "row", flexWrap: "nowrap", gap: "10px", height: "100px", justifyContent: "center", overflow: "visible", padding: "0px", position: "relative", width: "100px", border: "1px solid color-mix(in srgb, var(--foreground) 20%, transparent)" }}>
                 <motion.div style={{ flex: "none", height: "348px", overflow: "visible", position: "relative", width: "348px", zIndex: 2, scale: 0.3 }}>
                   <motion.div
-                    style={{ alignContent: "center", alignItems: "center", display: "flex", flex: "none", flexDirection: "column", flexWrap: "nowrap", gap: "28px", height: "min-content", justifyContent: "center", left: "50%", overflow: "visible", padding: "0px", position: "absolute", top: "50%", transformStyle: "preserve-3d", width: "min-content", zIndex: 3, rotate: 49, rotateX: 23, rotateY: 33, scale: 0.7, transformPerspective: 1200 }}
+                    style={{ alignContent: "center", alignItems: "center", display: "flex", flex: "none", flexDirection: "column", flexWrap: "nowrap", gap: "28px", height: "min-content", justifyContent: "center", left: "50%", overflow: "visible", padding: "0px", position: "absolute", top: "50%", transformStyle: "preserve-3d", width: "min-content", transformPerspective: 1200 }}
                     transformTemplate={transformTemplate1}
+                    initial={{ rotate: 49, rotateX: 23, rotateY: 33, scale: 0.7 }}
                     variants={sliceCubeVariants}
-                    animate={isHoverVariant ? 'zEwHlJ7zp' : 'default'}
+                    animate={isHoverVariant ? 'zEwHlJ7zp' : { rotate: 49, rotateX: 23, rotateY: 33, scale: 0.7 }}
                   >
                     {[1,2,3].map((n) => (
                       <Transition key={n} value={transition2}>
                         <motion.div style={{ alignContent: "center", alignItems: "center", display: "flex", flex: "none", flexDirection: "row", flexWrap: "nowrap", gap: "10px", height: "min-content", justifyContent: "center", overflow: "visible", padding: "0px", position: "relative", transformStyle: "preserve-3d", width: "min-content" }}>
-                          <motion.div style={sliceStyle()} variants={cubeSliceVariants} animate={isHoverVariant ? 'zEwHlJ7zp' : 'default'} />
-                          <motion.div style={sliceStyle({ position: "absolute", right: "0px", top: "0px", bottom: "0px", zIndex: 1, rotateY: 180 })} variants={cubeSliceVariants} animate={isHoverVariant ? 'zEwHlJ7zp' : 'default'} />
-                          <motion.div style={sliceStyle({ position: "absolute", left: "120px", top: "0px", bottom: "0px", zIndex: 1, rotateY: 90 })} variants={cubeSliceVariants} animate={isHoverVariant ? 'zEwHlJ7zp' : 'default'} />
-                          <motion.div style={sliceStyle({ position: "absolute", right: "120px", top: "0px", bottom: "0px", zIndex: 1, rotateY: -90 })} variants={cubeSliceVariants} animate={isHoverVariant ? 'zEwHlJ7zp' : 'default'} />
-                          <motion.div style={{ flex: "none", height: "240px", left: "0px", overflow: "hidden", position: "absolute", right: "0px", top: "-120px", zIndex: 1, border: "4px solid var(--foreground)", backgroundColor: "var(--background)", rotateX: 90 }} variants={cubeSliceVariants} animate={isHoverVariant ? 'zEwHlJ7zp' : 'default'} />
-                          <motion.div style={{ flex: "none", height: "240px", left: "0px", overflow: "hidden", position: "absolute", right: "0px", top: "-86px", zIndex: 1, border: "4px solid var(--foreground)", backgroundColor: "var(--background)", rotateX: 90 }} variants={cubeSliceVariants} animate={isHoverVariant ? 'zEwHlJ7zp' : 'default'} />
+                          <motion.div style={sliceBaseStyle} variants={cubeSliceVariants} animate={isHoverVariant ? 'zEwHlJ7zp' : 'default'} />
+                          <motion.div style={{ ...sliceBaseStyle, position: "absolute", right: "0px", top: "0px", bottom: "0px", zIndex: 1 }} initial={{ rotateY: 180 }} animate={{ rotateY: 180 }} />
+                          <motion.div style={{ ...sliceBaseStyle, position: "absolute", left: "120px", top: "0px", bottom: "0px", zIndex: 1 }} initial={{ rotateY: 90 }} animate={{ rotateY: 90 }} />
+                          <motion.div style={{ ...sliceBaseStyle, position: "absolute", right: "120px", top: "0px", bottom: "0px", zIndex: 1 }} initial={{ rotateY: -90 }} animate={{ rotateY: -90 }} />
+                          <motion.div
+                            style={{ flex: "none", height: "240px", left: "0px", overflow: "hidden", position: "absolute", right: "0px", top: "-120px", zIndex: 1, border: "4px solid var(--foreground)", backgroundColor: "var(--background)" }}
+                            initial={{ rotateX: 90 }} animate={{ rotateX: 90 }}
+                          />
+                          <motion.div
+                            style={{ flex: "none", height: "240px", left: "0px", overflow: "hidden", position: "absolute", right: "0px", top: "-86px", zIndex: 1, border: "4px solid var(--foreground)", backgroundColor: "var(--background)" }}
+                            initial={{ rotateX: 90 }} animate={{ rotateX: 90 }}
+                          />
                         </motion.div>
                       </Transition>
                     ))}
@@ -107,7 +114,7 @@ export const IconHover3D: React.FC<Props> = ({
                     { bottom: isHoverVariant ? "-6px" : "14px", right: isHoverVariant ? "-6px" : "14px", borderRight: "4px solid var(--foreground)", borderBottom: "4px solid var(--foreground)" },
                     { top: isHoverVariant ? "-6px" : "14px", right: isHoverVariant ? "-6px" : "14px", borderRight: "4px solid var(--foreground)", borderTop: "4px solid var(--foreground)" },
                   ].map((s, i) => (
-                    <motion.div key={i} style={{ flex: "none", height: "24px", overflow: "hidden", position: "absolute", width: "24px", zIndex: 2, scale: 1, ...s }} variants={cornerScaleVariants} animate={isHoverVariant ? 'zEwHlJ7zp' : 'default'} />
+                    <motion.div key={i} style={{ flex: "none", height: "24px", overflow: "hidden", position: "absolute", width: "24px", zIndex: 2, ...s }} variants={cornerScaleVariants} animate={isHoverVariant ? 'zEwHlJ7zp' : 'default'} />
                   ))}
                 </motion.div>
               </motion.div>
@@ -117,7 +124,7 @@ export const IconHover3D: React.FC<Props> = ({
                   <motion.div style={{ flex: "none", height: "32px", position: "relative", whiteSpace: "pre", width: "auto", fontFamily: '"Inter", sans-serif', fontWeight: "600", fontSize: "18px", color: "var(--foreground)", userSelect: "none", cursor: "pointer", display: "flex", alignItems: "center", overflow: "hidden" }}>
                     <span style={{ position: "relative", zIndex: 1 }}>{heading}</span>
                     <motion.span style={{ position: "absolute", top: 0, left: 0, color: "var(--background)", clipPath: `inset(0 ${isHoverVariant ? '0%' : '100%'} 0 0)`, zIndex: 2 }} animate={{ clipPath: `inset(0 ${isHoverVariant ? '0%' : '100%'} 0 0)` }} transition={titleTransition}>{heading}</motion.span>
-                    <motion.div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "var(--foreground)", transformOrigin: "left center", scaleX: 0, zIndex: 1 }} animate={{ scaleX: isHoverVariant ? 1 : 0 }} transition={titleTransition} />
+                    <motion.div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "var(--foreground)", transformOrigin: "left center", zIndex: 1 }} animate={{ scaleX: isHoverVariant ? 1 : 0 }} transition={titleTransition} />
                   </motion.div>
                 </motion.div>
                 <motion.div style={{ flex: "none", height: "auto", position: "relative", whiteSpace: "pre-wrap", width: "220px", wordBreak: "break-word", fontFamily: '"Inter", sans-serif', fontWeight: "400", fontSize: "14px", lineHeight: "1.5em", color: "color-mix(in srgb, var(--foreground) 70%, transparent)", userSelect: "none" }}>
