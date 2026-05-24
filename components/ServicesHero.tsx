@@ -99,7 +99,7 @@ export default function ServicesHero() {
             >
               <Link
                 href="#services"
-                className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-[#f0a500] rounded-xl hover:bg-[#d4890a] transition-colors shadow-[0_2px_20px_rgba(240,165,0,0.28)]"
+                className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-[#0066FF] rounded-xl hover:bg-[#0052cc] transition-colors shadow-[0_2px_20px_rgba(0,102,255,0.28)]"
               >
                 Explore services
 

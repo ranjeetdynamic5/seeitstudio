@@ -48,7 +48,7 @@ export default function ServicesPage() {
                 </a>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-[#f0a500] rounded-xl hover:bg-[#d4890a] transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-xl hover:bg-[#0052cc] transition-colors"
                 >
                   Get in Touch
                 </Link>
