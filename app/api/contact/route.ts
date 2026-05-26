@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { Resend } from "resend";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { z } from "zod";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -10,6 +11,17 @@ const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
   limiter: Ratelimit.slidingWindow(5, "1 h"),
   analytics: true,
+});
+
+// Zod schema
+const contactSchema = z.object({
+  fullName: z.string().min(2, "Name must be at least 2 characters").max(100).trim(),
+  email: z.string().email("Invalid email address").max(255).trim(),
+  phone: z.string().max(20).optional().default(""),
+  company: z.string().max(100).optional().default(""),
+  inquiryType: z.string().max(50).optional().default(""),
+  message: z.string().max(2000).optional().default(""),
+  hearAboutUs: z.array(z.string()).optional().default([]),
 });
 
 export async function POST(req: NextRequest) {
@@ -26,21 +38,26 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { fullName, email, phone, company, inquiryType, message, hearAboutUs } = body;
 
-    if (!fullName || !email) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    // Zod validation
+    const parsed = contactSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.issues[0].message },
+        { status: 400 }
+      );
     }
 
-    const source = Array.isArray(hearAboutUs) ? hearAboutUs.join(", ") : "";
+    const { fullName, email, phone, company, inquiryType, message, hearAboutUs } = parsed.data;
+    const source = hearAboutUs.join(", ");
 
     const { error: dbError } = await supabase.from("leads").insert([{
       full_name: fullName,
       email,
-      phone: phone || "",
-      company: company || "",
-      inquiry_type: inquiryType || "",
-      message: message || "",
+      phone,
+      company,
+      inquiry_type: inquiryType,
+      message,
       source,
       status: "new",
     }]);
