@@ -1,13 +1,24 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import NavHeader from "@/components/NavHeader";
 import Footer from "@/components/Footer";
 import { getTrainingCourses } from "@/lib/supabase";
 import TrainingCatalog from "./TrainingCatalog";
 
-export const metadata = {
-  title: "Training Courses | SeeIt Studio",
+export const metadata: Metadata = {
+  title: "Training Courses — SketchUp & Rendering Training UK | Seeit Studio",
   description:
-    "Expert-led SketchUp, rendering and AI training courses for design professionals. Certified UK instructors.",
+    "Expert-led SketchUp, V-Ray, Enscape and AI training courses for architects and design professionals. Certified UK instructors, small group sizes, certificate included.",
+  alternates: {
+    canonical: "https://seeitstudio.com/training",
+  },
+  openGraph: {
+    title: "Training Courses — SketchUp & Rendering Training UK | Seeit Studio",
+    description:
+      "Expert-led SketchUp, V-Ray, Enscape and AI training courses for architects and design professionals. Certified UK instructors, small group sizes, certificate included.",
+    url: "https://seeitstudio.com/training",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
 };
 
 export default async function TrainingPage() {

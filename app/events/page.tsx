@@ -175,9 +175,19 @@ function PastCard({ event }: { event: Event }) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export const metadata = {
-  title: "Events & Workshops — SeeIt Studio",
+  title: "Events & Workshops — SketchUp Training Events UK | Seeit Studio",
   description:
-    "Upcoming training workshops and events from SeeIt Studio — SketchUp, rendering, and design technology sessions for UK professionals.",
+    "Upcoming SketchUp, V-Ray, and AI design workshops from Seeit Studio. Live online and in-person training events for architects and design professionals across the UK.",
+  alternates: {
+    canonical: "https://seeitstudio.com/events",
+  },
+  openGraph: {
+    title: "Events & Workshops — SketchUp Training Events UK | Seeit Studio",
+    description:
+      "Upcoming SketchUp, V-Ray, and AI design workshops from Seeit Studio. Live online and in-person training events for architects and design professionals across the UK.",
+    url: "https://seeitstudio.com/events",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
 };
 
 export default function EventsPage() {

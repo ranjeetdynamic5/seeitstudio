@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import NavHeader from "@/components/NavHeader";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
@@ -72,6 +73,21 @@ function toServiceCardProps(s: Service) {
 
 // ─── Page ──────────────────────────────────────────────────────────────────────
 
+export const metadata: Metadata = {
+  title: "Seeit Studio — SketchUp Software, Training & Creative Services UK",
+  description:
+    "UK-based digital studio offering SketchUp extensions, rendering software, AI tools, professional training, and creative services for architects and design professionals.",
+  alternates: {
+    canonical: "https://seeitstudio.com",
+  },
+  openGraph: {
+    title: "Seeit Studio — SketchUp Software, Training & Creative Services UK",
+    description:
+      "UK-based digital studio offering SketchUp extensions, rendering software, AI tools, professional training, and creative services for architects and design professionals.",
+    url: "https://seeitstudio.com",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
+};
 export default async function HomePage() {
   const [featuredProducts, allTrainings, services] = await Promise.all([
     getFeaturedProducts(),

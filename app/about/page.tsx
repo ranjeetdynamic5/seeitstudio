@@ -73,9 +73,19 @@ const WHY_CHOOSE_US = [
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export const metadata = {
-  title: "About — SeeIt Studio",
+  title: "About Seeit Studio — SketchUp Experts & Design Technology UK",
   description:
-    "SeeIt Studio is a UK-based design technology company offering software, training, consulting, and digital services for architecture and design professionals.",
+    "Meet the team behind Seeit Studio. 35+ years of CAD, BIM and SketchUp expertise. Authorised UK reseller and certified training partner for design professionals.",
+  alternates: {
+    canonical: "https://seeitstudio.com/about",
+  },
+  openGraph: {
+    title: "About Seeit Studio — SketchUp Experts & Design Technology UK",
+    description:
+      "Meet the team behind Seeit Studio. 35+ years of CAD, BIM and SketchUp expertise. Authorised UK reseller and certified training partner for design professionals.",
+    url: "https://seeitstudio.com/about",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
 };
 
 export default function AboutPage() {

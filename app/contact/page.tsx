@@ -5,9 +5,19 @@ import Footer from "@/components/Footer";
 import ContactForm from "./ContactForm";
 
 export const metadata = {
-  title: "Contact Us — SeeIt Studio",
+  title: "Contact Seeit Studio — Get in Touch | UK Design Software & Training",
   description:
-    "Get in touch with SeeIt Studio. Software licensing, training, and consulting for UK design professionals.",
+    "Contact Seeit Studio for SketchUp software licensing, professional training, AI consulting, and web development services. UK-based team, responds within one business day.",
+  alternates: {
+    canonical: "https://seeitstudio.com/contact",
+  },
+  openGraph: {
+    title: "Contact Seeit Studio — Get in Touch | UK Design Software & Training",
+    description:
+      "Contact Seeit Studio for SketchUp software licensing, professional training, AI consulting, and web development services. UK-based team, responds within one business day.",
+    url: "https://seeitstudio.com/contact",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
 };
 
 export default function ContactPage() {
