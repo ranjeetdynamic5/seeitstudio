@@ -220,9 +220,9 @@ export default async function HomePage() {
             <div className="pointer-events-none absolute -top-40 -left-40 w-[560px] h-[560px] rounded-full bg-white opacity-[0.04]" />
 
             <div className="max-w-[560px]">
-              <p className="text-xs font-medium text-[#00527d] uppercase tracking-[0.25em] mb-3">
-                Get Started Today
-              </p>
+              <p className="text-xs font-medium text-white/60 uppercase tracking-[0.25em] mb-3">
+  Get Started Today
+</p>
               <h2 className="text-4xl lg:text-5xl font-bold text-white leading-[1.05] tracking-tight mb-4">
                 Ready to elevate your design workflow?
               </h2>

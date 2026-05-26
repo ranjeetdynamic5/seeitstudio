@@ -95,22 +95,7 @@ export default function Testimonials() {
         </div>
 
         {/* Trusted By */}
-        <div className="border-t border-slate-200 pt-10">
-          <p className="text-xs font-semibold text-[#64748B] uppercase tracking-widest text-center mb-7">
-            Trusted by teams at
-          </p>
-          {/* Grid on mobile for clean alignment, flex on md+ */}
-          <div className="grid grid-cols-3 sm:flex sm:flex-wrap sm:justify-center gap-y-4 sm:gap-x-10 sm:gap-y-4">
-            {trustedBy.map((name) => (
-              <span
-                key={name}
-                className="text-sm font-medium text-slate-400 hover:text-[#64748B] transition-colors text-center"
-              >
-                {name}
-              </span>
-            ))}
-          </div>
-        </div>
+        
       </div>
     </section>
   );
