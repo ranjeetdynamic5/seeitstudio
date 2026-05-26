@@ -18,7 +18,7 @@ const SERVICES = [
       'Fast turnaround, revision-inclusive',
     ],
     href: '/services/rendering-services',
-    image: '/hero/D5-banner.webp',
+    image: '/services/rendering.jpg',
     imageAlt: 'Architectural rendering — cinematic interior',
   },
   {
@@ -32,7 +32,7 @@ const SERVICES = [
       'Architecture, interior & product-ready',
     ],
     href: '/services/3d-modelling',
-    image: '/hero/Arch-banner.webp',
+    image: '/services/modelling.jpg',
     imageAlt: '3D architectural model — structural detail',
   },
   {
@@ -46,7 +46,7 @@ const SERVICES = [
       'Strategy, scoping & end-to-end delivery',
     ],
     href: '/services/ai-consulting',
-    image: '/hero/open_bim.webp',
+    image: '/services/ai-consulting.jpg',
     imageAlt: 'AI consulting — intelligent workflow system',
   },
   {
@@ -60,7 +60,7 @@ const SERVICES = [
       'Scalable, secure & maintainable',
     ],
     href: '/services/web-development',
-    image: '/hero/webservices.webp',
+    image: '/services/web-development.jpg',
     imageAlt: 'Web development — premium digital product',
   },
 ]

@@ -1,4 +1,4 @@
-// Trusted Partners — Server Component
+"use client";
 
 import Image from "next/image";
 
@@ -31,10 +31,8 @@ const logos = [
 
 export default function TrustedPartners() {
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 lg:py-28 bg-[#f5f5f7] border-t border-[#ebebeb]">
+    <section className="py-20 px-4 sm:px-6 lg:px-8 lg:py-28 bg-[#f5f5f7] border-t border-[#ebebeb] overflow-hidden">
       <div className="max-w-7xl mx-auto">
-
-        {/* Header */}
         <div className="text-center mb-14 lg:mb-20">
           <p className="text-[10px] font-medium text-[#6b7280] uppercase tracking-[0.18em] mb-4">
             Our Partners &amp; Affiliations
@@ -47,35 +45,46 @@ export default function TrustedPartners() {
             high-quality solutions.
           </p>
         </div>
+      </div>
 
-        {/* Logo grid
-            Mobile:  2 columns
-            sm:      3 columns
-            lg:      4 columns
-        */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
-          {logos.map((logo) => (
+      {/* Single marquee row */}
+      <div className="relative">
+        <div className="flex animate-marquee gap-5 w-max">
+          {[...logos, ...logos].map((logo, i) => (
             <div
-              key={logo.src}
-              className="group flex items-center justify-center bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-300"
+              key={i}
+              className="h-20 w-auto object-contain"
             >
               <Image
                 src={logo.src}
                 alt={logo.alt}
-                width={160}
-                height={110}
-                className="h-20 w-auto object-contain transition-all duration-300"
+                width={120}
+                height={70}
+                className="h-14 w-auto object-contain"
               />
             </div>
           ))}
         </div>
+      </div>
 
-        {/* Trademark note */}
+      <div className="max-w-7xl mx-auto">
         <p className="text-xs text-[#6b7280]/50 text-center mt-16">
           All brand names and logos are trademarks of their respective owners.
         </p>
-
       </div>
+
+      <style jsx>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          animation: marquee 60s linear infinite;
+        }
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
     </section>
   );
 }
