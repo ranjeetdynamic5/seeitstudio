@@ -1,5 +1,6 @@
 // Footer — Server Component
 
+"use client"
 const CURRENT_YEAR = new Date().getFullYear();
 
 const footerNav = {
@@ -36,79 +37,74 @@ const legal = [
   { label: "GDPR", href: "/gdpr" },
 ];
 
+const socials = [
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/SeeIt3d",
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+      </svg>
+    ),
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/seeit3dwithjames/",
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+      </svg>
+    ),
+  },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/user/SEEIT3D",
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+      </svg>
+    ),
+  },
+  {
+    label: "X",
+    href: "https://x.com/SeeIt3D",
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      </svg>
+    ),
+  },
+];
+
 export default function Footer() {
   return (
-    <footer className="bg-[#111111] text-white/40">
+    <footer className="bg-[#0B0F19] text-white border-t border-white/[0.06]">
+
+      {/* Top gradient line */}
+      <div className="h-px bg-gradient-to-r from-transparent via-[#0066FF]/40 to-transparent" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ── Main Grid ── */}
-        <div className="py-14 lg:py-20 border-b border-white/[0.07]">
+        <div className="py-16 lg:py-20 border-b border-white/[0.06]">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-6 gap-10 lg:gap-12">
 
-          {/* Mobile / tablet brand block */}
-          <div className="mb-10 lg:hidden">
-            <a href="/" className="flex items-center gap-2.5 mb-5">
-              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shrink-0">
-                <span className="text-[#111111] text-sm font-bold">S</span>
-              </div>
-              <span className="text-white font-medium text-base tracking-tight">SeeIt Studio</span>
-            </a>
-            <p className="text-sm leading-relaxed text-white/35 max-w-xs mb-6">
-              UK-based digital studio providing software, training, and creative services to design
-              professionals and businesses worldwide.
-            </p>
-            <div className="flex flex-col gap-3 text-sm text-white/40">
-              <a href="mailto:hello@seeitstudio.co.uk" className="flex items-center gap-2 hover:text-white/70 transition-colors">
-                <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                </svg>
-                hello@seeitstudio.co.uk
-              </a>
-              <span className="flex items-center gap-2">
-                <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                </svg>
-                London &amp; Manchester, UK
-              </span>
-            </div>
-          </div>
-
-          {/* Mobile / tablet nav grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-10 lg:hidden">
-            {Object.entries(footerNav).map(([group, links]) => (
-              <div key={group}>
-                <h4 className="text-white/50 text-[10px] font-medium uppercase tracking-[0.18em] mb-5">
-                  {group}
-                </h4>
-                <ul className="flex flex-col gap-3.5">
-                  {links.map((link) => (
-                    <li key={link.href}>
-                      <a href={link.href} className="text-sm text-white/40 hover:text-white/70 transition-colors">
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          {/* Desktop 6-column grid */}
-          <div className="hidden lg:grid lg:grid-cols-6 lg:gap-12">
             {/* Brand — spans 2 cols */}
             <div className="col-span-2">
-              <a href="/" className="flex items-center gap-2.5 mb-6">
-                <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shrink-0">
-                  <span className="text-[#111111] text-sm font-bold">S</span>
+              <a href="/" className="flex items-center gap-2.5 mb-5 group">
+                <div className="w-8 h-8 bg-[#0066FF] rounded-lg flex items-center justify-center shrink-0 group-hover:bg-[#0052cc] transition-colors">
+                  <span className="text-white text-sm font-bold">S</span>
                 </div>
-                <span className="text-white font-medium text-base tracking-tight">SeeIt Studio</span>
+                <span className="text-white font-semibold text-base tracking-tight">Seeit Studio</span>
               </a>
-              <p className="text-sm leading-relaxed text-white/35 max-w-xs mb-7">
-                UK-based digital studio providing software, training, and creative services to design
-                professionals and businesses worldwide.
+              <p className="text-sm leading-relaxed text-white/40 max-w-xs mb-6">
+                UK-based digital studio providing 3D software, training, and creative services to design
+                professionals worldwide.
               </p>
-              <div className="flex flex-col gap-3 text-sm text-white/40">
-                <a href="mailto:hello@seeitstudio.co.uk" className="flex items-center gap-2 hover:text-white/70 transition-colors">
+
+              {/* Contact */}
+              <div className="flex flex-col gap-2.5 text-sm text-white/40 mb-7">
+                <a href="mailto:hello@seeitstudio.co.uk" className="flex items-center gap-2 hover:text-[#0066FF] transition-colors">
                   <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                   </svg>
@@ -122,18 +118,37 @@ export default function Footer() {
                   London &amp; Manchester, UK
                 </span>
               </div>
+
+              {/* Socials */}
+              <div className="flex items-center gap-3">
+                {socials.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.label}
+                    className="w-8 h-8 rounded-lg bg-white/[0.06] flex items-center justify-center text-white/40 hover:bg-[#0066FF] hover:text-white transition-all duration-200"
+                  >
+                    {s.icon}
+                  </a>
+                ))}
+              </div>
             </div>
 
             {/* Nav columns */}
             {Object.entries(footerNav).map(([group, links]) => (
               <div key={group}>
-                <h4 className="text-white/50 text-[10px] font-medium uppercase tracking-[0.18em] mb-5">
+                <h4 className="text-white text-xs font-semibold uppercase tracking-[0.15em] mb-5">
                   {group}
                 </h4>
-                <ul className="flex flex-col gap-3.5">
+                <ul className="flex flex-col gap-3">
                   {links.map((link) => (
                     <li key={link.href}>
-                      <a href={link.href} className="text-sm text-white/40 hover:text-white/70 transition-colors">
+                      <a
+                        href={link.href}
+                        className="text-sm text-white/40 hover:text-white transition-colors"
+                      >
                         {link.label}
                       </a>
                     </li>
@@ -145,10 +160,10 @@ export default function Footer() {
         </div>
 
         {/* ── Bottom Bar ── */}
-        <div className="py-7 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-1">
-            <p className="text-sm text-white/30">
-              &copy; {CURRENT_YEAR} SeeIt Studio Ltd. All rights reserved.
+        <div className="py-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-0.5">
+            <p className="text-xs text-white/30">
+              &copy; {CURRENT_YEAR} Seeit Studio Ltd. All rights reserved.
             </p>
             <p className="text-xs text-white/20">
               Registered in England &amp; Wales &middot; Company No. 12345678
@@ -159,7 +174,7 @@ export default function Footer() {
               <a
                 key={item.href}
                 href={item.href}
-                className="text-xs text-white/25 hover:text-white/50 transition-colors"
+                className="text-xs text-white/25 hover:text-white/60 transition-colors"
               >
                 {item.label}
               </a>
