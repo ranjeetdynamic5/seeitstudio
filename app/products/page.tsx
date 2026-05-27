@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import NavHeader from "@/components/NavHeader";
 import Footer from "@/components/Footer";
-import { getProducts } from "../../lib/supabase";
+import { getProducts, getProductCategories } from "../../lib/supabase";
 import ProductsCatalog from "./ProductsCatalog";
 
 export const metadata: Metadata = {
@@ -21,13 +21,16 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductsPage() {
-  const products = await getProducts();
+  const [products, categories] = await Promise.all([
+    getProducts(),
+    getProductCategories(),
+  ]);
 
   return (
     <>
       <NavHeader />
       <main className="pt-20 md:pt-32 min-h-screen bg-[#f8fafc]">
-        <ProductsCatalog products={products} />
+        <ProductsCatalog products={products} categories={categories} />
       </main>
       <Footer />
     </>

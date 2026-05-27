@@ -2,24 +2,38 @@
 
 import { useState, useMemo } from "react";
 import ProductCard from "@/components/ProductCard";
-import type { Product } from "../../lib/supabase";
+import type { Product, ProductCategory } from "../../lib/supabase";
 
 type SortOption = "default" | "price-asc" | "price-desc";
 
-function CatalogInner({ products }: { products: Product[] }) {
+function CatalogInner({
+  products,
+  categories,
+}: {
+  products: Product[];
+  categories: ProductCategory[];
+}) {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<SortOption>("default");
+  const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
 
   const filtered = useMemo(() => {
     let result = products;
+
+    if (activeCategoryId !== null) {
+      result = result.filter((p) => p.category_id === activeCategoryId);
+    }
+
     if (search.trim()) {
       const q = search.trim().toLowerCase();
       result = result.filter((p) => p.title.toLowerCase().includes(q));
     }
+
     if (sort === "price-asc") result = [...result].sort((a, b) => a.price - b.price);
     if (sort === "price-desc") result = [...result].sort((a, b) => b.price - a.price);
+
     return result;
-  }, [products, search, sort]);
+  }, [products, search, sort, activeCategoryId]);
 
   return (
     <>
@@ -48,6 +62,7 @@ function CatalogInner({ products }: { products: Product[] }) {
             </p>
           </div>
 
+          {/* Search */}
           <div className="mt-5 relative max-w-md">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803 7.5 7.5 0 0016.803 15.803z" />
@@ -67,6 +82,33 @@ function CatalogInner({ products }: { products: Product[] }) {
               </button>
             )}
           </div>
+
+          {/* Category Filter Buttons */}
+          <div className="mt-5 flex flex-wrap gap-2">
+            <button
+              onClick={() => setActiveCategoryId(null)}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                activeCategoryId === null
+                  ? "bg-[#0066FF] text-white"
+                  : "bg-white border border-slate-200 text-[#64748B] hover:border-[#0066FF] hover:text-[#0066FF]"
+              }`}
+            >
+              All
+            </button>
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategoryId(cat.id)}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  activeCategoryId === cat.id
+                    ? "bg-[#0066FF] text-white"
+                    : "bg-white border border-slate-200 text-[#64748B] hover:border-[#0066FF] hover:text-[#0066FF]"
+                }`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -76,7 +118,9 @@ function CatalogInner({ products }: { products: Product[] }) {
           <p className="text-sm text-[#64748B]">
             Showing <span className="font-semibold text-[#0B0F19]">{filtered.length}</span> of{" "}
             <span className="font-semibold text-[#0B0F19]">{products.length}</span> product{filtered.length !== 1 ? "s" : ""}
-            {search.trim() && <> matching <span className="font-semibold text-[#0B0F19]">&ldquo;{search.trim()}&rdquo;</span></>}
+            {search.trim() && (
+              <> matching <span className="font-semibold text-[#0B0F19]">&ldquo;{search.trim()}&rdquo;</span></>
+            )}
           </p>
           <div className="flex items-center gap-3 shrink-0">
             <select
@@ -88,8 +132,11 @@ function CatalogInner({ products }: { products: Product[] }) {
               <option value="price-asc">Price: Low to High</option>
               <option value="price-desc">Price: High to Low</option>
             </select>
-            {search.trim() && (
-              <button onClick={() => setSearch("")} className="text-sm font-medium text-[#6b7280] hover:text-[#1d1d1f] transition-colors flex items-center gap-1 whitespace-nowrap">
+            {(search.trim() || activeCategoryId !== null) && (
+              <button
+                onClick={() => { setSearch(""); setActiveCategoryId(null); }}
+                className="text-sm font-medium text-[#6b7280] hover:text-[#1d1d1f] transition-colors flex items-center gap-1 whitespace-nowrap"
+              >
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -113,8 +160,11 @@ function CatalogInner({ products }: { products: Product[] }) {
               </svg>
             </div>
             <p className="text-base font-semibold text-[#0B0F19] mb-1">No products found</p>
-            <p className="text-sm text-[#64748B]">Try a different search term.</p>
-            <button onClick={() => setSearch("")} className="mt-4 px-4 py-2 text-sm font-medium text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors">
+            <p className="text-sm text-[#64748B]">Try a different search term or category.</p>
+            <button
+              onClick={() => { setSearch(""); setActiveCategoryId(null); }}
+              className="mt-4 px-4 py-2 text-sm font-medium text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
+            >
               View all products
             </button>
           </div>
@@ -146,6 +196,12 @@ function CatalogInner({ products }: { products: Product[] }) {
   );
 }
 
-export default function ProductsCatalog({ products }: { products: Product[] }) {
-  return <CatalogInner products={products} />;
+export default function ProductsCatalog({
+  products,
+  categories,
+}: {
+  products: Product[];
+  categories: ProductCategory[];
+}) {
+  return <CatalogInner products={products} categories={categories} />;
 }
