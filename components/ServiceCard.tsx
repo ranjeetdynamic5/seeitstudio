@@ -21,22 +21,22 @@ function ServiceIcon({ title, hovered }: { title: string; hovered: boolean }) {
   const inner = { width: 300, height: 300, transform: 'scale(0.4333)', transformOrigin: 'top left' as const }
 
   if (t.includes('render')) return (
-    <div style={outer} className={hovered ? "text-[#00334e]" : "text-[#00527d]"}>
+    <div style={outer} className={hovered ? "text-[#0066FF]" : "text-[#0066FF]/60"}>
       <div style={inner}><RenderingIcon isHovered={hovered} /></div>
     </div>
   )
   if (t.includes('model') || t.includes('3d')) return (
-    <div style={outer} className={hovered ? "text-[#00334e]" : "text-[#00527d]"}>
+    <div style={outer} className={hovered ? "text-[#0066FF]" : "text-[#0066FF]/60"}>
       <div style={inner}><ModellingIcon isHovered={hovered} /></div>
     </div>
   )
   if (t.includes('ai') || t.includes('consult')) return (
-    <div style={outer} className={hovered ? "text-[#00334e]" : "text-[#00527d]"}>
+    <div style={outer} className={hovered ? "text-[#0066FF]" : "text-[#0066FF]/60"}>
       <div style={inner}><AiIcon isHovered={hovered} /></div>
     </div>
   )
   return (
-    <div style={outer} className={hovered ? "text-[#00334e]" : "text-[#00527d]"}>
+    <div style={outer} className={hovered ? "text-[#0066FF]" : "text-[#0066FF]/60"}>
       <div style={inner}><WebIcon isHovered={hovered} /></div>
     </div>
   )
@@ -48,7 +48,7 @@ export default function ServiceCard({ service }: { service: Service }) {
   return (
     <Link
       href={service.href}
-      className="group flex flex-col bg-white border border-slate-200 rounded-[28px] shadow-sm hover:border-[#00527d] hover:shadow-[0_18px_50px_rgba(0,82,125,0.10)] hover:-translate-y-0.5 transition-all duration-300 overflow-hidden"
+      className="group flex flex-col bg-white border border-slate-200 rounded-[28px] shadow-sm hover:border-[#0066FF] hover:shadow-[0_18px_50px_rgba(0,102,255,0.10)] hover:-translate-y-0.5 transition-all duration-300 overflow-hidden"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -68,7 +68,7 @@ export default function ServiceCard({ service }: { service: Service }) {
           <ul className="flex flex-col gap-2">
             {service.highlights.map((h) => (
               <li key={h} className="flex items-center gap-2 text-xs text-[#64748B]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#00527d] shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#0066FF] shrink-0" />
                 {h}
               </li>
             ))}
@@ -76,7 +76,7 @@ export default function ServiceCard({ service }: { service: Service }) {
         )}
 
         <div className="mt-auto pt-2 border-t border-slate-100">
-          <div className="w-full flex items-center justify-center px-4 py-1.5 text-sm font-semibold rounded-full bg-white border border-slate-200 text-[#0B0F19] hover:bg-[#00334e] hover:text-white hover:border-[#00334e] transition-colors">
+          <div className="w-full flex items-center justify-center px-4 py-1.5 text-sm font-semibold rounded-full bg-white border border-slate-200 text-[#0B0F19] hover:bg-[#0066FF] hover:text-white hover:border-[#0066FF] transition-colors">
             Learn more
           </div>
         </div>

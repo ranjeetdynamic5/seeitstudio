@@ -2,15 +2,14 @@ import { motion } from 'framer-motion';
 import React from 'react';
 
 const strokeVariants = {
-  idle: { pathLength: 1 },
+  idle: { pathLength: 1, opacity: 0.4 },
   hovering: (custom: number) => ({
-    pathLength: [0, 1],
+    pathLength: 1,
+    opacity: 1,
     transition: {
-      duration: 1,
+      duration: 0.6,
       ease: "easeInOut",
-      repeat: Infinity,
-      repeatType: "reverse" as const,
-      delay: custom * 0.1,
+      delay: custom * 0.06,
     },
   }),
 };
@@ -31,7 +30,15 @@ export const TracedEllipse = ({ custom = 0, isHovered, className = "", ...props 
   <motion.ellipse {...props} variants={strokeVariants} custom={custom} initial="idle" animate={isHovered ? "hovering" : "idle"} className={`stroke-current ${className}`} />
 );
 
-const sharedProps = { width: 300, height: 300, viewBox: "0 0 300 300", fill: "none", strokeLinecap: "round" as const, strokeLinejoin: "round" as const, strokeWidth: 2};
+const sharedProps = {
+  width: 300,
+  height: 300,
+  viewBox: "0 0 300 300",
+  fill: "none",
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  strokeWidth: 6,
+};
 
 export const RenderingIcon = ({ isHovered }: { isHovered?: boolean }) => (
   <svg {...sharedProps}>
