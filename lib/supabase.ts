@@ -125,7 +125,7 @@ export async function getFeaturedProducts(): Promise<Product[]> {
     .select("*")
     .eq("is_featured", true)
     .order("created_at", { ascending: false })
-    .limit(5);
+    .limit(8);
   if (error) {
     console.error("Error fetching featured products:", error);
     return [];
@@ -176,7 +176,7 @@ export async function getFeaturedTrainingCourses(): Promise<TrainingCourse[]> {
     .select("*")
     .eq("is_featured", true)
     .order("title")
-    .limit(5);
+    .limit(8);
   if (error) {
     console.error("Error fetching featured training courses:", error);
     return [];
