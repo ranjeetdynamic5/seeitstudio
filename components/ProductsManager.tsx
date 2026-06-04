@@ -11,8 +11,16 @@ type Product = {
   original_price: number | null
   discount_percent: number | null
   is_on_sale: boolean
+  is_featured: boolean
+  category_id: number | null
   image_url: string | null
   created_at: string
+}
+
+type Category = {
+  id: number
+  name: string
+  slug: string
 }
 
 const empty = {
@@ -22,16 +30,30 @@ const empty = {
   original_price: '',
   discount_percent: '',
   is_on_sale: false,
+  is_featured: false,
+  category_id: '',
   image_url: '',
 }
 
-export default function ProductsManager({ products }: { products: Product[] }) {
+export default function ProductsManager({
+  products,
+  categories: initialCategories,
+}: {
+  products: Product[]
+  categories: Category[]
+}) {
   const [data, setData] = useState<Product[]>(products ?? [])
+  const [categories, setCategories] = useState<Category[]>(initialCategories ?? [])
   const [form, setForm] = useState(empty)
   const [editId, setEditId] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+
+  // New category state
+  const [showNewCategory, setShowNewCategory] = useState(false)
+  const [newCategoryName, setNewCategoryName] = useState('')
+  const [categoryLoading, setCategoryLoading] = useState(false)
 
   const supabase = createClient()
 
@@ -60,7 +82,30 @@ export default function ProductsManager({ products }: { products: Product[] }) {
     return data.publicUrl
   }
 
+  const handleCreateCategory = async () => {
+    if (!newCategoryName.trim()) return
+    setCategoryLoading(true)
+    const slug = newCategoryName.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+    const res = await fetch('/api/admin/categories', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: newCategoryName.trim(), slug }),
+    })
+    const newCat = await res.json()
+    if (newCat?.id) {
+      setCategories(prev => [...prev, newCat])
+      setForm(f => ({ ...f, category_id: String(newCat.id) }))
+      setNewCategoryName('')
+      setShowNewCategory(false)
+    }
+    setCategoryLoading(false)
+  }
+
   const handleSubmit = async () => {
+    if (!form.title || !form.slug || !form.price) {
+      alert('Title, slug and price are required.')
+      return
+    }
     setLoading(true)
     const image_url = await uploadImage()
     const payload = {
@@ -70,6 +115,8 @@ export default function ProductsManager({ products }: { products: Product[] }) {
       original_price: form.original_price ? Number(form.original_price) : null,
       discount_percent: form.discount_percent ? Number(form.discount_percent) : null,
       is_on_sale: form.is_on_sale,
+      is_featured: form.is_featured,
+      category_id: form.category_id ? Number(form.category_id) : null,
       image_url,
     }
 
@@ -91,6 +138,7 @@ export default function ProductsManager({ products }: { products: Product[] }) {
     setEditId(null)
     setImageFile(null)
     setImagePreview(null)
+    setShowNewCategory(false)
     await refresh()
     setLoading(false)
   }
@@ -104,10 +152,13 @@ export default function ProductsManager({ products }: { products: Product[] }) {
       original_price: p.original_price ? String(p.original_price) : '',
       discount_percent: p.discount_percent ? String(p.discount_percent) : '',
       is_on_sale: p.is_on_sale,
+      is_featured: p.is_featured ?? false,
+      category_id: p.category_id ? String(p.category_id) : '',
       image_url: p.image_url ?? '',
     })
     setImagePreview(p.image_url ?? null)
     setImageFile(null)
+    setShowNewCategory(false)
   }
 
   const handleDelete = async (id: number) => {
@@ -120,20 +171,26 @@ export default function ProductsManager({ products }: { products: Product[] }) {
     await refresh()
   }
 
+  const getCategoryName = (id: number | null) => {
+    if (!id) return '—'
+    return categories.find(c => c.id === id)?.name ?? '—'
+  }
+
   return (
     <div className="space-y-8">
+      {/* Form */}
       <div className="bg-white border rounded-xl p-6 shadow-sm">
         <h2 className="text-base font-semibold mb-4">
           {editId ? 'Edit Product' : 'Add New Product'}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <input placeholder="Title" value={form.title}
+          <input placeholder="Title *" value={form.title}
             onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
             className="border px-3 py-2 rounded text-sm" />
-          <input placeholder="Slug (e.g. sketchup-pro)" value={form.slug}
+          <input placeholder="Slug * (e.g. sketchup-pro)" value={form.slug}
             onChange={e => setForm(f => ({ ...f, slug: e.target.value }))}
             className="border px-3 py-2 rounded text-sm" />
-          <input placeholder="Price (£)" type="number" value={form.price}
+          <input placeholder="Price (£) *" type="number" value={form.price}
             onChange={e => setForm(f => ({ ...f, price: e.target.value }))}
             className="border px-3 py-2 rounded text-sm" />
           <input placeholder="Original Price (£)" type="number" value={form.original_price}
@@ -142,10 +199,66 @@ export default function ProductsManager({ products }: { products: Product[] }) {
           <input placeholder="Discount %" type="number" value={form.discount_percent}
             onChange={e => setForm(f => ({ ...f, discount_percent: e.target.value }))}
             className="border px-3 py-2 rounded text-sm" />
-          <label className="flex items-center gap-2 text-sm">
+
+          {/* Category */}
+          <div className="flex flex-col gap-1.5">
+            <div className="flex gap-2">
+              <select
+                value={form.category_id}
+                onChange={e => {
+                  if (e.target.value === '__new__') {
+                    setShowNewCategory(true)
+                  } else {
+                    setForm(f => ({ ...f, category_id: e.target.value }))
+                    setShowNewCategory(false)
+                  }
+                }}
+                className="flex-1 border px-3 py-2 rounded text-sm text-gray-700"
+              >
+                <option value="">Select Category</option>
+                {categories.map(cat => (
+                  <option key={cat.id} value={String(cat.id)}>{cat.name}</option>
+                ))}
+                <option value="__new__">+ New Category</option>
+              </select>
+            </div>
+            {showNewCategory && (
+              <div className="flex gap-2">
+                <input
+                  placeholder="New category name"
+                  value={newCategoryName}
+                  onChange={e => setNewCategoryName(e.target.value)}
+                  className="flex-1 border px-3 py-2 rounded text-sm"
+                />
+                <button
+                  onClick={handleCreateCategory}
+                  disabled={categoryLoading || !newCategoryName.trim()}
+                  className="px-3 py-2 bg-[#0066FF] text-white rounded text-sm hover:bg-[#0052cc] disabled:opacity-50"
+                >
+                  {categoryLoading ? '...' : 'Create'}
+                </button>
+                <button
+                  onClick={() => { setShowNewCategory(false); setNewCategoryName('') }}
+                  className="px-3 py-2 border rounded text-sm hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Checkboxes */}
+        <div className="flex flex-wrap gap-6 mt-4">
+          <label className="flex items-center gap-2 text-sm cursor-pointer">
             <input type="checkbox" checked={form.is_on_sale}
               onChange={e => setForm(f => ({ ...f, is_on_sale: e.target.checked }))} />
             On Sale
+          </label>
+          <label className="flex items-center gap-2 text-sm cursor-pointer">
+            <input type="checkbox" checked={form.is_featured}
+              onChange={e => setForm(f => ({ ...f, is_featured: e.target.checked }))} />
+            Featured (show on homepage)
           </label>
         </div>
 
@@ -173,7 +286,7 @@ export default function ProductsManager({ products }: { products: Product[] }) {
             {loading ? 'Saving...' : editId ? 'Update Product' : 'Add Product'}
           </button>
           {editId && (
-            <button onClick={() => { setForm(empty); setEditId(null); setImagePreview(null); setImageFile(null) }}
+            <button onClick={() => { setForm(empty); setEditId(null); setImagePreview(null); setImageFile(null); setShowNewCategory(false) }}
               className="border px-4 py-2 rounded text-sm hover:bg-gray-50">
               Cancel
             </button>
@@ -181,14 +294,17 @@ export default function ProductsManager({ products }: { products: Product[] }) {
         </div>
       </div>
 
+      {/* Table */}
       <div className="bg-white border rounded-xl shadow-sm overflow-hidden">
         <table className="min-w-full text-sm">
           <thead className="bg-gray-50 border-b">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sale</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Featured</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
             </tr>
           </thead>
@@ -202,6 +318,7 @@ export default function ProductsManager({ products }: { products: Product[] }) {
                   }
                 </td>
                 <td className="px-6 py-3 font-medium">{p.title}</td>
+                <td className="px-6 py-3 text-gray-500">{getCategoryName(p.category_id)}</td>
                 <td className="px-6 py-3">
                   £{p.price}
                   {p.original_price && (
@@ -212,6 +329,12 @@ export default function ProductsManager({ products }: { products: Product[] }) {
                   {p.is_on_sale
                     ? <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">On Sale</span>
                     : <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">Regular</span>
+                  }
+                </td>
+                <td className="px-6 py-3">
+                  {p.is_featured
+                    ? <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Featured</span>
+                    : <span className="px-2 py-1 bg-gray-100 text-gray-400 rounded-full text-xs">No</span>
                   }
                 </td>
                 <td className="px-6 py-3">
