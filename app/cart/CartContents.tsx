@@ -36,10 +36,7 @@ export default function CartContents() {
           <h1 className="text-3xl font-semibold tracking-tight text-[#092145]">Your Cart</h1>
         </div>
 
-        {/* Wait for mount to avoid SSR mismatch */}
         {!mounted ? null : items.length === 0 ? (
-
-          /* Empty state */
           <div className="bg-white rounded-2xl border border-slate-200 px-8 py-20 flex flex-col items-center text-center">
             <div className="w-16 h-16 mb-5 rounded-full bg-slate-100 flex items-center justify-center">
               <svg className="w-7 h-7 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -48,26 +45,32 @@ export default function CartContents() {
             </div>
             <p className="text-base font-semibold text-[#092145] mb-1">Your cart is empty</p>
             <p className="text-sm text-[#64748B] mb-6">Browse our products and add items to get started.</p>
-            <Link
-              href="/products"
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
-            >
+            <Link href="/products" className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors">
               Browse Products
             </Link>
           </div>
 
         ) : (
-
           <div className="flex flex-col lg:flex-row gap-6">
 
             {/* Item list */}
             <div className="flex-1 flex flex-col gap-3">
               {items.map((item) => (
-                <div key={item.id} className="bg-white border border-slate-200 rounded-xl p-5 flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-lg bg-[#f8f9fa] flex items-center justify-center shrink-0">
-                    <svg className="w-7 h-7 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
-                    </svg>
+                <div key={item.id} className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-4">
+
+                  {/* Product image */}
+                  <div className="w-16 h-16 rounded-lg bg-[#f1f3f5] flex items-center justify-center shrink-0 overflow-hidden">
+                    {item.image_url ? (
+                      <img
+                        src={item.image_url}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <svg className="w-7 h-7 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                      </svg>
+                    )}
                   </div>
 
                   <div className="flex-1 min-w-0">
@@ -105,7 +108,7 @@ export default function CartContents() {
                   <button
                     onClick={() => removeFromCart(item.id)}
                     aria-label={`Remove ${item.name}`}
-                    className="text-slate-300 hover:text-[#0066FF] transition-colors shrink-0"
+                    className="text-slate-300 hover:text-red-400 transition-colors shrink-0"
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -114,10 +117,7 @@ export default function CartContents() {
                 </div>
               ))}
 
-              <button
-                onClick={clearCart}
-                className="self-start text-sm text-[#64748B] hover:text-[#0066FF] transition-colors mt-1"
-              >
+              <button onClick={clearCart} className="self-start text-sm text-[#64748B] hover:text-red-400 transition-colors mt-1">
                 Clear cart
               </button>
             </div>
@@ -143,9 +143,7 @@ export default function CartContents() {
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping</span>
-                    <span className="font-medium text-[#092145]">
-                      {shipping === 0 ? "Free" : `£${shipping.toFixed(2)}`}
-                    </span>
+                    <span className="font-medium text-[#092145]">{shipping === 0 ? "Free" : `£${shipping.toFixed(2)}`}</span>
                   </div>
                   {shipping === 0 && (
                     <p className="text-xs text-green-600">Free shipping on orders over £50</p>
@@ -157,28 +155,20 @@ export default function CartContents() {
                   <span>£{total.toFixed(2)}</span>
                 </div>
 
-                <Link
-                  href="/checkout"
-                  className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
-                >
+                <Link href="/checkout" className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors">
                   Proceed to Checkout
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                   </svg>
                 </Link>
 
-                <Link
-                  href="/products"
-                  className="text-center text-sm text-[#64748B] hover:text-[#0066FF] transition-colors"
-                >
+                <Link href="/products" className="text-center text-sm text-[#64748B] hover:text-[#0066FF] transition-colors">
                   Continue shopping
                 </Link>
               </div>
             </div>
-
           </div>
         )}
-
       </div>
     </main>
   );

@@ -14,7 +14,12 @@ export default function ProductCard({ product }: { product: Product }) {
 
   function handleAddToCart(e: React.MouseEvent) {
     e.stopPropagation();
-    addToCart({ id: product.id, name: product.title, price: product.price });
+    addToCart({
+      id: product.id,
+      name: product.title,
+      price: product.price,
+      image_url: product.image_url ?? null,
+    });
     setAdded(true);
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
@@ -28,7 +33,7 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <div className="flex flex-col bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-[0_18px_50px_rgba(0,0,0,0.10)] hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
 
-      {/* Image — full width */}
+      {/* Image */}
       <Link href={href} className="relative block w-full overflow-hidden bg-[#f1f3f5]" style={{ height: '200px' }}>
         {product.is_on_sale && product.discount_percent != null && (
           <span className="absolute top-3 left-3 z-10 bg-[#f0a500] text-[#092145] text-[10px] font-semibold px-2.5 py-1 rounded-full shadow-[0_2px_8px_rgba(240,165,0,0.35)]">
@@ -36,11 +41,7 @@ export default function ProductCard({ product }: { product: Product }) {
           </span>
         )}
         {product.image_url ? (
-          <img
-            src={product.image_url}
-            alt={product.title}
-            className="w-full h-full object-cover"
-          />
+          <img src={product.image_url} alt={product.title} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <svg className="w-10 h-10 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
@@ -55,10 +56,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
         {/* Title + platform icons */}
         <div className="flex items-start justify-between gap-2">
-          <Link
-            href={href}
-            className="text-base font-semibold text-white leading-snug hover:text-[#0066FF] transition-colors line-clamp-2"
-          >
+          <Link href={href} className="text-base font-semibold text-white leading-snug hover:text-[#0066FF] transition-colors line-clamp-2">
             {product.title}
           </Link>
 
@@ -96,17 +94,11 @@ export default function ProductCard({ product }: { product: Product }) {
             <span className="text-[10px] text-white/40 uppercase tracking-wide">From</span>
             {product.is_on_sale && product.original_price != null ? (
               <div className="flex items-baseline gap-1.5">
-                <span className="text-xl font-bold text-white">
-                  £{product.price?.toFixed(2) || "0.00"}
-                </span>
-                <span className="text-xs text-white/40 line-through">
-                  £{product.original_price.toFixed(2)}
-                </span>
+                <span className="text-xl font-bold text-white">£{product.price?.toFixed(2) || "0.00"}</span>
+                <span className="text-xs text-white/40 line-through">£{product.original_price.toFixed(2)}</span>
               </div>
             ) : (
-              <span className="text-xl font-bold text-white">
-                £{product.price?.toFixed(2) || "0.00"}
-              </span>
+              <span className="text-xl font-bold text-white">£{product.price?.toFixed(2) || "0.00"}</span>
             )}
           </div>
 
@@ -114,9 +106,7 @@ export default function ProductCard({ product }: { product: Product }) {
             type="button"
             onClick={handleAddToCart}
             className={`flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg transition-colors whitespace-nowrap ${
-              added
-                ? "bg-green-500 text-white"
-                : "bg-[#0066FF] text-white hover:bg-[#0052cc]"
+              added ? "bg-green-500 text-white" : "bg-[#0066FF] text-white hover:bg-[#0052cc]"
             }`}
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
