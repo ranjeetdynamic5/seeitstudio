@@ -72,7 +72,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en-GB">
-      <body suppressHydrationWarning className="min-h-screen flex flex-col bg-white text-[#0B0F19]">
+      <body suppressHydrationWarning className="min-h-screen flex flex-col bg-white text-[#092145]">
         {children}
         <CartToast />
       </body>

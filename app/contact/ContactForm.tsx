@@ -26,7 +26,7 @@ const INITIAL_FORM: FormState = {
 const HEAR_ABOUT_OPTIONS = ["Google", "LinkedIn", "Referral", "Social Media", "Other"];
 
 const inputClass =
-  "w-full px-4 py-3 text-sm text-[#0B0F19] bg-white border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-400";
+  "w-full px-4 py-3 text-sm text-[#092145] bg-white border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-400";
 
 export default function ContactForm() {
   const [step, setStep] = useState(1);
@@ -89,7 +89,7 @@ export default function ContactForm() {
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-[#0B0F19] mb-1">Enquiry Received</h3>
+            <h3 className="text-lg font-semibold text-[#092145] mb-1">Enquiry Received</h3>
             <p className="text-sm text-[#64748B] leading-relaxed max-w-sm">
               Thank you, {form.fullName.split(" ")[0]}. We&apos;ll be in touch within one business day.
             </p>
@@ -235,7 +235,7 @@ export default function ContactForm() {
               </p>
               <div className="flex flex-wrap gap-3">
                 {HEAR_ABOUT_OPTIONS.map((item) => (
-                  <label key={item} className="flex items-center gap-2 text-sm text-[#0B0F19] cursor-pointer">
+                  <label key={item} className="flex items-center gap-2 text-sm text-[#092145] cursor-pointer">
                     <input
                       type="checkbox"
                       checked={form.hearAboutUs.includes(item)}

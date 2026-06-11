@@ -71,7 +71,7 @@ export default function ContactPage() {
                 <p className="text-xs font-semibold text-[#0066FF] uppercase tracking-widest mb-2">
                   Get in touch
                 </p>
-                <h2 className="text-2xl sm:text-3xl font-bold text-[#0B0F19] tracking-tight mb-4">
+                <h2 className="text-2xl sm:text-3xl font-bold text-[#092145] tracking-tight mb-4">
                   Get in Touch with Seelt3D
                 </h2>
                 <p className="text-sm text-[#64748B] leading-relaxed mb-3">
@@ -86,7 +86,7 @@ export default function ContactPage() {
               </div>
 
               <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                <p className="text-xs font-semibold text-[#0B0F19] mb-1.5">
+                <p className="text-xs font-semibold text-[#092145] mb-1.5">
                   Privacy Notice (GDPR Compliance)
                 </p>
                 <p className="text-xs text-[#64748B] leading-relaxed">
@@ -121,7 +121,7 @@ export default function ContactPage() {
                   <p className="text-xs font-semibold text-[#0066FF] uppercase tracking-widest mb-2">
                     Software &amp; Licences
                   </p>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-[#0B0F19] tracking-tight mb-4">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-[#092145] tracking-tight mb-4">
                     Buy Software or Upgrade Licences
                   </h2>
                   <p className="text-sm text-[#64748B] leading-relaxed">

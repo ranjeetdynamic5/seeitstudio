@@ -46,18 +46,18 @@ export default async function TrainingDetail({
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
 
             <nav className="flex items-center gap-1.5 text-sm text-[#64748B] mb-6">
-              <Link href="/" className="hover:text-[#0B0F19] transition-colors">Home</Link>
+              <Link href="/" className="hover:text-[#092145] transition-colors">Home</Link>
               <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
               </svg>
-              <Link href="/training" className="hover:text-[#0B0F19] transition-colors">Training</Link>
+              <Link href="/training" className="hover:text-[#092145] transition-colors">Training</Link>
               <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
               </svg>
-              <span className="text-[#0B0F19] font-medium truncate max-w-[200px]">{training.title}</span>
+              <span className="text-[#092145] font-medium truncate max-w-[200px]">{training.title}</span>
             </nav>
 
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B0F19] mb-3">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#092145] mb-3">
               {training.title}
             </h1>
           </div>
@@ -71,21 +71,21 @@ export default async function TrainingDetail({
               <svg className="w-4 h-4 text-[#64748B]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span className="text-sm font-semibold text-[#0B0F19]">{training.duration}</span>
+              <span className="text-sm font-semibold text-[#092145]">{training.duration}</span>
             </div>
           )}
 
           {/* Description */}
           {training.description && (
             <div className="bg-white border border-slate-200 rounded-xl px-6 py-6">
-              <h2 className="text-base font-semibold text-[#0B0F19] mb-3">About this course</h2>
+              <h2 className="text-base font-semibold text-[#092145] mb-3">About this course</h2>
               <p className="text-sm text-[#64748B] leading-relaxed">{training.description}</p>
             </div>
           )}
 
           {/* Inclusions */}
           <div className="bg-white border border-slate-200 rounded-xl px-6 py-6">
-            <h2 className="text-base font-semibold text-[#0B0F19] mb-4">What&apos;s included</h2>
+            <h2 className="text-base font-semibold text-[#092145] mb-4">What&apos;s included</h2>
             <ul className="space-y-2.5">
               {[
                 "Certified UK instructor",

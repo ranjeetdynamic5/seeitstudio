@@ -49,7 +49,7 @@ export default function ExploreServices({ currentSlug }: { currentSlug: string }
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         <div className="mb-10">
           <p className="text-xs font-semibold text-[#0088cc] uppercase tracking-widest mb-3">Our Services</p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#0B0F19] tracking-tight">Explore Other Services</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#092145] tracking-tight">Explore Other Services</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {SERVICES.map((service) => {
@@ -58,7 +58,7 @@ export default function ExploreServices({ currentSlug }: { currentSlug: string }
               return (
                 <div
                   key={service.slug}
-                  className="rounded-2xl bg-[#00334e] p-6 flex flex-col"
+                  className="rounded-2xl bg-[#092145] p-6 flex flex-col"
                 >
                   <div className="w-10 h-10 rounded-xl bg-white/10 text-white flex items-center justify-center mb-5 shrink-0">
                     {service.icon}
@@ -80,14 +80,14 @@ export default function ExploreServices({ currentSlug }: { currentSlug: string }
                 href={`/services/${service.slug}`}
                 className="rounded-2xl bg-white border border-[#e2e8f0] p-6 flex flex-col hover:shadow-md hover:border-[#c7d2dc] transition-all group"
               >
-                <div className="w-10 h-10 rounded-xl bg-[#e0f0f8] text-[#00527d] flex items-center justify-center mb-5 shrink-0 group-hover:bg-[#00334e] group-hover:text-white transition-colors">
+                <div className="w-10 h-10 rounded-xl bg-[#e0f0f8] text-[#00527d] flex items-center justify-center mb-5 shrink-0 group-hover:bg-[#092145] group-hover:text-white transition-colors">
                   {service.icon}
                 </div>
-                <h3 className="font-semibold text-[#0B0F19] mb-2 group-hover:text-[#00334e] transition-colors">
+                <h3 className="font-semibold text-[#092145] mb-2 group-hover:text-[#092145] transition-colors">
                   {service.title}
                 </h3>
                 <p className="text-sm text-[#64748B] leading-relaxed flex-1">{service.description}</p>
-                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[#00527d] group-hover:text-[#00334e] transition-colors">
+                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[#00527d] group-hover:text-[#092145] transition-colors">
                   Learn more
                   <svg
                     className="w-4 h-4 group-hover:translate-x-0.5 transition-transform"

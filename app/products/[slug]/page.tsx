@@ -30,11 +30,11 @@ export default async function ProductDetailPage({
         <div className="bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
             <nav className="flex items-center gap-1.5 text-sm text-[#64748B]">
-              <Link href="/" className="hover:text-[#0B0F19]">Home</Link>
+              <Link href="/" className="hover:text-[#092145]">Home</Link>
               <span>›</span>
-              <Link href="/products" className="hover:text-[#0B0F19]">Products</Link>
+              <Link href="/products" className="hover:text-[#092145]">Products</Link>
               <span>›</span>
-              <span className="text-[#0B0F19] font-medium">{product.title}</span>
+              <span className="text-[#092145] font-medium">{product.title}</span>
             </nav>
           </div>
         </div>
@@ -63,7 +63,7 @@ export default async function ProductDetailPage({
 
             {/* Info */}
             <div className="flex flex-col gap-5">
-              <h1 className="text-2xl font-bold text-[#0B0F19]">{product.title}</h1>
+              <h1 className="text-2xl font-bold text-[#092145]">{product.title}</h1>
 
               {product.is_on_sale && product.offer_text && (
                 <p className="text-sm text-[#0066FF] font-medium">{product.offer_text}</p>
@@ -97,7 +97,7 @@ export default async function ProductDetailPage({
         {product.description && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             <div className="bg-white rounded-xl border border-slate-200 p-8">
-              <h2 className="text-xl font-semibold text-[#0B0F19] mb-6">Product Details</h2>
+              <h2 className="text-xl font-semibold text-[#092145] mb-6">Product Details</h2>
               <DescriptionPreview source={product.description} />
             </div>
           </div>

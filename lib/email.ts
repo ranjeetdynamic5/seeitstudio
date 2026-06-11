@@ -28,10 +28,10 @@ function buildInvoiceHtml(order: OrderEmailData): string {
     .map(
       (p) => `
         <tr>
-          <td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#0B0F19">${p.name}</td>
-          <td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#0B0F19;text-align:center">${p.quantity}</td>
-          <td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#0B0F19;text-align:right">£${p.price.toFixed(2)}</td>
-          <td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#0B0F19;text-align:right;font-weight:600">£${(p.price * p.quantity).toFixed(2)}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#092145">${p.name}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#092145;text-align:center">${p.quantity}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#092145;text-align:right">£${p.price.toFixed(2)}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#092145;text-align:right;font-weight:600">£${(p.price * p.quantity).toFixed(2)}</td>
         </tr>`
     )
     .join("");
@@ -46,7 +46,7 @@ function buildInvoiceHtml(order: OrderEmailData): string {
 
         <!-- Header -->
         <tr>
-          <td style="background:#0B0F19;padding:24px 32px">
+          <td style="background:#092145;padding:24px 32px">
             <span style="color:#ffffff;font-size:18px;font-weight:700;letter-spacing:-0.3px">SeeIt Studio</span>
             <span style="color:#94a3b8;font-size:13px;margin-left:14px">Order Confirmation</span>
           </td>
@@ -56,7 +56,7 @@ function buildInvoiceHtml(order: OrderEmailData): string {
         <tr><td style="padding:32px">
 
           <p style="margin:0 0 6px;color:#64748b;font-size:14px">Dear ${order.customerName},</p>
-          <p style="margin:0 0 28px;color:#0B0F19;font-size:15px;line-height:1.5">
+          <p style="margin:0 0 28px;color:#092145;font-size:15px;line-height:1.5">
             Thank you for your order. We have received it and will be in touch shortly.
           </p>
 
@@ -64,11 +64,11 @@ function buildInvoiceHtml(order: OrderEmailData): string {
           <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;background:#f8fafc;border-radius:8px;padding:0;border:1px solid #e2e8f0">
             <tr>
               <td style="padding:12px 16px;color:#64748b;font-size:13px;border-bottom:1px solid #e2e8f0">Order Reference</td>
-              <td style="padding:12px 16px;color:#0B0F19;font-size:13px;font-weight:700;text-align:right;border-bottom:1px solid #e2e8f0">#${order.orderId}</td>
+              <td style="padding:12px 16px;color:#092145;font-size:13px;font-weight:700;text-align:right;border-bottom:1px solid #e2e8f0">#${order.orderId}</td>
             </tr>
             <tr>
               <td style="padding:12px 16px;color:#64748b;font-size:13px">Date</td>
-              <td style="padding:12px 16px;color:#0B0F19;font-size:13px;text-align:right">${date}</td>
+              <td style="padding:12px 16px;color:#092145;font-size:13px;text-align:right">${date}</td>
             </tr>
           </table>
 
@@ -88,10 +88,10 @@ function buildInvoiceHtml(order: OrderEmailData): string {
             <tr>
               <td></td>
               <td style="width:220px">
-                <table width="100%" cellpadding="0" cellspacing="0" style="border-top:2px solid #0B0F19">
+                <table width="100%" cellpadding="0" cellspacing="0" style="border-top:2px solid #092145">
                   <tr>
-                    <td style="padding:12px 0 0;color:#0B0F19;font-size:15px;font-weight:700">Total</td>
-                    <td style="padding:12px 0 0;color:#0B0F19;font-size:18px;font-weight:700;text-align:right">£${order.totalAmount.toFixed(2)}</td>
+                    <td style="padding:12px 0 0;color:#092145;font-size:15px;font-weight:700">Total</td>
+                    <td style="padding:12px 0 0;color:#092145;font-size:18px;font-weight:700;text-align:right">£${order.totalAmount.toFixed(2)}</td>
                   </tr>
                 </table>
               </td>
@@ -129,7 +129,7 @@ function buildAdminHtml(order: OrderEmailData): string {
     .join("<br/>");
 
   return `
-    <h2 style="font-family:Arial,sans-serif;color:#0B0F19">New Order: #${order.orderId}</h2>
+    <h2 style="font-family:Arial,sans-serif;color:#092145">New Order: #${order.orderId}</h2>
     <p style="font-family:Arial,sans-serif;color:#374151"><strong>Customer:</strong> ${order.customerName}</p>
     <p style="font-family:Arial,sans-serif;color:#374151"><strong>Email:</strong> ${order.email}</p>
     <p style="font-family:Arial,sans-serif;color:#374151"><strong>Products:</strong><br/>${productLines}</p>

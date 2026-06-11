@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
           to: email,
           subject: "Thank you for contacting SeeIt Studio",
           html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #0B0F19;">
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #092145;">
               <h2 style="color: #0066FF;">Thank you for getting in touch, ${fullName}</h2>
               <p>We have received your enquiry and will respond within one business day.</p>
               <p>If your matter is urgent, please email us directly at
@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
           to: process.env.ADMIN_EMAIL || "ranjeetdynamic5@gmail.com",
           subject: `New Lead: ${inquiryType || "General Enquiry"} from ${fullName}`,
           html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #0B0F19;">
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #092145;">
               <h2 style="color: #0066FF;">New Contact Lead</h2>
               <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
                 <tr><td style="padding: 8px 0; font-weight: bold; width: 160px;">Name</td><td>${fullName}</td></tr>

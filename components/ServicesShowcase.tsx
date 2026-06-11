@@ -105,7 +105,7 @@ export default function ServicesShowcase() {
                   </p>
 
                   {/* Heading */}
-                  <h2 className="text-[1.85rem] sm:text-[2.25rem] lg:text-[2.5rem] font-bold tracking-tight text-[#0B0F19] leading-[1.08] mb-5 whitespace-pre-line">
+                  <h2 className="text-[1.85rem] sm:text-[2.25rem] lg:text-[2.5rem] font-bold tracking-tight text-[#092145] leading-[1.08] mb-5 whitespace-pre-line">
                     {service.heading}
                   </h2>
 
@@ -127,7 +127,7 @@ export default function ServicesShowcase() {
                   {/* CTA */}
                   <Link
                     href={service.href}
-                    className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-[#00334e] rounded-xl hover:bg-[#00527d] transition-colors shadow-sm group"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-[#092145] rounded-xl hover:bg-[#00527d] transition-colors shadow-sm group"
                   >
                     Learn more
                     <svg

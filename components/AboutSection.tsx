@@ -121,7 +121,7 @@ export default function AboutSection() {
               </a>
               <a
                 href="/about"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0B0F19] hover:text-black/60 transition-colors"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#092145] hover:text-black/60 transition-colors"
               >
                 Our story
                 <svg

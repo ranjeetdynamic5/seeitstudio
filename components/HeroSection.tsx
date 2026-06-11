@@ -61,7 +61,7 @@ export default function HeroSection() {
   );
 
   return (
-    <section className="w-full bg-[#0B0F19]">
+    <section className="w-full bg-[#092145]">
 
       {/* ── Main Hero ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

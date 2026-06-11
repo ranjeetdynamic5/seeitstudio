@@ -78,7 +78,7 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0B0F19] text-white border-t border-white/[0.06]">
+    <footer className="bg-[#092145] text-white border-t border-white/[0.06]">
 
       {/* Top gradient line */}
       <div className="h-px bg-gradient-to-r from-transparent via-[#0066FF]/40 to-transparent" />

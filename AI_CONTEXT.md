@@ -75,14 +75,14 @@ RLS is enabled on all tables except `product_categories`.
 
 | Token | Value |
 |---|---|
-| Primary dark | `#0B0F19` |
+| Primary dark | `#092145` |
 | CTA / accent blue | `#0066FF` |
 | CTA hover | `#0052cc` |
 | Page bg | `#f8fafc` / `#f8f9fa` |
 | Body text | `#64748B` |
 | Border | `#e2e8f0` / `slate-200` |
 
-Top bar header: `bg-[#0B0F19]` with slate-300/white text.
+Top bar header: `bg-[#092145]` with slate-300/white text.
 
 ---
 

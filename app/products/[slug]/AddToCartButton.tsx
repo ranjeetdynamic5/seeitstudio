@@ -52,7 +52,7 @@ export default function AddToCartButton({ id, name, price }: Props) {
         className={`flex-1 flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold rounded-xl transition-colors ${
           added
             ? "bg-green-600 text-white"
-            : "bg-white text-[#0B0F19] border border-slate-200 hover:bg-[#f8f9fa] hover:border-slate-300 active:bg-slate-100"
+            : "bg-white text-[#092145] border border-slate-200 hover:bg-[#f8f9fa] hover:border-slate-300 active:bg-slate-100"
         }`}
       >
         {added ? (

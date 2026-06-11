@@ -27,13 +27,13 @@ export default function CartContents() {
         {/* Page heading */}
         <div className="mb-8">
           <nav className="flex items-center gap-1.5 text-sm text-[#64748B] mb-4">
-            <Link href="/" className="hover:text-[#0B0F19] transition-colors">Home</Link>
+            <Link href="/" className="hover:text-[#092145] transition-colors">Home</Link>
             <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
             </svg>
-            <span className="text-[#0B0F19] font-medium">Cart</span>
+            <span className="text-[#092145] font-medium">Cart</span>
           </nav>
-          <h1 className="text-3xl font-semibold tracking-tight text-[#0B0F19]">Your Cart</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-[#092145]">Your Cart</h1>
         </div>
 
         {/* Wait for mount to avoid SSR mismatch */}
@@ -46,7 +46,7 @@ export default function CartContents() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.836l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 110-1.5.75.75 0 010 1.5zm12.75 0a.75.75 0 110-1.5.75.75 0 010 1.5z" />
               </svg>
             </div>
-            <p className="text-base font-semibold text-[#0B0F19] mb-1">Your cart is empty</p>
+            <p className="text-base font-semibold text-[#092145] mb-1">Your cart is empty</p>
             <p className="text-sm text-[#64748B] mb-6">Browse our products and add items to get started.</p>
             <Link
               href="/products"
@@ -71,7 +71,7 @@ export default function CartContents() {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-[#0B0F19] leading-snug truncate">{item.name}</p>
+                    <p className="text-sm font-semibold text-[#092145] leading-snug truncate">{item.name}</p>
                     <p className="text-xs text-[#64748B] mt-0.5">£{item.price.toFixed(2)} each</p>
                   </div>
 
@@ -86,7 +86,7 @@ export default function CartContents() {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                       </svg>
                     </button>
-                    <span className="w-6 text-center text-sm font-semibold text-[#0B0F19]">{item.quantity}</span>
+                    <span className="w-6 text-center text-sm font-semibold text-[#092145]">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                       aria-label="Increase quantity"
@@ -98,7 +98,7 @@ export default function CartContents() {
                     </button>
                   </div>
 
-                  <p className="text-base font-semibold text-[#0B0F19] shrink-0 w-20 text-right">
+                  <p className="text-base font-semibold text-[#092145] shrink-0 w-20 text-right">
                     £{(item.price * item.quantity).toFixed(2)}
                   </p>
 
@@ -125,13 +125,13 @@ export default function CartContents() {
             {/* Order summary */}
             <div className="lg:w-80 shrink-0">
               <div className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col gap-4 sticky top-36">
-                <h2 className="text-base font-semibold text-[#0B0F19]">Order Summary</h2>
+                <h2 className="text-base font-semibold text-[#092145]">Order Summary</h2>
 
                 <div className="flex flex-col gap-2 text-sm text-[#64748B]">
                   {items.map((item) => (
                     <div key={item.id} className="flex justify-between">
                       <span className="truncate pr-2">{item.name} ×{item.quantity}</span>
-                      <span className="shrink-0 font-medium text-[#0B0F19]">£{(item.price * item.quantity).toFixed(2)}</span>
+                      <span className="shrink-0 font-medium text-[#092145]">£{(item.price * item.quantity).toFixed(2)}</span>
                     </div>
                   ))}
                 </div>
@@ -139,11 +139,11 @@ export default function CartContents() {
                 <div className="border-t border-slate-100 pt-3 flex flex-col gap-2 text-sm text-[#64748B]">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span className="font-medium text-[#0B0F19]">£{subtotal.toFixed(2)}</span>
+                    <span className="font-medium text-[#092145]">£{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping</span>
-                    <span className="font-medium text-[#0B0F19]">
+                    <span className="font-medium text-[#092145]">
                       {shipping === 0 ? "Free" : `£${shipping.toFixed(2)}`}
                     </span>
                   </div>
@@ -152,7 +152,7 @@ export default function CartContents() {
                   )}
                 </div>
 
-                <div className="border-t border-slate-100 pt-3 flex justify-between text-base font-semibold text-[#0B0F19]">
+                <div className="border-t border-slate-100 pt-3 flex justify-between text-base font-semibold text-[#092145]">
                   <span>Total</span>
                   <span>£{total.toFixed(2)}</span>
                 </div>

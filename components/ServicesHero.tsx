@@ -24,7 +24,7 @@ const TRUST_ITEMS = [
 export default function ServicesHero() {
   return (
     <section
-      className="relative bg-[#001424] overflow-hidden"
+      className="relative bg-[#092145] overflow-hidden"
       aria-label="Services hero"
     >
       <div className="relative z-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32">
@@ -185,7 +185,7 @@ export default function ServicesHero() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, ease, delay: 0.7 }}
-              className="absolute -bottom-4 -left-4 sm:-bottom-5 sm:-left-5 bg-[#00334e] border border-[#0088cc]/30 rounded-xl px-4 py-3 shadow-xl"
+              className="absolute -bottom-4 -left-4 sm:-bottom-5 sm:-left-5 bg-[#092145] border border-[#0088cc]/30 rounded-xl px-4 py-3 shadow-xl"
             >
               <p className="text-[11px] font-semibold text-[#0088cc] uppercase tracking-widest mb-0.5">
                 Award-winning

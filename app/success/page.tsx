@@ -133,7 +133,7 @@ export default function SuccessPage() {
 
         {isLoggedIn === false && orderEmail && !createSuccess && (
           <div className="mt-8 pt-8 border-t border-slate-200 text-left">
-            <h2 className="text-base font-semibold text-[#0B0F19] mb-1">
+            <h2 className="text-base font-semibold text-[#092145] mb-1">
               Track your order
             </h2>
             <p className="text-sm text-[#64748B] mb-4">
@@ -156,7 +156,7 @@ export default function SuccessPage() {
                   required
                   minLength={6}
                   disabled={createLoading}
-                  className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
+                  className="w-full px-3.5 py-2.5 text-sm text-[#092145] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
                 />
                 <input
                   type="password"
@@ -166,7 +166,7 @@ export default function SuccessPage() {
                   required
                   minLength={6}
                   disabled={createLoading}
-                  className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
+                  className="w-full px-3.5 py-2.5 text-sm text-[#092145] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
                 />
                 {createError && <p className="text-xs text-red-500">{createError}</p>}
                 <button
@@ -195,7 +195,7 @@ export default function SuccessPage() {
                   onChange={(e) => setLoginPassword(e.target.value)}
                   required
                   disabled={loginLoading}
-                  className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
+                  className="w-full px-3.5 py-2.5 text-sm text-[#092145] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300"
                 />
                 {loginError && <p className="text-xs text-red-500">{loginError}</p>}
                 <button

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import NavHeader from "@/components/NavHeader";
 import Footer from "@/components/Footer";
-import { getTrainingCourses } from "@/lib/supabase";
+import { getTrainingCourses, getTrainingCategories } from "@/lib/supabase";
 import TrainingCatalog from "./TrainingCatalog";
 
 export const metadata: Metadata = {
@@ -22,13 +22,16 @@ export const metadata: Metadata = {
 };
 
 export default async function TrainingPage() {
-  const trainings = await getTrainingCourses();
+  const [trainings, categories] = await Promise.all([
+    getTrainingCourses(),
+    getTrainingCategories(),
+  ]);
 
   return (
     <>
       <NavHeader />
       <Suspense fallback={null}>
-        <TrainingCatalog trainings={trainings} />
+        <TrainingCatalog trainings={trainings} categories={categories} />
       </Suspense>
       <Footer />
     </>

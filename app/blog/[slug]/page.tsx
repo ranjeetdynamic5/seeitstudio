@@ -340,15 +340,15 @@ export default async function BlogPostPage({
 
               {/* Breadcrumb */}
               <nav className="flex items-center gap-1.5 text-sm text-[#64748B] mb-6">
-                <Link href="/" className="hover:text-[#0B0F19] transition-colors">Home</Link>
+                <Link href="/" className="hover:text-[#092145] transition-colors">Home</Link>
                 <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                 </svg>
-                <Link href="/blog" className="hover:text-[#0B0F19] transition-colors">Blog</Link>
+                <Link href="/blog" className="hover:text-[#092145] transition-colors">Blog</Link>
                 <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                 </svg>
-                <span className="text-[#0B0F19] font-medium truncate max-w-[180px]">{post.title}</span>
+                <span className="text-[#092145] font-medium truncate max-w-[180px]">{post.title}</span>
               </nav>
 
               {/* Header */}
@@ -359,7 +359,7 @@ export default async function BlogPostPage({
                   </span>
                   <span className="text-xs text-[#64748B]">{post.readTime}</span>
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0B0F19] leading-snug mb-4">
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#092145] leading-snug mb-4">
                   {post.title}
                 </h1>
                 <div className="flex items-center gap-3">
@@ -369,7 +369,7 @@ export default async function BlogPostPage({
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-[#0B0F19]">{post.author}</p>
+                    <p className="text-sm font-medium text-[#092145]">{post.author}</p>
                     <time className="text-xs text-[#64748B]">{formatDate(post.date)}</time>
                   </div>
                 </div>
@@ -432,7 +432,7 @@ export default async function BlogPostPage({
               {/* Related posts */}
               {related.length > 0 && (
                 <div className="bg-white border border-slate-200 rounded-xl p-5">
-                  <h3 className="text-sm font-semibold text-[#0B0F19] mb-4">More in {post.category}</h3>
+                  <h3 className="text-sm font-semibold text-[#092145] mb-4">More in {post.category}</h3>
                   <div className="flex flex-col gap-4">
                     {related.map((r) => (
                       <Link
@@ -440,7 +440,7 @@ export default async function BlogPostPage({
                         href={`/blog/${r.slug}`}
                         className="group flex flex-col gap-1"
                       >
-                        <p className="text-sm font-medium text-[#0B0F19] group-hover:text-[#0066FF] transition-colors leading-snug">
+                        <p className="text-sm font-medium text-[#092145] group-hover:text-[#0066FF] transition-colors leading-snug">
                           {r.title}
                         </p>
                         <div className="flex items-center gap-2 text-xs text-[#64748B]">

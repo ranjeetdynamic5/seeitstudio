@@ -76,7 +76,7 @@ export default function ProfileSettings({ userId, currentFullName, currentEmail 
   return (
     <div className="bg-white rounded-xl border shadow-sm">
       <div className="px-6 py-4 border-b">
-        <h3 className="text-base font-semibold text-[#0B0F19]">Profile Settings</h3>
+        <h3 className="text-base font-semibold text-[#092145]">Profile Settings</h3>
       </div>
 
       <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -17,21 +17,21 @@
 
 | Purpose | Color |
 |---|---|
-| Primary Navy | #00334e |
+| Primary Navy | #092145 |
 | Secondary Navy | #00527d |
 | Accent Blue | #0088cc |
 | CTA Button | #f0a500 |
 | CTA Hover | #d4890a |
 | Light Tint | #e0f0f8 |
 | Page Background | #F7F9FA |
-| Dark Text | #0B0F19 |
+| Dark Text | #092145 |
 | Body Text | #64748B |
 | Border | #e2e8f0 |
 
 ### Color Replacement Rules (Old → New)
 - #D9534F → #f0a500 (CTA buttons)
 - #c9302c → #d4890a (CTA hover)
-- #0F172A → #00334e (dark backgrounds)
+- #0F172A → #092145 (dark backgrounds)
 - #1e293b → #00527d (secondary dark)
 - text #D9534F → #0088cc (links)
 - hover text #c9302c → #00527d (link hover)
@@ -39,7 +39,7 @@
 
 ### Typography
 - Font: Inter (inherit from site)
-- Headings: font-bold, tracking-tight, #0B0F19
+- Headings: font-bold, tracking-tight, #092145
 - Body: #64748B
 - Labels: #374151
 

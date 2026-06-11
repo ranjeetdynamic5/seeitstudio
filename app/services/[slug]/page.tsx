@@ -49,19 +49,19 @@ export default async function ServiceDetailPage({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
 
             <nav className="flex items-center gap-1.5 text-sm text-[#64748B] mb-4">
-              <Link href="/" className="hover:text-[#0B0F19] transition-colors">Home</Link>
+              <Link href="/" className="hover:text-[#092145] transition-colors">Home</Link>
               <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
               </svg>
-              <Link href="/services" className="hover:text-[#0B0F19] transition-colors">Services</Link>
+              <Link href="/services" className="hover:text-[#092145] transition-colors">Services</Link>
               <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
               </svg>
-              <span className="text-[#0B0F19] font-medium">{service.title}</span>
+              <span className="text-[#092145] font-medium">{service.title}</span>
             </nav>
 
             <div className="max-w-2xl">
-              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B0F19]">
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#092145]">
                 {service.title}
               </h1>
               <p className="mt-3 text-base text-[#64748B] leading-relaxed">
@@ -91,7 +91,7 @@ export default async function ServiceDetailPage({
 
               {service.content && (
                 <section className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
-                  <h2 className="text-lg font-semibold text-[#0B0F19] mb-4">About This Service</h2>
+                  <h2 className="text-lg font-semibold text-[#092145] mb-4">About This Service</h2>
                   <div className="text-sm text-[#64748B] leading-relaxed whitespace-pre-line">
                     {service.content}
                   </div>
@@ -138,7 +138,7 @@ export default async function ServiceDetailPage({
 
                   <a
                     href="tel:03331212187"
-                    className="w-full flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-[#0B0F19] bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors"
+                    className="w-full flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-[#092145] bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
@@ -167,7 +167,7 @@ export default async function ServiceDetailPage({
         {/* ── Other services ── */}
         {otherServices.length > 0 && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-            <h2 className="text-lg font-semibold text-[#0B0F19] mb-5">Other Services</h2>
+            <h2 className="text-lg font-semibold text-[#092145] mb-5">Other Services</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {otherServices.map((s) => (
                 <Link
@@ -176,7 +176,7 @@ export default async function ServiceDetailPage({
                   className="bg-white border border-slate-200 rounded-xl px-5 py-4 hover:border-[#0066FF] hover:shadow-sm transition-all group flex items-center justify-between gap-3"
                 >
                   <div>
-                    <p className="text-sm font-semibold text-[#0B0F19] group-hover:text-[#0066FF] transition-colors">
+                    <p className="text-sm font-semibold text-[#092145] group-hover:text-[#0066FF] transition-colors">
                       {s.title}
                     </p>
                     <p className="text-xs text-[#64748B] mt-0.5 line-clamp-1">{s.description}</p>

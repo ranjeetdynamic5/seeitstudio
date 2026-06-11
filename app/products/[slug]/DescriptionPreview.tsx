@@ -19,7 +19,7 @@ export default function DescriptionPreview({ source }: { source: string }) {
           overflow-x: hidden !important;
         }
         .wmde-markdown h1, .wmde-markdown h2, .wmde-markdown h3 {
-          color: #0B0F19 !important;
+          color: #092145 !important;
           font-weight: 600 !important;
           background: transparent !important;
         }

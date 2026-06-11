@@ -275,7 +275,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
         className="w-full flex items-center justify-between gap-6 py-5 text-left group"
         aria-expanded={open}
       >
-        <span className="text-sm font-semibold text-[#0B0F19] group-hover:text-[#00334e] transition-colors">
+        <span className="text-sm font-semibold text-[#092145] group-hover:text-[#092145] transition-colors">
           {question}
         </span>
         <motion.span
@@ -346,7 +346,7 @@ export default function ArchRenderingContent() {
   return (
     <>
       {/* ── 1. HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative bg-[#001424] overflow-hidden" aria-label="Hero">
+      <section className="relative bg-[#092145] overflow-hidden" aria-label="Hero">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
@@ -403,7 +403,7 @@ export default function ArchRenderingContent() {
               >
                 <a
                   href="#enquiry"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-[#0B0F19] bg-[#f0a500] rounded-xl hover:bg-[#d4890a] transition-colors shadow-[0_2px_20px_rgba(240,165,0,0.28)]"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-[#092145] bg-[#f0a500] rounded-xl hover:bg-[#d4890a] transition-colors shadow-[0_2px_20px_rgba(240,165,0,0.28)]"
                 >
                   Discuss Your Project
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -462,7 +462,7 @@ export default function ArchRenderingContent() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, ease, delay: 0.7 }}
-                className="absolute -bottom-4 -left-4 sm:-bottom-5 sm:-left-5 bg-[#00334e] border border-[#0088cc]/30 rounded-xl px-4 py-3 shadow-xl"
+                className="absolute -bottom-4 -left-4 sm:-bottom-5 sm:-left-5 bg-[#092145] border border-[#0088cc]/30 rounded-xl px-4 py-3 shadow-xl"
               >
                 <p className="text-[11px] font-semibold text-[#0088cc] uppercase tracking-widest mb-0.5">
                   Studio Grade
@@ -481,7 +481,7 @@ export default function ArchRenderingContent() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0 lg:divide-x divide-slate-100">
             {STATS.map((stat, i) => (
               <motion.div key={stat.label} {...inView(i * 0.08)} className="text-center lg:px-8">
-                <p className="text-4xl sm:text-5xl font-bold text-[#00334e] tracking-tight mb-2">{stat.value}</p>
+                <p className="text-4xl sm:text-5xl font-bold text-[#092145] tracking-tight mb-2">{stat.value}</p>
                 <p className="text-sm text-[#64748B] font-medium">{stat.label}</p>
               </motion.div>
             ))}
@@ -490,7 +490,7 @@ export default function ArchRenderingContent() {
       </section>
 
       {/* ── 3. PORTFOLIO SHOWCASE ────────────────────────────────────────────── */}
-      <section className="bg-[#001424]" aria-label="Portfolio showcase" id="portfolio">
+      <section className="bg-[#092145]" aria-label="Portfolio showcase" id="portfolio">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
 
           {/* Header */}
@@ -621,7 +621,7 @@ export default function ArchRenderingContent() {
               {/* Info tile */}
               <motion.div
                 {...inView(0.18)}
-                className="rounded-2xl bg-[#00334e]/60 border border-white/[0.08] p-6 sm:p-7 flex flex-col justify-between min-h-[200px]"
+                className="rounded-2xl bg-[#092145]/60 border border-white/[0.08] p-6 sm:p-7 flex flex-col justify-between min-h-[200px]"
               >
                 <div>
                   <p className="text-[11px] font-semibold text-[#0088cc] uppercase tracking-widest mb-4">
@@ -659,7 +659,7 @@ export default function ArchRenderingContent() {
             </p>
             <a
               href="#enquiry"
-              className="shrink-0 inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-[#0B0F19] bg-[#f0a500] rounded-xl hover:bg-[#d4890a] transition-colors"
+              className="shrink-0 inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-[#092145] bg-[#f0a500] rounded-xl hover:bg-[#d4890a] transition-colors"
             >
               Start Your Project
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -676,7 +676,7 @@ export default function ArchRenderingContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
           <motion.div {...inView()} className="max-w-2xl mb-14">
             <p className="text-xs font-semibold text-[#0088cc] uppercase tracking-widest mb-4">What We Offer</p>
-            <h2 className="text-[2rem] sm:text-[2.5rem] font-bold tracking-tight text-[#0B0F19] leading-[1.1] mb-5">
+            <h2 className="text-[2rem] sm:text-[2.5rem] font-bold tracking-tight text-[#092145] leading-[1.1] mb-5">
               A complete range of architectural
               <br />
               visualisation services.
@@ -698,7 +698,7 @@ export default function ArchRenderingContent() {
                 <div className="w-13 h-13 w-12 h-12 bg-[#e0f0f8] text-[#0088cc] rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#0088cc] group-hover:text-white transition-colors duration-300">
                   {type.icon}
                 </div>
-                <h3 className="text-lg font-semibold text-[#0B0F19] mb-3">{type.title}</h3>
+                <h3 className="text-lg font-semibold text-[#092145] mb-3">{type.title}</h3>
                 <p className="text-sm text-[#64748B] leading-relaxed">{type.description}</p>
               </motion.div>
             ))}
@@ -711,7 +711,7 @@ export default function ArchRenderingContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
           <motion.div {...inView()} className="text-center max-w-2xl mx-auto mb-16">
             <p className="text-xs font-semibold text-[#0088cc] uppercase tracking-widest mb-4">How It Works</p>
-            <h2 className="text-[2rem] sm:text-[2.5rem] font-bold tracking-tight text-[#0B0F19] leading-[1.1] mb-5">
+            <h2 className="text-[2rem] sm:text-[2.5rem] font-bold tracking-tight text-[#092145] leading-[1.1] mb-5">
               A structured process from brief
               <br />
               to final delivery.
@@ -733,10 +733,10 @@ export default function ArchRenderingContent() {
                   {...inView(i * 0.1)}
                   className="flex flex-col items-center text-center"
                 >
-                  <div className="relative z-10 w-14 h-14 rounded-2xl bg-[#00334e] text-white flex items-center justify-center text-sm font-bold mb-5 shadow-sm">
+                  <div className="relative z-10 w-14 h-14 rounded-2xl bg-[#092145] text-white flex items-center justify-center text-sm font-bold mb-5 shadow-sm">
                     {step.step}
                   </div>
-                  <h3 className="text-sm font-semibold text-[#0B0F19] mb-2.5">{step.title}</h3>
+                  <h3 className="text-sm font-semibold text-[#092145] mb-2.5">{step.title}</h3>
                   <p className="text-xs text-[#64748B] leading-relaxed">{step.description}</p>
                 </motion.div>
               ))}
@@ -762,7 +762,7 @@ export default function ArchRenderingContent() {
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#001424]/60 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#092145]/60 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6 right-6">
                 <p className="text-sm font-semibold text-white leading-snug">
                   Physically accurate lighting &amp; materiality
@@ -775,7 +775,7 @@ export default function ArchRenderingContent() {
             <div className="order-1 lg:order-2 flex flex-col justify-center">
               <motion.div {...inView(0.05)}>
                 <p className="text-xs font-semibold text-[#0088cc] uppercase tracking-widest mb-5">The Business Case</p>
-                <h2 className="text-[2rem] sm:text-[2.5rem] font-bold tracking-tight text-[#0B0F19] leading-[1.1] mb-5">
+                <h2 className="text-[2rem] sm:text-[2.5rem] font-bold tracking-tight text-[#092145] leading-[1.1] mb-5">
                   Why CGI is a commercial
                   <br />investment, not a cost.
                 </h2>
@@ -790,7 +790,7 @@ export default function ArchRenderingContent() {
                       {benefit.icon}
                     </div>
                     <div>
-                      <h3 className="text-sm font-semibold text-[#0B0F19] mb-1">{benefit.title}</h3>
+                      <h3 className="text-sm font-semibold text-[#092145] mb-1">{benefit.title}</h3>
                       <p className="text-sm text-[#64748B] leading-relaxed">{benefit.description}</p>
                     </div>
                   </motion.div>
@@ -803,7 +803,7 @@ export default function ArchRenderingContent() {
       </section>
 
       {/* ── 7. WHY CHOOSE US ─────────────────────────────────────────────────── */}
-      <section className="bg-[#00334e]" aria-label="Why choose us">
+      <section className="bg-[#092145]" aria-label="Why choose us">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
           <motion.div {...inView()} className="text-center max-w-2xl mx-auto mb-14">
             <p className="text-xs font-semibold text-[#0088cc] uppercase tracking-widest mb-4">Our Difference</p>
@@ -841,7 +841,7 @@ export default function ArchRenderingContent() {
             <p className="text-xs font-semibold text-[#0088cc] uppercase tracking-widest mb-4">
               Client Testimonials
             </p>
-            <h2 className="text-[2rem] sm:text-[2.5rem] font-bold tracking-tight text-[#0B0F19] leading-[1.1]">
+            <h2 className="text-[2rem] sm:text-[2.5rem] font-bold tracking-tight text-[#092145] leading-[1.1]">
               Trusted by architects and developers
               <br />
               across the UK.
@@ -856,13 +856,13 @@ export default function ArchRenderingContent() {
                 className="bg-white border border-slate-100 rounded-2xl p-7 shadow-sm flex flex-col"
               >
                 <StarRow />
-                <p className="text-[#0B0F19] text-sm leading-relaxed mb-6 flex-1">&ldquo;{t.quote}&rdquo;</p>
+                <p className="text-[#092145] text-sm leading-relaxed mb-6 flex-1">&ldquo;{t.quote}&rdquo;</p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-[#00334e] text-white rounded-full flex items-center justify-center font-semibold text-xs shrink-0">
+                  <div className="w-10 h-10 bg-[#092145] text-white rounded-full flex items-center justify-center font-semibold text-xs shrink-0">
                     {t.initials}
                   </div>
                   <div>
-                    <p className="font-semibold text-[#0B0F19] text-sm">{t.name}</p>
+                    <p className="font-semibold text-[#092145] text-sm">{t.name}</p>
                     <p className="text-xs text-[#64748B]">{t.role}</p>
                   </div>
                 </div>
@@ -879,7 +879,7 @@ export default function ArchRenderingContent() {
 
             <motion.div {...inView()} className="lg:col-span-4">
               <p className="text-xs font-semibold text-[#0088cc] uppercase tracking-widest mb-4">FAQ</p>
-              <h2 className="text-[2rem] sm:text-[2.5rem] font-bold tracking-tight text-[#0B0F19] leading-[1.1] mb-5">
+              <h2 className="text-[2rem] sm:text-[2.5rem] font-bold tracking-tight text-[#092145] leading-[1.1] mb-5">
                 Common questions answered.
               </h2>
               <p className="text-base text-[#64748B] leading-relaxed mb-8">
@@ -909,7 +909,7 @@ export default function ArchRenderingContent() {
       </section>
 
       {/* ── 10. FINAL CTA + FORM ─────────────────────────────────────────────── */}
-      <section className="bg-[#001424]" aria-label="Get in touch" id="enquiry">
+      <section className="bg-[#092145]" aria-label="Get in touch" id="enquiry">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
 
@@ -928,7 +928,7 @@ export default function ArchRenderingContent() {
               <div className="flex flex-wrap gap-4 mb-10">
                 <a
                   href="#enquiry"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-[#0B0F19] bg-[#f0a500] rounded-xl hover:bg-[#d4890a] transition-colors"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-[#092145] bg-[#f0a500] rounded-xl hover:bg-[#d4890a] transition-colors"
                 >
                   Discuss Your Project
                 </a>
@@ -1030,7 +1030,7 @@ export default function ArchRenderingContent() {
                     <button
                       type="submit"
                       disabled={formStatus === 'loading'}
-                      className="w-full py-4 bg-[#f0a500] text-[#0B0F19] font-semibold rounded-xl hover:bg-[#d4890a] transition-colors disabled:opacity-60 text-sm"
+                      className="w-full py-4 bg-[#f0a500] text-[#092145] font-semibold rounded-xl hover:bg-[#d4890a] transition-colors disabled:opacity-60 text-sm"
                     >
                       {formStatus === 'loading' ? 'Sending…' : 'Send Project Brief'}
                     </button>

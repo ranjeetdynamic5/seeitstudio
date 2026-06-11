@@ -44,7 +44,7 @@ export default async function DashboardPage() {
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-xl font-semibold text-[#0B0F19]">Seeit Studio</Link>
+          <Link href="/" className="text-xl font-semibold text-[#092145]">Seeit Studio</Link>
           <div className="flex items-center gap-4">
             <p className="text-sm text-gray-500">{user.email}</p>
             <LogoutButton />
@@ -65,7 +65,7 @@ export default async function DashboardPage() {
                   {(profile?.full_name?.[0] ?? user.email?.[0] ?? 'U').toUpperCase()}
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-[#0B0F19]">
+                  <h2 className="text-lg font-semibold text-[#092145]">
                     Welcome back{profile?.full_name ? `, ${profile.full_name}` : ''} 👋
                   </h2>
                   <p className="text-sm text-gray-500">{user.email}</p>
@@ -76,7 +76,7 @@ export default async function DashboardPage() {
             {/* Orders */}
             <div className="bg-white rounded-xl border shadow-sm">
               <div className="px-6 py-4 border-b">
-                <h3 className="text-base font-semibold text-[#0B0F19]">My Orders</h3>
+                <h3 className="text-base font-semibold text-[#092145]">My Orders</h3>
               </div>
               {!orders || orders.length === 0 ? (
                 <div className="px-6 py-10 text-center">
@@ -138,17 +138,17 @@ export default async function DashboardPage() {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">Total Orders</span>
-                  <span className="text-lg font-bold text-[#0B0F19]">{orders?.length ?? 0}</span>
+                  <span className="text-lg font-bold text-[#092145]">{orders?.length ?? 0}</span>
                 </div>
                 <div className="flex justify-between items-center border-t pt-3">
                   <span className="text-sm text-gray-500">Total Spent</span>
-                  <span className="text-lg font-bold text-[#0B0F19]">
+                  <span className="text-lg font-bold text-[#092145]">
                     £{orders?.reduce((sum, o) => sum + Number(o.total_amount), 0).toFixed(2) ?? '0.00'}
                   </span>
                 </div>
                 <div className="flex justify-between items-center border-t pt-3">
                   <span className="text-sm text-gray-500">Active Orders</span>
-                  <span className="text-lg font-bold text-[#0B0F19]">
+                  <span className="text-lg font-bold text-[#092145]">
                     {orders?.filter(o => o.status === 'paid' || o.status === 'pending').length ?? 0}
                   </span>
                 </div>
@@ -161,21 +161,21 @@ export default async function DashboardPage() {
               <div className="space-y-2">
                 <Link href="/products"
                   className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors group">
-                  <span className="text-sm font-medium text-[#0B0F19]">Browse Products</span>
+                  <span className="text-sm font-medium text-[#092145]">Browse Products</span>
                   <svg className="w-4 h-4 text-gray-400 group-hover:text-[#0066FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                   </svg>
                 </Link>
                 <Link href="/training"
                   className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors group">
-                  <span className="text-sm font-medium text-[#0B0F19]">Training Courses</span>
+                  <span className="text-sm font-medium text-[#092145]">Training Courses</span>
                   <svg className="w-4 h-4 text-gray-400 group-hover:text-[#0066FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                   </svg>
                 </Link>
                 <Link href="/contact"
                   className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors group">
-                  <span className="text-sm font-medium text-[#0B0F19]">Contact Support</span>
+                  <span className="text-sm font-medium text-[#092145]">Contact Support</span>
                   <svg className="w-4 h-4 text-gray-400 group-hover:text-[#0066FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                   </svg>

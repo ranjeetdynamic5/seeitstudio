@@ -23,7 +23,7 @@ export default function ProductNotFound() {
               />
             </svg>
           </div>
-          <h1 className="font-heading text-2xl font-bold text-[#0B0F19] tracking-tight mb-2">
+          <h1 className="font-heading text-2xl font-bold text-[#092145] tracking-tight mb-2">
             Product not found
           </h1>
           <p className="text-sm text-[#64748B] leading-relaxed mb-8">
@@ -39,7 +39,7 @@ export default function ProductNotFound() {
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-[#0B0F19] bg-white border border-slate-200 rounded-xl hover:bg-[#f8f9fa] transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-[#092145] bg-white border border-slate-200 rounded-xl hover:bg-[#f8f9fa] transition-colors"
             >
               Contact us
             </Link>

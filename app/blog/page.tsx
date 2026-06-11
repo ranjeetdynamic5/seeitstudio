@@ -180,16 +180,16 @@ export default function BlogPage() {
 
             {/* Breadcrumb */}
             <nav className="flex items-center gap-1.5 text-sm text-[#64748B] mb-4">
-              <Link href="/" className="hover:text-[#0B0F19] transition-colors">Home</Link>
+              <Link href="/" className="hover:text-[#092145] transition-colors">Home</Link>
               <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
               </svg>
-              <span className="text-[#0B0F19] font-medium">Blog</span>
+              <span className="text-[#092145] font-medium">Blog</span>
             </nav>
 
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
               <div>
-                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B0F19]">
+                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#092145]">
                   Insights & Resources
                 </h1>
                 <p className="mt-2 text-base text-[#64748B] max-w-xl">
@@ -198,7 +198,7 @@ export default function BlogPage() {
                 </p>
               </div>
               <p className="text-sm text-[#64748B] shrink-0">
-                <span className="font-semibold text-[#0B0F19]">{filtered.length}</span> article{filtered.length !== 1 ? "s" : ""}
+                <span className="font-semibold text-[#092145]">{filtered.length}</span> article{filtered.length !== 1 ? "s" : ""}
               </p>
             </div>
 
@@ -212,7 +212,7 @@ export default function BlogPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search articles..."
-                className="w-full pl-9 pr-4 py-2.5 text-sm text-[#0B0F19] bg-white border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-400"
+                className="w-full pl-9 pr-4 py-2.5 text-sm text-[#092145] bg-white border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-400"
               />
               {search && (
                 <button
@@ -243,7 +243,7 @@ export default function BlogPage() {
                     className={`relative flex items-center gap-2 px-4 py-3.5 text-sm font-medium whitespace-nowrap transition-colors border-b-2 -mb-px
                       ${isActive
                         ? "border-[#0066FF] text-[#0066FF]"
-                        : "border-transparent text-[#64748B] hover:text-[#0B0F19] hover:border-slate-300"
+                        : "border-transparent text-[#64748B] hover:text-[#092145] hover:border-slate-300"
                       }`}
                   >
                     {tab.label}
@@ -282,7 +282,7 @@ export default function BlogPage() {
                     </div>
 
                     <div className="flex flex-col gap-1.5">
-                      <h2 className="text-sm font-semibold text-[#0B0F19] leading-snug line-clamp-2">
+                      <h2 className="text-sm font-semibold text-[#092145] leading-snug line-clamp-2">
                         {post.title}
                       </h2>
                       <p className="text-sm text-[#64748B] leading-relaxed line-clamp-3">
@@ -315,12 +315,12 @@ export default function BlogPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803 7.5 7.5 0 0016.803 15.803z" />
                 </svg>
               </div>
-              <p className="text-base font-semibold text-[#0B0F19] mb-1">No articles found</p>
+              <p className="text-base font-semibold text-[#092145] mb-1">No articles found</p>
               <p className="text-sm text-[#64748B] mb-6 max-w-xs">
                 {search.trim() && activeCategory !== "all"
-                  ? <>No results for <span className="font-medium text-[#0B0F19]">&ldquo;{search.trim()}&rdquo;</span> in <span className="font-medium text-[#0B0F19]">{activeCategory}</span>.</>
+                  ? <>No results for <span className="font-medium text-[#092145]">&ldquo;{search.trim()}&rdquo;</span> in <span className="font-medium text-[#092145]">{activeCategory}</span>.</>
                   : search.trim()
-                  ? <>No results for <span className="font-medium text-[#0B0F19]">&ldquo;{search.trim()}&rdquo;</span>.</>
+                  ? <>No results for <span className="font-medium text-[#092145]">&ldquo;{search.trim()}&rdquo;</span>.</>
                   : <>No articles in this category yet.</>
                 }
                 {" "}Try a different keyword or clear filters.

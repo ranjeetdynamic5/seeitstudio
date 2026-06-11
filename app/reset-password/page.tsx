@@ -72,7 +72,7 @@ export default function ResetPasswordPage() {
               required
             />
 
-            <button className="w-full bg-[#0B0F19] text-white py-3 rounded">
+            <button className="w-full bg-[#092145] text-white py-3 rounded">
               Update Password
             </button>
           </form>

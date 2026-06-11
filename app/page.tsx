@@ -30,7 +30,7 @@ function SectionHeading({
       <p className="text-xs font-medium text-[#0066FF] uppercase tracking-widest mb-3">
         {eyebrow}
       </p>
-      <h2 className="font-heading text-[30px] sm:text-[38px] lg:text-[48px] leading-[1.05] font-bold tracking-tight text-[#0B0F19] mb-3 sm:mb-4">
+      <h2 className="font-heading text-[30px] sm:text-[38px] lg:text-[48px] leading-[1.05] font-bold tracking-tight text-[#092145] mb-3 sm:mb-4">
         {title}
       </h2>
       {subtitle && (
@@ -166,7 +166,7 @@ export default async function HomePage() {
               ))}
             </div>
 
-            <div className="bg-[#0B0F19] rounded-2xl p-6 sm:p-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="bg-[#092145] rounded-2xl p-6 sm:p-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-base sm:text-lg font-semibold text-white mb-1">
                   Looking for bespoke team training?
@@ -177,7 +177,7 @@ export default async function HomePage() {
               </div>
               <a
                 href="/contact"
-                className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-[#0B0F19] bg-white rounded-lg hover:bg-slate-100 transition-colors"
+                className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-[#092145] bg-white rounded-lg hover:bg-slate-100 transition-colors"
               >
                 Enquire now
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -211,7 +211,7 @@ export default async function HomePage() {
         {/* ── CTA Section ───────────────────────────────────────────────────── */}
         <section className="py-20 px-6 md:px-10 xl:px-16 lg:py-32 bg-white">
           <div className="max-w-[1440px] mx-auto">
-            <div className="relative overflow-hidden bg-[#0B0F19] rounded-[36px] border border-white/[0.08] shadow-[0_30px_80px_rgba(0,0,0,0.08)] px-8 py-14 md:px-14 lg:px-20 lg:py-20 flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
+            <div className="relative overflow-hidden bg-[#092145] rounded-[36px] border border-white/[0.08] shadow-[0_30px_80px_rgba(0,0,0,0.08)] px-8 py-14 md:px-14 lg:px-20 lg:py-20 flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
 
               <div className="pointer-events-none absolute -top-40 -left-40 w-[560px] h-[560px] rounded-full bg-[#0066FF] opacity-[0.06]" />
 
@@ -231,7 +231,7 @@ export default async function HomePage() {
               <div className="flex flex-col sm:flex-row gap-3 lg:shrink-0">
                 <a
                   href="/products"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-sm font-semibold text-[#0B0F19] bg-white rounded-full hover:-translate-y-px transition-all duration-200"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-sm font-semibold text-[#092145] bg-white rounded-full hover:-translate-y-px transition-all duration-200"
                 >
                   Shop Products
                 </a>

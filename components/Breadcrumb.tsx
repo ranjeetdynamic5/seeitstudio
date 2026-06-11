@@ -26,12 +26,12 @@ export default function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
               {item.href ? (
                 <Link
                   href={item.href}
-                  className="text-sm font-medium text-[#00527d] hover:text-[#00334e] transition-colors"
+                  className="text-sm font-medium text-[#00527d] hover:text-[#092145] transition-colors"
                 >
                   {item.label}
                 </Link>
               ) : (
-                <span className="text-sm font-medium text-[#0B0F19]" aria-current="page">
+                <span className="text-sm font-medium text-[#092145]" aria-current="page">
                   {item.label}
                 </span>
               )}

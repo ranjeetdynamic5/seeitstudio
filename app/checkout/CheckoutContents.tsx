@@ -192,22 +192,22 @@ export default function CheckoutContents() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
 
         <nav className="flex items-center gap-1.5 text-sm text-[#64748B] mb-6">
-          <Link href="/" className="hover:text-[#0B0F19] transition-colors">Home</Link>
+          <Link href="/" className="hover:text-[#092145] transition-colors">Home</Link>
           <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
           </svg>
-          <Link href="/cart" className="hover:text-[#0B0F19] transition-colors">Cart</Link>
+          <Link href="/cart" className="hover:text-[#092145] transition-colors">Cart</Link>
           <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
           </svg>
-          <span className="text-[#0B0F19] font-medium">Checkout</span>
+          <span className="text-[#092145] font-medium">Checkout</span>
         </nav>
 
-        <h1 className="text-3xl font-semibold tracking-tight text-[#0B0F19] mb-8">Checkout</h1>
+        <h1 className="text-3xl font-semibold tracking-tight text-[#092145] mb-8">Checkout</h1>
 
         {mounted && items.length === 0 && (
           <div className="bg-white border border-slate-200 rounded-xl px-8 py-16 flex flex-col items-center text-center max-w-md mx-auto">
-            <p className="text-base font-semibold text-[#0B0F19] mb-1">Your cart is empty</p>
+            <p className="text-base font-semibold text-[#092145] mb-1">Your cart is empty</p>
             <p className="text-sm text-[#64748B] mb-6">Add items to your cart before checking out.</p>
             <Link href="/products" className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors">
               Browse Products
@@ -223,11 +223,11 @@ export default function CheckoutContents() {
               {!loggedInUser && (
                 <div className="flex gap-1.5 mb-6 p-1 bg-slate-50 border border-slate-200 rounded-lg">
                   <button type="button" onClick={() => setCheckoutMode("guest")}
-                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${checkoutMode === "guest" ? "bg-white shadow-sm text-[#0B0F19]" : "text-[#64748B] hover:text-[#0B0F19]"}`}>
+                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${checkoutMode === "guest" ? "bg-white shadow-sm text-[#092145]" : "text-[#64748B] hover:text-[#092145]"}`}>
                     Continue as Guest
                   </button>
                   <button type="button" onClick={() => setCheckoutMode("login")}
-                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${checkoutMode === "login" ? "bg-white shadow-sm text-[#0B0F19]" : "text-[#64748B] hover:text-[#0B0F19]"}`}>
+                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${checkoutMode === "login" ? "bg-white shadow-sm text-[#092145]" : "text-[#64748B] hover:text-[#092145]"}`}>
                     Sign In
                   </button>
                 </div>
@@ -249,10 +249,10 @@ export default function CheckoutContents() {
                   <p className="text-xs text-[#64748B]">Sign in to pre-fill your details and track your order.</p>
                   <input type="email" placeholder="Email address" value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)} disabled={loginLoading}
-                    className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300" />
+                    className="w-full px-3.5 py-2.5 text-sm text-[#092145] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300" />
                   <input type="password" placeholder="Password" value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)} disabled={loginLoading}
-                    className="w-full px-3.5 py-2.5 text-sm text-[#0B0F19] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300" />
+                    className="w-full px-3.5 py-2.5 text-sm text-[#092145] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300" />
                   {loginError && <p className="text-xs text-red-500">{loginError}</p>}
                   <button type="button" onClick={handleLogin} disabled={loginLoading}
                     className="w-full py-2.5 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] disabled:opacity-60 transition-colors">
@@ -261,7 +261,7 @@ export default function CheckoutContents() {
                 </div>
               )}
 
-              <h2 className="text-base font-semibold text-[#0B0F19] mb-6">Delivery Details</h2>
+              <h2 className="text-base font-semibold text-[#092145] mb-6">Delivery Details</h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <Field label="Full Name" name="fullName" type="text" autoComplete="name"
@@ -297,26 +297,26 @@ export default function CheckoutContents() {
 
             <div className="lg:w-80 shrink-0 w-full">
               <div className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col gap-5 sticky top-36">
-                <h2 className="text-base font-semibold text-[#0B0F19]">Order Summary</h2>
+                <h2 className="text-base font-semibold text-[#092145]">Order Summary</h2>
                 <ul className="flex flex-col gap-2">
                   {items.map((item) => (
                     <li key={item.id} className="flex justify-between text-sm text-[#64748B]">
                       <span className="truncate pr-2">{item.name} &times;{item.quantity}</span>
-                      <span className="shrink-0 font-medium text-[#0B0F19]">£{(item.price * item.quantity).toFixed(2)}</span>
+                      <span className="shrink-0 font-medium text-[#092145]">£{(item.price * item.quantity).toFixed(2)}</span>
                     </li>
                   ))}
                 </ul>
                 <div className="border-t border-slate-100 pt-4 flex flex-col gap-2.5 text-sm">
                   <div className="flex justify-between text-[#64748B]">
                     <span>Subtotal</span>
-                    <span className="font-medium text-[#0B0F19]">£{subtotal.toFixed(2)}</span>
+                    <span className="font-medium text-[#092145]">£{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-[#64748B]">
                     <span>Shipping</span>
-                    <span className="font-medium text-[#0B0F19]">{shipping === 0 ? "Free" : `£${shipping.toFixed(2)}`}</span>
+                    <span className="font-medium text-[#092145]">{shipping === 0 ? "Free" : `£${shipping.toFixed(2)}`}</span>
                   </div>
                   {shipping === 0 && <p className="text-xs text-green-600">Free shipping applied (orders over £50)</p>}
-                  <div className="flex justify-between text-base font-semibold text-[#0B0F19] pt-2 border-t border-slate-100">
+                  <div className="flex justify-between text-base font-semibold text-[#092145] pt-2 border-t border-slate-100">
                     <span>Total</span>
                     <span>£{total.toFixed(2)}</span>
                   </div>
@@ -355,7 +355,7 @@ function Field({ label, name, type, autoComplete, value, error, onChange, classN
       <input
         id={name} name={name} type={type} autoComplete={autoComplete}
         value={value} onChange={onChange} disabled={disabled}
-        className={`w-full px-3.5 py-2.5 text-sm text-[#0B0F19] bg-white border rounded-lg outline-none transition-colors placeholder:text-slate-300
+        className={`w-full px-3.5 py-2.5 text-sm text-[#092145] bg-white border rounded-lg outline-none transition-colors placeholder:text-slate-300
           ${disabled ? "bg-gray-50 text-gray-500 cursor-not-allowed" : ""}
           ${error ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100" : "border-slate-200 focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50"}`}
       />

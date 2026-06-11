@@ -120,7 +120,7 @@ function UpcomingCard({ event }: { event: Event }) {
       {/* Content */}
       <div className="flex flex-col flex-1 p-5 gap-3">
         <div className="flex flex-wrap items-start justify-between gap-2">
-          <h3 className="text-sm font-semibold text-[#0B0F19] leading-snug">{event.title}</h3>
+          <h3 className="text-sm font-semibold text-[#092145] leading-snug">{event.title}</h3>
           <span className={`shrink-0 px-2.5 py-1 text-xs font-semibold rounded-full ${FORMAT_COLORS[event.format]}`}>
             {event.format}
           </span>
@@ -158,7 +158,7 @@ function PastCard({ event }: { event: Event }) {
   return (
     <div className="bg-white border border-slate-200 rounded-xl px-5 py-4 flex items-center justify-between gap-4 opacity-75">
       <div className="min-w-0">
-        <p className="text-sm font-medium text-[#0B0F19] truncate">{event.title}</p>
+        <p className="text-sm font-medium text-[#092145] truncate">{event.title}</p>
         <div className="flex items-center gap-3 mt-1">
           <span className="text-xs text-[#64748B]">{formatDate(event.date)}</span>
           <span className="text-xs text-[#64748B]">·</span>
@@ -210,16 +210,16 @@ export default function EventsPage() {
 
             {/* Breadcrumb */}
             <nav className="flex items-center gap-1.5 text-sm text-[#64748B] mb-4">
-              <Link href="/" className="hover:text-[#0B0F19] transition-colors">Home</Link>
+              <Link href="/" className="hover:text-[#092145] transition-colors">Home</Link>
               <svg className="w-3.5 h-3.5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
               </svg>
-              <span className="text-[#0B0F19] font-medium">Events</span>
+              <span className="text-[#092145] font-medium">Events</span>
             </nav>
 
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
               <div className="max-w-xl">
-                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B0F19]">
+                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#092145]">
                   Events & Workshops
                 </h1>
                 <p className="mt-3 text-base text-[#64748B]">
@@ -228,7 +228,7 @@ export default function EventsPage() {
                 </p>
               </div>
               <div className="text-sm text-[#64748B] shrink-0">
-                <span className="font-semibold text-[#0B0F19]">{upcoming.length}</span> upcoming event{upcoming.length !== 1 ? "s" : ""}
+                <span className="font-semibold text-[#092145]">{upcoming.length}</span> upcoming event{upcoming.length !== 1 ? "s" : ""}
               </div>
             </div>
 
@@ -256,7 +256,7 @@ export default function EventsPage() {
           {/* ── Upcoming events ─────────────────────────────────────────────── */}
           <section>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-[#0B0F19] tracking-tight">Upcoming Events</h2>
+              <h2 className="text-xl font-bold text-[#092145] tracking-tight">Upcoming Events</h2>
               <span className="px-3 py-1 text-xs font-semibold text-[#0066FF] bg-rose-50 rounded-full">
                 {upcoming.length} scheduled
               </span>
@@ -275,7 +275,7 @@ export default function EventsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                   </svg>
                 </div>
-                <p className="text-sm font-semibold text-[#0B0F19]">No upcoming events scheduled</p>
+                <p className="text-sm font-semibold text-[#092145]">No upcoming events scheduled</p>
                 <p className="text-sm text-[#64748B]">Check back soon or contact us to arrange a private session.</p>
               </div>
             )}
@@ -284,7 +284,7 @@ export default function EventsPage() {
           {/* ── Past events ─────────────────────────────────────────────────── */}
           {past.length > 0 && (
             <section>
-              <h2 className="text-xl font-bold text-[#0B0F19] tracking-tight mb-6">Past Events</h2>
+              <h2 className="text-xl font-bold text-[#092145] tracking-tight mb-6">Past Events</h2>
               <div className="flex flex-col gap-3">
                 {past.map((event) => (
                   <PastCard key={event.id} event={event} />

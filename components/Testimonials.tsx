@@ -41,14 +41,14 @@ const trustedBy = [
 
 export default function Testimonials() {
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 lg:py-24 bg-[#f8f9fa]">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-16 px-6 md:px-10 xl:px-16 lg:py-24 bg-[#f8f9fa]">
+      <div className="max-w-[1440px] mx-auto">
         {/* Header */}
         <div className="max-w-xl mb-10 lg:mb-14">
           <p className="text-xs font-semibold text-[#0066FF] uppercase tracking-widest mb-3">
             Client Testimonials
           </p>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-[#0B0F19] mb-4">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-[#092145] mb-4">
             Trusted by UK design professionals
           </h2>
           <p className="text-[#64748B] leading-relaxed text-sm sm:text-base">
@@ -74,7 +74,7 @@ export default function Testimonials() {
               </div>
 
               {/* Quote */}
-              <p className="text-sm text-[#0B0F19] leading-relaxed flex-1">
+              <p className="text-sm text-[#092145] leading-relaxed flex-1">
                 &ldquo;{t.quote}&rdquo;
               </p>
 
@@ -84,7 +84,7 @@ export default function Testimonials() {
                   {t.initials}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-[#0B0F19]">{t.name}</p>
+                  <p className="text-sm font-semibold text-[#092145]">{t.name}</p>
                   <p className="text-xs text-[#64748B] mt-0.5">
                     {t.role} &middot; {t.company}
                   </p>

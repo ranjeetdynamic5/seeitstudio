@@ -47,7 +47,7 @@ export default function StickyBar({ id, name, price, originalPrice }: Props) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
         {/* Product info */}
         <div className="hidden sm:flex flex-col min-w-0">
-          <span className="text-sm font-semibold text-[#0B0F19] truncate">{name}</span>
+          <span className="text-sm font-semibold text-[#092145] truncate">{name}</span>
           <div className="flex items-baseline gap-2">
             <span className="text-base font-bold text-[#0F172A]">£{price.toFixed(2)}</span>
             {originalPrice && (
@@ -72,7 +72,7 @@ export default function StickyBar({ id, name, price, originalPrice }: Props) {
             className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg transition-colors ${
               added
                 ? "bg-green-600 text-white"
-                : "text-[#0B0F19] bg-white border border-slate-200 hover:bg-[#f8f9fa]"
+                : "text-[#092145] bg-white border border-slate-200 hover:bg-[#f8f9fa]"
             }`}
           >
             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

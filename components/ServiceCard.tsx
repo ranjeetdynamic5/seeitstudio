@@ -1,85 +1,63 @@
 'use client'
 
 import Link from "next/link"
-import { useState } from "react"
 import type { ReactNode } from "react"
-import { RenderingIcon, ModellingIcon, AiIcon, WebIcon } from "@/components/ui/animated-icons"
+import {
+  Layers,
+  Box,
+  Building2,
+  Cpu,
+  Globe,
+  Pen,
+} from "lucide-react"
 
 export type Service = {
   title: string
   category: string
   description: string
   href: string
-  icon: ReactNode
+  icon?: ReactNode
   highlights: string[]
   image?: string
 }
 
-function ServiceIcon({ title, hovered }: { title: string; hovered: boolean }) {
+function getIcon(title: string) {
   const t = title.toLowerCase()
-  const outer = { width: 130, height: 130, overflow: 'hidden' as const }
-  const inner = { width: 300, height: 300, transform: 'scale(0.4333)', transformOrigin: 'top left' as const }
-
-  if (t.includes('render')) return (
-    <div style={outer} className={hovered ? "text-[#0066FF]" : "text-[#0066FF]/60"}>
-      <div style={inner}><RenderingIcon isHovered={hovered} /></div>
-    </div>
-  )
-  if (t.includes('model') || t.includes('3d')) return (
-    <div style={outer} className={hovered ? "text-[#0066FF]" : "text-[#0066FF]/60"}>
-      <div style={inner}><ModellingIcon isHovered={hovered} /></div>
-    </div>
-  )
-  if (t.includes('ai') || t.includes('consult')) return (
-    <div style={outer} className={hovered ? "text-[#0066FF]" : "text-[#0066FF]/60"}>
-      <div style={inner}><AiIcon isHovered={hovered} /></div>
-    </div>
-  )
-  return (
-    <div style={outer} className={hovered ? "text-[#0066FF]" : "text-[#0066FF]/60"}>
-      <div style={inner}><WebIcon isHovered={hovered} /></div>
-    </div>
-  )
+  if (t.includes('render') || t.includes('visual')) return <Layers className="w-5 h-5" />
+  if (t.includes('3d') || t.includes('model')) return <Box className="w-5 h-5" />
+  if (t.includes('bim') || t.includes('architect')) return <Building2 className="w-5 h-5" />
+  if (t.includes('ai') || t.includes('consult')) return <Cpu className="w-5 h-5" />
+  if (t.includes('web') || t.includes('ux') || t.includes('ui')) return <Globe className="w-5 h-5" />
+  return <Pen className="w-5 h-5" />
 }
 
 export default function ServiceCard({ service }: { service: Service }) {
-  const [hovered, setHovered] = useState(false)
-
   return (
     <Link
       href={service.href}
-      className="group flex flex-col bg-white border border-slate-200 rounded-[28px] shadow-sm hover:border-[#0066FF] hover:shadow-[0_18px_50px_rgba(0,102,255,0.10)] hover:-translate-y-0.5 transition-all duration-300 overflow-hidden"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className="group flex flex-col bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300"
     >
-      {/* Icon area */}
-      <div className="flex items-center justify-center bg-[#fafafa] min-h-[140px] lg:min-h-[160px] p-1.5 border-b border-slate-100">
-        <ServiceIcon title={service.title} hovered={hovered} />
+      {/* Icon badge */}
+      <div className="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-[#092145] mb-5 group-hover:bg-[#0066FF]/10 group-hover:text-[#0066FF] transition-colors">
+        {getIcon(service.title)}
       </div>
 
-      {/* Content */}
-      <div className="flex flex-col flex-1 p-2.5 gap-2">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm font-semibold text-[#0B0F19] leading-snug">{service.title}</h3>
-          <p className="text-xs text-[#64748B] leading-relaxed line-clamp-3">{service.description}</p>
-        </div>
+      {/* Title */}
+      <h3 className="text-base font-semibold text-[#092145] mb-2 group-hover:text-[#0066FF] transition-colors">
+        {service.title}
+      </h3>
 
-        {service.highlights && service.highlights.length > 0 && (
-          <ul className="flex flex-col gap-2">
-            {service.highlights.map((h) => (
-              <li key={h} className="flex items-center gap-2 text-xs text-[#64748B]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#0066FF] shrink-0" />
-                {h}
-              </li>
-            ))}
-          </ul>
-        )}
+      {/* Description */}
+      <p className="text-sm text-[#64748B] leading-relaxed flex-1 mb-5">
+        {service.description}
+      </p>
 
-        <div className="mt-auto pt-2 border-t border-slate-100">
-          <div className="w-full flex items-center justify-center px-4 py-1.5 text-sm font-semibold rounded-full bg-white border border-slate-200 text-[#0B0F19] hover:bg-[#0066FF] hover:text-white hover:border-[#0066FF] transition-colors">
-            Learn more
-          </div>
-        </div>
+      {/* Learn more */}
+      <div className="flex items-center gap-1.5 text-sm font-medium text-[#092145] group-hover:text-[#0066FF] transition-colors">
+        Learn more
+        <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+        </svg>
       </div>
     </Link>
   )
