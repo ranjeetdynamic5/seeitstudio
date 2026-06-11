@@ -58,6 +58,9 @@ function getSupabase() {
 
 export default function CheckoutContents() {
   const [mounted, setMounted] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState<{ id: string; email: string } | null>(null);
+
   useEffect(() => setMounted(true), []);
 
   const router = useRouter();
@@ -72,54 +75,28 @@ export default function CheckoutContents() {
   const [loading, setLoading] = useState(false);
   const [orderError, setOrderError] = useState<string | null>(null);
 
-  const [checkoutMode, setCheckoutMode] = useState<"guest" | "login">("guest");
-  const [loggedInUser, setLoggedInUser] = useState<{ id: string; email: string } | null>(null);
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [loginLoading, setLoginLoading] = useState(false);
-  const [loginError, setLoginError] = useState<string | null>(null);
-
+  // Auth check — redirect if not logged in
   useEffect(() => {
     getSupabase()
       .auth.getUser()
       .then(({ data: { user } }) => {
-        if (user) {
-          setLoggedInUser({ id: user.id, email: user.email ?? "" });
-          setForm((prev) => ({
-            ...prev,
-            email: user.email ?? prev.email,
-            fullName: (user.user_metadata?.full_name as string | undefined) ?? prev.fullName,
-          }));
+        if (!user) {
+          router.replace("/login?redirect=/checkout");
+          return;
         }
+        setLoggedInUser({ id: user.id, email: user.email ?? "" });
+        setForm((prev) => ({
+          ...prev,
+          email: user.email ?? prev.email,
+          fullName: (user.user_metadata?.full_name as string | undefined) ?? prev.fullName,
+        }));
+        setAuthChecked(true);
       });
-  }, []);
-
-  async function handleLogin() {
-    setLoginError(null);
-    setLoginLoading(true);
-    const supabase = getSupabase();
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: loginEmail,
-      password: loginPassword,
-    });
-    setLoginLoading(false);
-    if (error) {
-      setLoginError(error.message);
-      return;
-    }
-    if (data.user) {
-      setLoggedInUser({ id: data.user.id, email: data.user.email ?? "" });
-      setForm((prev) => ({
-        ...prev,
-        email: data.user.email ?? prev.email,
-        fullName: (data.user.user_metadata?.full_name as string | undefined) ?? prev.fullName,
-      }));
-    }
-  }
+  }, [router]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
-    if (name === "email" && loggedInUser) return // logged in user ka email change nahi hoga
+    if (name === "email") return; // email is locked to account
     setForm((prev) => ({ ...prev, [name]: value }));
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
@@ -138,7 +115,6 @@ export default function CheckoutContents() {
     setOrderError(null);
 
     const id = `UK${Math.floor(10000 + Math.random() * 90000)}`;
-    const finalEmail = loggedInUser?.email || form.email
 
     try {
       const res = await fetch("/api/create-order", {
@@ -147,7 +123,7 @@ export default function CheckoutContents() {
         body: JSON.stringify({
           orderId: id,
           customerName: form.fullName,
-          email: finalEmail,
+          email: loggedInUser!.email,
           products: items.map((item) => ({
             productId: item.id,
             name: item.name,
@@ -160,22 +136,19 @@ export default function CheckoutContents() {
 
       if (!res.ok) throw new Error("Order save failed");
 
-      const data = await res.json();
-      console.log("Sending email...", data);
-
       await fetch("/api/send-order-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           orderId: id,
-          customerEmail: finalEmail,
+          customerEmail: loggedInUser!.email,
           customerName: form.fullName,
         }),
       });
 
       clearCart();
       sessionStorage.setItem("orderComplete", "1");
-      sessionStorage.setItem("orderEmail", finalEmail);
+      sessionStorage.setItem("orderEmail", loggedInUser!.email);
       router.push(`/success?orderId=${id}`);
     } catch {
       setOrderError("There was a problem placing your order. Please try again.");
@@ -186,6 +159,21 @@ export default function CheckoutContents() {
   const subtotal = mounted ? getSubtotal() : 0;
   const shipping = mounted ? getShipping() : 0;
   const total = mounted ? getTotal() : 0;
+
+  // Show nothing while auth is being checked
+  if (!authChecked) {
+    return (
+      <main className="pt-20 md:pt-32 min-h-screen bg-[#f8fafc] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <svg className="w-8 h-8 animate-spin text-[#0066FF]" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z" />
+          </svg>
+          <p className="text-sm text-[#64748B]">Checking your account…</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="pt-20 md:pt-32 min-h-screen bg-[#f8fafc]">
@@ -220,46 +208,15 @@ export default function CheckoutContents() {
 
             <form onSubmit={handleSubmit} noValidate className="flex-1 bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
 
-              {!loggedInUser && (
-                <div className="flex gap-1.5 mb-6 p-1 bg-slate-50 border border-slate-200 rounded-lg">
-                  <button type="button" onClick={() => setCheckoutMode("guest")}
-                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${checkoutMode === "guest" ? "bg-white shadow-sm text-[#092145]" : "text-[#64748B] hover:text-[#092145]"}`}>
-                    Continue as Guest
-                  </button>
-                  <button type="button" onClick={() => setCheckoutMode("login")}
-                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${checkoutMode === "login" ? "bg-white shadow-sm text-[#092145]" : "text-[#64748B] hover:text-[#092145]"}`}>
-                    Sign In
-                  </button>
-                </div>
-              )}
-
-              {loggedInUser && (
-                <div className="mb-6 flex items-center gap-2 px-3 py-2.5 bg-green-50 border border-green-200 rounded-lg">
-                  <svg className="w-4 h-4 text-green-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <p className="text-sm text-green-700">
-                    Signed in as <span className="font-medium">{loggedInUser.email}</span>
-                  </p>
-                </div>
-              )}
-
-              {checkoutMode === "login" && !loggedInUser && (
-                <div className="mb-6 pb-6 border-b border-slate-100 flex flex-col gap-3">
-                  <p className="text-xs text-[#64748B]">Sign in to pre-fill your details and track your order.</p>
-                  <input type="email" placeholder="Email address" value={loginEmail}
-                    onChange={(e) => setLoginEmail(e.target.value)} disabled={loginLoading}
-                    className="w-full px-3.5 py-2.5 text-sm text-[#092145] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300" />
-                  <input type="password" placeholder="Password" value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)} disabled={loginLoading}
-                    className="w-full px-3.5 py-2.5 text-sm text-[#092145] border border-slate-200 rounded-lg outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50 transition-colors placeholder:text-slate-300" />
-                  {loginError && <p className="text-xs text-red-500">{loginError}</p>}
-                  <button type="button" onClick={handleLogin} disabled={loginLoading}
-                    className="w-full py-2.5 text-sm font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] disabled:opacity-60 transition-colors">
-                    {loginLoading ? "Signing in…" : "Sign In"}
-                  </button>
-                </div>
-              )}
+              {/* Logged in indicator */}
+              <div className="mb-6 flex items-center gap-2 px-3 py-2.5 bg-green-50 border border-green-200 rounded-lg">
+                <svg className="w-4 h-4 text-green-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p className="text-sm text-green-700">
+                  Signed in as <span className="font-medium">{loggedInUser?.email}</span>
+                </p>
+              </div>
 
               <h2 className="text-base font-semibold text-[#092145] mb-6">Delivery Details</h2>
 
@@ -267,8 +224,8 @@ export default function CheckoutContents() {
                 <Field label="Full Name" name="fullName" type="text" autoComplete="name"
                   value={form.fullName} error={errors.fullName} onChange={handleChange} className="sm:col-span-2" />
                 <Field label="Email Address" name="email" type="email" autoComplete="email"
-                  value={loggedInUser?.email || form.email} error={errors.email} onChange={handleChange}
-                  disabled={!!loggedInUser} />
+                  value={loggedInUser?.email ?? ""} error={errors.email} onChange={handleChange}
+                  disabled={true} />
                 <Field label="Phone Number" name="phone" type="tel" autoComplete="tel"
                   value={form.phone} error={errors.phone} onChange={handleChange} />
                 <Field label="Address" name="address" type="text" autoComplete="street-address"
@@ -289,12 +246,13 @@ export default function CheckoutContents() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z" />
                     </svg>
-                    Processing&hellip;
+                    Processing…
                   </>
                 ) : "Complete Secure Order →"}
               </button>
             </form>
 
+            {/* Order summary */}
             <div className="lg:w-80 shrink-0 w-full">
               <div className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col gap-5 sticky top-36">
                 <h2 className="text-base font-semibold text-[#092145]">Order Summary</h2>
@@ -357,7 +315,7 @@ function Field({ label, name, type, autoComplete, value, error, onChange, classN
         value={value} onChange={onChange} disabled={disabled}
         className={`w-full px-3.5 py-2.5 text-sm text-[#092145] bg-white border rounded-lg outline-none transition-colors placeholder:text-slate-300
           ${disabled ? "bg-gray-50 text-gray-500 cursor-not-allowed" : ""}
-          ${error ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100" : "border-slate-200 focus:border-[#0066FF] focus:ring-2 focus:ring-rose-50"}`}
+          ${error ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100" : "border-slate-200 focus:border-[#0066FF] focus:ring-2 focus:ring-blue-50"}`}
       />
       {error && <p className="mt-1.5 text-xs text-red-500">{error}</p>}
       {disabled && <p className="mt-1 text-xs text-gray-400">Email is linked to your account</p>}
