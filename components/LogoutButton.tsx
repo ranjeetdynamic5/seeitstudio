@@ -2,13 +2,16 @@
 
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { useCartStore } from '@/lib/cartStore'
 
 export default function LogoutButton() {
   const supabase = createClient()
   const router = useRouter()
+  const clearCart = useCartStore((s) => s.clearCart)
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
+    clearCart()
     router.push('/login')
   }
 
