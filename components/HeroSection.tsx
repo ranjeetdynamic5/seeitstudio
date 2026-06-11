@@ -184,7 +184,7 @@ export default function HeroSection() {
       {/* ── Stats Bar ── */}
       <div className="border-t border-white/[0.15]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/[0.15]">
+          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/[0.3]">
             {STATS.map((stat, i) => (
               <motion.div
                 key={stat.label}
