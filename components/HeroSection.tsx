@@ -182,7 +182,7 @@ export default function HeroSection() {
       </div>
 
       {/* ── Stats Bar ── */}
-      <div className="border-t border-white/[0.06]">
+      <div className="border-t border-white/[0.15]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/[0.06]">
             {STATS.map((stat, i) => (
