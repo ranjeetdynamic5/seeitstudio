@@ -34,7 +34,7 @@ export default function ProductCard({ product }: { product: Product }) {
     <div className="flex flex-col bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-[0_18px_50px_rgba(0,0,0,0.10)] hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
 
       {/* Image */}
-      <Link href={href} className="relative block w-full overflow-hidden bg-[#f1f3f5]" style={{ height: '200px' }}>
+      <Link href={href} className="relative block w-full overflow-hidden bg-white" style={{ height: '200px' }}>
         {product.is_on_sale && product.discount_percent != null && (
           <span className="absolute top-3 left-3 z-10 bg-[#f0a500] text-[#092145] text-[10px] font-semibold px-2.5 py-1 rounded-full shadow-[0_2px_8px_rgba(240,165,0,0.35)]">
             {product.discount_percent}% OFF
