@@ -23,12 +23,12 @@ export type Service = {
 
 function getIcon(title: string) {
   const t = title.toLowerCase()
-  if (t.includes('render') || t.includes('visual')) return <Layers className="w-5 h-5" />
-  if (t.includes('3d') || t.includes('model')) return <Box className="w-5 h-5" />
-  if (t.includes('bim') || t.includes('architect')) return <Building2 className="w-5 h-5" />
-  if (t.includes('ai') || t.includes('consult')) return <Cpu className="w-5 h-5" />
-  if (t.includes('web') || t.includes('ux') || t.includes('ui')) return <Globe className="w-5 h-5" />
-  return <Pen className="w-5 h-5" />
+  if (t.includes('render') || t.includes('visual')) return <Layers className="w-8 h-8" />
+  if (t.includes('3d') || t.includes('model')) return <Box className="w-8 h-8" />
+  if (t.includes('bim') || t.includes('architect')) return <Building2 className="w-8 h-8" />
+  if (t.includes('ai') || t.includes('consult')) return <Cpu className="w-8 h-8" />
+  if (t.includes('web') || t.includes('ux') || t.includes('ui')) return <Globe className="w-8 h-8" />
+  return <Pen className="w-8 h-8" />
 }
 
 export default function ServiceCard({ service }: { service: Service }) {
@@ -38,7 +38,7 @@ export default function ServiceCard({ service }: { service: Service }) {
       className="group flex flex-col bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300"
     >
       {/* Icon badge */}
-      <div className="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-[#092145] mb-5 group-hover:bg-[#0066FF]/10 group-hover:text-[#0066FF] transition-colors">
+      <div className="w-11 h-16 rounded-xl bg-slate-100 flex items-center justify-center text-[#092145] mb-5 group-hover:bg-[#0066FF]/10 group-hover:text-[#0066FF] transition-colors">
         {getIcon(service.title)}
       </div>
 
