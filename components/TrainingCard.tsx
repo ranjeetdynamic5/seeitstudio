@@ -10,9 +10,9 @@ export default function TrainingCard({ training }: { training: TrainingCourse })
     <div className="flex flex-col bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-[0_18px_50px_rgba(0,0,0,0.10)] hover:-translate-y-0.5 transition-all duration-300 overflow-hidden cursor-pointer">
 
       {/* Image */}
-      <Link href={href} className="relative block w-full overflow-hidden bg-[#f1f3f5]" style={{ height: '180px' }}>
+      <Link href={href} className="relative block w-full overflow-hidden bg-white" style={{ height: '180px' }}>
         {training.image_url ? (
-          <img src={training.image_url} alt={training.title} className="w-full h-full object-cover" />
+          <img src={training.image_url} alt={training.title} className="w-full h-full object-contain p-4" />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#e8f0fe] to-[#f0f4ff]">
             <svg className="w-10 h-10 text-[#0066FF]/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
