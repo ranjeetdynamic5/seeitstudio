@@ -1,291 +1,179 @@
-'use client'
+import type { Metadata } from "next";
+import NavHeader from "@/components/NavHeader";
+import Footer from "@/components/Footer";
+import Link from "next/link";
 
-import { useState, useRef, Fragment } from 'react'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import Breadcrumb from '@/components/Breadcrumb'
-import ExploreServices from '@/components/ExploreServices'
-
-const BREADCRUMB = [
-  { label: 'Home', href: '/' },
-  { label: 'Services', href: '/services' },
-  { label: 'AI Consulting' },
-]
-
-const SERVICE = 'AI Consulting'
-
-const inputCls = 'w-full px-4 py-3 border border-slate-200 rounded-lg text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-[#0066FF]/10 transition-colors'
-
-const features = [
-  {
-    icon: (
-      <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25zm.75-12h9v9h-9v-9z" />
-      </svg>
-    ),
-    title: 'AI Workflow Integration',
-    description: 'Streamline your design process by embedding AI tools directly into your existing workflow.',
+export const metadata: Metadata = {
+  title: "AI Consulting for Architects & Design Firms UK | SeeIt Studio",
+  description: "AI consulting and workflow automation for architects, interior designers, and creative studios across the UK. Integrate tools like MyArchitectAI, automate repetitive tasks, and future-proof your design practice.",
+  alternates: { canonical: "https://seeitstudio.com/services/ai-consulting" },
+  openGraph: {
+    title: "AI Consulting for UK Architecture & Design Firms | SeeIt Studio",
+    description: "Expert AI consulting for design professionals. Automate workflows, integrate AI tools, and stay ahead in 2026.",
+    url: "https://seeitstudio.com/services/ai-consulting",
   },
-  {
-    icon: (
-      <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
-      </svg>
-    ),
-    title: 'Custom AI Tools',
-    description: 'Bespoke AI solutions built specifically for your practice — from image generation to automation.',
-  },
-  {
-    icon: (
-      <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
-      </svg>
-    ),
-    title: 'Training & Support',
-    description: 'Hands-on AI training sessions for your team, plus ongoing support as the technology evolves.',
-  },
-  {
-    icon: (
-      <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-    title: 'Process Automation',
-    description: 'Automate repetitive tasks and save hours every week with intelligent AI-powered workflows.',
-  },
-]
+};
 
-const steps = [
-  {
-    title: 'Workflow Audit',
-    description: 'We analyse your current processes, tools and pain points to identify where AI delivers the greatest impact.',
-  },
-  {
-    title: 'AI Strategy',
-    description: 'We build a clear roadmap tailored to your practice — tools to adopt, workflows to automate, quick wins and long-term gains.',
-  },
-  {
-    title: 'Implementation & Training',
-    description: 'We set up the tools, integrate them with your workflow, and train your team to use them with confidence.',
-  },
-]
+const services = [
+  { title: "AI Readiness Assessment", description: "We audit your current workflows, tools, and team capabilities to identify exactly where AI can save time and reduce cost in your practice.", icon: "🔍" },
+  { title: "Tool Selection & Integration", description: "Guidance on the right AI tools for your workflow — MyArchitectAI, generative design tools, AI rendering, and automation platforms — with hands-on setup and training.", icon: "🔧" },
+  { title: "Workflow Automation", description: "Automate repetitive tasks such as document preparation, client reporting, material scheduling, and project handovers using modern AI-powered systems.", icon: "⚡" },
+  { title: "AI-Assisted Design", description: "Incorporate AI-generated concept visuals, facade explorations, and spatial layouts into your early-stage design process using tools like MyArchitectAI and Stable Diffusion.", icon: "🎨" },
+  { title: "Team Training & Adoption", description: "Practical, hands-on training for your team so they can use AI tools confidently in day-to-day workflows without disrupting existing processes.", icon: "👥" },
+  { title: "Ongoing AI Strategy", description: "Monthly advisory sessions to keep your practice up to date with the rapidly evolving AI landscape and ensure your toolstack continues to deliver ROI.", icon: "📈" },
+];
 
-export default function AiConsultingPage() {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-  const formRef = useRef<HTMLFormElement>(null)
+const stats = [
+  { value: "45%", label: "of UK AEC firms cite AI adoption as top challenge in 2026" },
+  { value: "40%", label: "reduction in admin overhead achievable with AI automation" },
+  { value: "94%", label: "of AI-adopting AEC firms plan to increase investment" },
+  { value: "2026", label: "the defining year for AI in UK architecture practices" },
+];
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setStatus('loading')
-    const fd = new FormData(e.currentTarget)
-    try {
-      const res = await fetch('/api/services/enquiry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          full_name: fd.get('full_name'),
-          email: fd.get('email'),
-          phone: fd.get('phone'),
-          company: fd.get('company') || '',
-          message: fd.get('message'),
-          service: SERVICE,
-        }),
-      })
-      const json = await res.json()
-      if (json.success) {
-        setStatus('success')
-        formRef.current?.reset()
-      } else {
-        setStatus('error')
-      }
-    } catch {
-      setStatus('error')
-    }
-  }
+const faqs = [
+  { q: "We're a small practice — is AI consulting relevant for us?", a: "Absolutely. Small practices often see the biggest gains because their workflows are more flexible. Even simple automations can save 5–10 hours per week." },
+  { q: "Which AI tools do you recommend for architects?", a: "It depends on your workflow. We commonly recommend MyArchitectAI for concept generation, AI rendering tools like D5 Render and Enscape, and automation platforms for document workflows. We'll recommend the right tools after understanding your practice." },
+  { q: "Do we need a large budget?", a: "No. Many of the most impactful AI tools are available on affordable monthly subscriptions. We help you identify the highest-ROI options for your budget." },
+  { q: "How is this different from generic IT consulting?", a: "We specialise specifically in architecture and design workflows. We understand SketchUp, Revit, rendering pipelines, and the pressures of practice — and we apply that knowledge directly to AI integration." },
+];
 
+export default function AIConsultingPage() {
   return (
-    <div className="min-h-screen flex flex-col scroll-smooth">
-      <Header />
-      <main className="flex-1 pt-20 md:pt-32">
-        <Breadcrumb items={BREADCRUMB} />
+    <>
+      <NavHeader />
+      <main className="min-h-screen bg-white">
 
         {/* Hero */}
-        <section
-          className="relative min-h-[480px] flex items-center"
-          style={{
-            backgroundColor: '#0F172A',
-            backgroundImage: `
-              linear-gradient(135deg, rgba(15,23,42,0.97) 0%, rgba(30,41,59,0.97) 100%),
-              repeating-linear-gradient(
-                45deg,
-                rgba(255,255,255,0.03) 0,
-                rgba(255,255,255,0.03) 1px,
-                transparent 0,
-                transparent 50%
-              )
-            `,
-            backgroundSize: '100% 100%, 14px 14px',
-          }}
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center w-full">
-            <p className="text-[#0066FF] text-sm font-semibold uppercase tracking-widest mb-4">Services</p>
-            <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-              AI Consulting for Design Professionals
-            </h1>
-            <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto mb-10">
-              Integrate artificial intelligence into your design workflow and stay ahead
-            </p>
-            <a
-              href="#enquiry-form"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white bg-[#0066FF] rounded-lg hover:bg-[#0052cc] transition-colors"
-            >
-              Book a Consultation
-            </a>
+        <section className="bg-[#092145] pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="max-w-3xl">
+              <p className="text-[#0066FF] text-sm font-semibold uppercase tracking-widest mb-4">AI Consulting</p>
+              <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight mb-6">
+                AI Consulting for Architects & Design Firms UK
+              </h1>
+              <p className="text-lg text-white/70 leading-relaxed mb-8 max-w-2xl">
+                Practical AI integration for architecture and design practices. We help you identify where AI saves time, select the right tools, automate workflows, and train your team — with measurable results.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3 bg-[#0066FF] text-white text-sm font-semibold rounded-lg hover:bg-[#0052cc] transition-colors">
+                  Book a Free AI Readiness Call
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                  </svg>
+                </Link>
+                <Link href="/training" className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 text-white text-sm font-semibold rounded-lg hover:bg-white/20 border border-white/20 transition-colors">
+                  View AI Training Courses
+                </Link>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Features */}
-        <section className="py-20 bg-slate-50">
+        {/* Market stats */}
+        <section className="bg-[#0a1628] border-b border-white/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
-              <h2 className="text-3xl font-bold text-[#0F172A] mb-3">What We Offer</h2>
-              <p className="text-[#64748B] max-w-xl mx-auto">
-                Practical AI solutions that save time and give your practice a competitive edge
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-              {features.map((f) => (
-                <div key={f.title} className="bg-white border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
-                  <div className="w-12 h-12 bg-[#0066FF]/10 text-[#0066FF] rounded-lg flex items-center justify-center mb-4">
-                    {f.icon}
-                  </div>
-                  <h3 className="font-semibold text-[#0F172A] mb-2">{f.title}</h3>
-                  <p className="text-sm text-[#64748B] leading-relaxed">{f.description}</p>
+            <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/10">
+              {stats.map((stat) => (
+                <div key={stat.label} className="flex flex-col items-center justify-center py-6 px-4 gap-1 text-center">
+                  <span className="text-2xl font-bold text-white">{stat.value}</span>
+                  <span className="text-xs text-white/40">{stat.label}</span>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* How it Works */}
-        <section className="py-20 bg-white">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
-              <h2 className="text-3xl font-bold text-[#0F172A] mb-3">How It Works</h2>
-              <p className="text-[#64748B] max-w-xl mx-auto">
-                A structured engagement designed to deliver measurable results
-              </p>
+        {/* Services */}
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#f8fafc]">
+          <div className="max-w-7xl mx-auto">
+            <div className="max-w-2xl mb-12">
+              <p className="text-[#0066FF] text-xs font-semibold uppercase tracking-widest mb-3">What We Do</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#092145] mb-4">AI integration built around your practice</h2>
+              <p className="text-[#64748B] leading-relaxed">We don't just recommend tools — we implement them, train your team, and measure the results.</p>
             </div>
-            <div className="flex flex-col md:flex-row items-start gap-6">
-              {steps.map((step, i) => (
-                <Fragment key={step.title}>
-                  <div className="flex-1 flex flex-col items-center text-center px-2">
-                    <div className="w-12 h-12 rounded-full bg-[#0066FF] text-white flex items-center justify-center font-bold text-lg mb-5 shrink-0">
-                      {i + 1}
-                    </div>
-                    <h3 className="font-semibold text-[#0F172A] text-lg mb-2">{step.title}</h3>
-                    <p className="text-sm text-[#64748B] leading-relaxed">{step.description}</p>
-                  </div>
-                  {i < steps.length - 1 && (
-                    <div className="hidden md:flex items-start pt-4 shrink-0">
-                      <svg className="w-6 h-6 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {services.map((item) => (
+                <div key={item.title} className="bg-white rounded-2xl p-6 border border-slate-200 hover:shadow-md transition-shadow">
+                  <div className="text-3xl mb-4">{item.icon}</div>
+                  <h3 className="text-base font-semibold text-[#092145] mb-2">{item.title}</h3>
+                  <p className="text-sm text-[#64748B] leading-relaxed">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Why SeeIt Studio */}
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <p className="text-[#0066FF] text-xs font-semibold uppercase tracking-widest mb-3">Why SeeIt Studio</p>
+                <h2 className="text-3xl sm:text-4xl font-bold text-[#092145] mb-6">We know architecture. We know AI.</h2>
+                <p className="text-[#64748B] leading-relaxed mb-6">
+                  Unlike generic IT or AI consultancies, we work exclusively with architects, interior designers, and creative studios. We understand SketchUp workflows, rendering pipelines, BIM processes, and the commercial pressures of running a design practice.
+                </p>
+                <p className="text-[#64748B] leading-relaxed mb-8">
+                  That means our AI recommendations are grounded in real design workflows — not theoretical use cases. We've been supporting UK design professionals for over 10 years, and we bring that depth of knowledge to every AI engagement.
+                </p>
+                <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3 bg-[#092145] text-white text-sm font-semibold rounded-lg hover:bg-[#0a1e3a] transition-colors">
+                  Book a Free Call
+                </Link>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { label: "Design-specific expertise", desc: "We only work with architecture and design practices." },
+                  { label: "Tool-agnostic advice", desc: "We recommend what's right for you, not what we're paid to sell." },
+                  { label: "Hands-on implementation", desc: "We set up and configure tools, not just advise on them." },
+                  { label: "Training included", desc: "Every engagement includes team training for lasting adoption." },
+                ].map((item) => (
+                  <div key={item.label} className="bg-[#f8fafc] rounded-xl p-5 border border-slate-200">
+                    <div className="w-8 h-8 rounded-lg bg-[#0066FF]/10 flex items-center justify-center mb-3">
+                      <svg className="w-4 h-4 text-[#0066FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                       </svg>
                     </div>
-                  )}
-                </Fragment>
+                    <p className="text-sm font-semibold text-[#092145] mb-1">{item.label}</p>
+                    <p className="text-xs text-[#64748B]">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQs */}
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#f8fafc]">
+          <div className="max-w-3xl mx-auto">
+            <p className="text-[#0066FF] text-xs font-semibold uppercase tracking-widest mb-3">FAQs</p>
+            <h2 className="text-3xl font-bold text-[#092145] mb-10">Questions we get asked</h2>
+            <div className="space-y-6">
+              {faqs.map((faq) => (
+                <div key={faq.q} className="border-b border-slate-200 pb-6">
+                  <h3 className="text-base font-semibold text-[#092145] mb-2">{faq.q}</h3>
+                  <p className="text-sm text-[#64748B] leading-relaxed">{faq.a}</p>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        <ExploreServices currentSlug="ai-consulting" />
-
-        {/* Enquiry Form */}
-        <section id="enquiry-form" className="py-20 bg-slate-50">
-          <div className="max-w-2xl mx-auto px-4 sm:px-6">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold text-[#0F172A] mb-3">Book a Consultation</h2>
-              <p className="text-[#64748B]">Tell us about your practice — we&apos;ll respond within 24 hours</p>
-            </div>
-            <div className="bg-white border border-slate-200 rounded-2xl p-8 sm:p-10">
-              {status === 'success' ? (
-                <div className="text-center py-10">
-                  <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-5">
-                    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-[#0F172A] mb-2">Thank you!</h3>
-                  <p className="text-[#64748B]">We&apos;ll contact you within 24 hours.</p>
-                </div>
-              ) : (
-                <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-sm font-medium text-[#0F172A] mb-1.5">
-                        Full Name <span className="text-[#0066FF]">*</span>
-                      </label>
-                      <input required name="full_name" type="text" placeholder="Jane Smith" className={inputCls} />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-[#0F172A] mb-1.5">
-                        Email Address <span className="text-[#0066FF]">*</span>
-                      </label>
-                      <input required name="email" type="email" placeholder="jane@studio.co.uk" className={inputCls} />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-sm font-medium text-[#0F172A] mb-1.5">
-                        Phone Number <span className="text-[#0066FF]">*</span>
-                      </label>
-                      <input required name="phone" type="tel" placeholder="+44 7700 000000" className={inputCls} />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-[#0F172A] mb-1.5">
-                        Company <span className="text-slate-400 font-normal">(optional)</span>
-                      </label>
-                      <input name="company" type="text" placeholder="Your practice name" className={inputCls} />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-[#0F172A] mb-1.5">
-                      Message <span className="text-[#0066FF]">*</span>
-                    </label>
-                    <textarea
-                      required
-                      name="message"
-                      rows={5}
-                      placeholder="Tell us about your practice and where you'd like to use AI..."
-                      className={`${inputCls} resize-none`}
-                    />
-                  </div>
-                  {status === 'error' && (
-                    <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
-                      Something went wrong. Please try again.
-                    </p>
-                  )}
-                  <button
-                    type="submit"
-                    disabled={status === 'loading'}
-                    className="w-full py-4 bg-[#0066FF] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-colors disabled:opacity-60 text-base"
-                  >
-                    {status === 'loading' ? 'Sending…' : 'Send Enquiry'}
-                  </button>
-                  <p className="text-xs text-center text-slate-400">
-                    By submitting you agree to our{' '}
-                    <a href="/privacy" className="underline hover:text-slate-600 transition-colors">Privacy Policy</a>.
-                  </p>
-                </form>
-              )}
-            </div>
+        {/* CTA */}
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#092145]">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Ready to bring AI into your practice?</h2>
+            <p className="text-white/60 mb-8 leading-relaxed">Book a free 30-minute AI readiness call. We'll assess your current workflows and identify where AI can have the biggest impact.</p>
+            <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-4 bg-[#0066FF] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-colors">
+              Book Free AI Readiness Call
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+              </svg>
+            </Link>
           </div>
         </section>
 
       </main>
       <Footer />
-    </div>
-  )
+    </>
+  );
 }
