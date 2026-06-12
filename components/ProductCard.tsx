@@ -41,7 +41,7 @@ export default function ProductCard({ product }: { product: Product }) {
           </span>
         )}
         {product.image_url ? (
-          <img src={product.image_url} alt={product.title} className="w-full h-full object-cover" />
+          <img src={product.image_url} alt={product.title} className="w-full h-full object-contain p-4" />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <svg className="w-10 h-10 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
