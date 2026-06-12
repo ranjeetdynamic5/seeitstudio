@@ -95,7 +95,7 @@ export default async function HomePage() {
     getServices(),
   ]);
 
-  const featuredTrainings = allTrainings.filter(t => t.is_featured).slice(0, 5);
+  const featuredTrainings = allTrainings.filter(t => t.is_featured).slice(0, 8);
 
   return (
     <>
